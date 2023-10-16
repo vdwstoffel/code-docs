@@ -56,8 +56,11 @@ git stash pop
 git submodule init
 
 # adding a submodule
-git submodule add <remote_url> <destination_folder>
+git submodule add <remote_url>
 
 # updating a submodule
 git submodule update --remote --merge
+
+# remove submodule
+git rm <path-to-submodule>
 ```
