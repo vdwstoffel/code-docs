@@ -22,6 +22,19 @@ const sidebars = {
     "git",
     {
       type: "category",
+      label: "Python",
+      items: [
+        "python/intro",
+        "python/flask",
+        "python/databases",
+        "python/pyqt6",
+        "python/pandas",
+        "python/selenium",
+        "python/other",
+      ],
+    },
+    {
+      type: "category",
       label: "JavaScript",
       items: [
         "javascript/intro",
