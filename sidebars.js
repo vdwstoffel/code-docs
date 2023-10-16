@@ -49,6 +49,7 @@ const sidebars = {
     "docker",
     "sql",
     "bash",
+    "cli",
   ],
 };
 
