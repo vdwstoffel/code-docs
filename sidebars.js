@@ -38,6 +38,7 @@ const sidebars = {
       label: "JavaScript",
       items: [
         "javascript/intro",
+        "javascript/node",
         "javascript/express",
         "javascript/react",
         "javascript/next",
