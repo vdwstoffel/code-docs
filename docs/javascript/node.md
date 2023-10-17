@@ -2,10 +2,12 @@
 
 ## I/O
 
+`__dirname` refers to the location the script is located
+
 ```javascript
 const fs = require("fs");
 
-fs.readFile("./asyncExample.txt", "utf-8", (err, data) => {
+fs.readFile(`${__dirname}/asyncExample.txt`, "utf-8", (err, data) => {
   if (err) throw err;
   console.log(data);
 });
@@ -19,7 +21,7 @@ fs.writeFile("textOut.txt", text, "utf-8", (err) => {
 
 // Append to the file
 const textToAppend = "This line has been appended to the file\n";
-fs.appendFile("./textOut.txt", textToAppend, (err) => {
+fs.appendFile(`${__dirname}/textOut.txt`, textToAppend, (err) => {
   if (err) throw err;
   console.log("File appended check output");
 });

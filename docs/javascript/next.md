@@ -3,6 +3,10 @@ sidebar_label: "Next.js"
 sidebar_position: 4
 ---
 
+import CodeBlock from "@theme/CodeBlock";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 # Next
 
 ## Setup new project
@@ -23,7 +27,12 @@ npx create-next-app@latest
     └── PageOne.jsx
 ```
 
-```javascript title="Layout.jsx"
+```mdx-code-block
+<Tabs>
+<TabItem value="Layout.jsx">
+```
+
+```javascript
 import Link from "next/link";
 
 export default function Layout(props) {
@@ -42,7 +51,12 @@ export default function Layout(props) {
 }
 ```
 
-```javascript title="_app.jsx"
+```mdx-code-block
+</TabItem>
+<TabItem value="_app.jsx">
+```
+
+```javascript
 import Layout from "../components/Layout";
 
 export default function MyApp({ Component, pageProps }) {
@@ -54,16 +68,31 @@ export default function MyApp({ Component, pageProps }) {
 }
 ```
 
-```javascript title="index.jsx"
+```mdx-code-block
+</TabItem>
+<TabItem value="index.jsx">
+```
+
+```javascript
 export default function Index() {
   return <h1>Index</h1>;
 }
 ```
 
-```javascript title="PageOne.jsx"
+```mdx-code-block
+</TabItem>
+<TabItem value="PageOne.jsx">
+```
+
+```javascript
 export default function PageOne() {
   return <h1>Page One</h1>;
 }
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ## Routes
@@ -288,11 +317,7 @@ export default function Index() {
     e.preventDefault();
     const enteredLabel = myLabel.current.value; // get the value from the label
     // make a request to your own api backend
-    await axios.post(
-      "/api/firebase/",
-      { myLabel: enteredLabel },
-      { headers: { "Content-Type": "application/data" } }
-    );
+    await axios.post("/api/firebase/", { myLabel: enteredLabel }, { headers: { "Content-Type": "application/data" } });
     router.push("/showItems"); // redirect to another page
   };
 
@@ -360,10 +385,7 @@ export default function Document() {
         {/* Add google fonts in the head */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap"
-          rel="stylesheet"
-        />
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet" />
       </Head>
       <body>
         <Main />

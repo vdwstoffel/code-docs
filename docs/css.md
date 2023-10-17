@@ -112,7 +112,10 @@ div {
 }
 ```
 
-![overflow-auto](./images/overflow_auto.png)
+<div style={{width: "200px", height: "100px", overflow: "auto", backgroundColor: "orange", color: "black", padding: "0.5em"}}>
+  You can use the overflow property when you want to have better control of the layout. The overflow property specifies
+  what happens if content overflows an element's box.
+</div>
 
 ## Layout
 
@@ -178,12 +181,7 @@ background-size: cover; /* auto scale to never have white space */
 background-position: 0% 10%; /* left edge, amount to crop at top*/
 background-position: center; /* Crop same amount top and bottom */
 
-background-image: linear-gradient(
-  145deg,
-  red 20%,
-  blue 60%,
-  green
-); /* direction , color (when to transition)*/
+background-image: linear-gradient(145deg, red 20%, blue 60%, green); /* direction , color (when to transition)*/
 /*               shape (circle/ ellipse) size   left, top     start transition */
 background-image: radial-gradient(circle 50em at 10% 80%, red 20%, blue);
 
