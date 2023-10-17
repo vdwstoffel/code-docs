@@ -26,3 +26,24 @@ fs.appendFile(`${__dirname}/textOut.txt`, textToAppend, (err) => {
   console.log("File appended check output");
 });
 ```
+
+## Nodemon
+
+```bash
+npm install nodemon --save-dev
+```
+
+```json title="package.json"
+"scripts": {
+  "start": "nodemon index.js"
+}
+"devDependencies": {
+  "nodemon": "^1.18.11"
+}
+```
+
+Then in the terminal run
+
+```bash
+npm run start
+```

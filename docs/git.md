@@ -1,6 +1,7 @@
 ---
 sidebar_label: "Git"
 sidebar_position: 2
+slug: /
 ---
 
 # Git Workflows
