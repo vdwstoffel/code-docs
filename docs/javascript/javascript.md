@@ -3,6 +3,10 @@ sidebar_label: "JavaScript"
 sidebar_position: 1
 ---
 
+import CodeBlock from "@theme/CodeBlock";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 # Javascript
 
 Basic concepts of JavaScript
@@ -27,7 +31,12 @@ console.log(uppercaseNames); // Output: ['ALICE', 'BOB', 'CHARLIE', 'DAVE']
 
 ## OOP
 
-```javascript title="animal.js"
+```mdx-code-block
+<Tabs>
+<TabItem value="animal.js">
+```
+
+```javascript
 class Animal {
   constructor(name, species) {
     this.name = name;
@@ -42,11 +51,21 @@ class Animal {
 module.exports = Animal;
 ```
 
-```javascript title="main.js"
+```mdx-code-block
+</TabItem>
+<TabItem value="main.js">
+```
+
+```javascript
 const Animal = require("./animal");
 
 const cat = new Animal("Whiskers", "Cat");
 cat.makeSound(); // Output: Whiskers makes a sound.
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ## Importing/Exporting

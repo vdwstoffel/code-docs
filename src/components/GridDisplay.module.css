@@ -1,0 +1,13 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* Set 3 grid rows*/
+}
+
+.box {
+  width: 150px;
+  height: 50px;
+  background-color: rgba(86, 85, 85, 0.589);
+  margin: 1em;
+  border-radius: 5px;
+  text-align: center;
+}

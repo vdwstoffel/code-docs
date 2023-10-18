@@ -33,38 +33,34 @@ body {
 
 ## Grid Display
 
-### Grid Sizing
-
-Create a 2x2 grid
-
-```css
-.grid-example {
-  display: grid;
-  grid-template-columns: 1fr 2fr; /* create two grids with a ratio 1:2 */
-  grid-template-rows: 1fr 1fr; /* create two grids with a 1:1 ration */
-  gap: 10px; /* gap between grids */
-}
-```
-
-Repeat the same x times: repeat (times, size)
-
 ```css
 .container {
   display: grid;
-  grid-template-columns: repeat(8, 4em);
-  grid-template-rows: repeat(8, 4em);
-  gap: 10px;
+  grid-template-columns: 1fr 1fr 1fr; /* Set 3 grid rows*/
 }
 ```
+
+import GridDisplay from '@site/src/components/GridDisplay'
+
+<GridDisplay />
 
 ### Grid Placement
 
 ```css
-.container {
-  grid-column: span 2; /* takes a columns */
-  grid-row: span 3; /* takes 3 rows*/
+.one {
+  grid-column: span 2; /* takes x columns */
+  grid-row: span 1; /* takes x rows*/
+}
+
+.two {
+  grid-column: span 1; /* takes x columns */
+  grid-row: span 2; /* takes x rows*/
 }
 ```
+
+import GridPlacement from '@site/src/components/GridPlacement'
+
+<GridPlacement />
 
 ## Positioning
 
@@ -104,6 +100,13 @@ Repeat the same x times: repeat (times, size)
 position: sticky;
 top: 20px; /* space between element and parent*/
 ```
+
+<div style={{width: "300px", height: "300px", backgroundColor: "black", overflow: "auto", color: "white", textAlign: "center"}}>
+<div style={{marginTop: "2em", padding: "1em"}}>
+<div style={{position: "sticky", top: "20px", backgroundColor: "gray"}}>Heading</div>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</div>
+</div>
 
 ## Overflow
 

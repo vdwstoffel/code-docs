@@ -6,6 +6,28 @@ sidebar_position: 1
 
 # Node
 
+## Getting Started
+
+### Init
+
+```bash
+npm init
+```
+
+### Install
+
+To install from `package.json`
+
+```bash
+npm install
+```
+
+### Remove package
+
+```bash
+npm remove <package-name>
+```
+
 ## I/O
 
 `__dirname` refers to the location the script is located

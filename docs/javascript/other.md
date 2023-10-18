@@ -3,6 +3,10 @@ sidebar_label: "Other"
 sidebar_position: 6
 ---
 
+import CodeBlock from "@theme/CodeBlock";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 # Other
 
 ## Axios
@@ -11,16 +15,20 @@ sidebar_position: 6
 npm i axios
 ```
 
-```javascript
+```js
 "use strict";
 
 const axios = require("axios"); // npm i axios
 require("dotenv").config({ path: "../../.env" }); // npm i dotenv
 const endpoint = process.env["FIREBASE"];
+```
 
-/***************
- ***** GET *****
- ***************/
+```mdx-code-block
+<Tabs>
+<TabItem value="GET">
+```
+
+```js
 const getData = async () => {
   try {
     const response = await axios.get(endpoint);
@@ -29,10 +37,14 @@ const getData = async () => {
     console.log(err);
   }
 };
+```
 
-/****************
- ***** POST *****
- ****************/
+```mdx-code-block
+</TabItem>
+<TabItem value="POST">
+```
+
+```js
 const postData = async () => {
   try {
     await axios.post(endpoint, { hello: "World" });
@@ -40,10 +52,14 @@ const postData = async () => {
     console.log(err);
   }
 };
+```
 
-/***************
- ***** PUT *****
- ***************/
+```mdx-code-block
+</TabItem>
+<TabItem value="PUT">
+```
+
+```js
 const putData = async () => {
   try {
     await axios.put(endpoint, { hello: "JavaScript" });
@@ -51,10 +67,14 @@ const putData = async () => {
     console.log(err);
   }
 };
+```
 
-/******************
- ***** DELETE *****
- ******************/
+```mdx-code-block
+</TabItem>
+<TabItem value="DELETE">
+```
+
+```js
 const deleteData = async () => {
   try {
     await axios.delete(endpoint, { hello: "JavaScript" });
@@ -62,6 +82,11 @@ const deleteData = async () => {
     console.log(err);
   }
 };
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ## dotenv
