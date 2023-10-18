@@ -3,6 +3,10 @@ sidebar_label: "React"
 sidebar_position: 3
 ---
 
+import CodeBlock from "@theme/CodeBlock";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 # React
 
 ## Getting Started
@@ -21,9 +25,12 @@ npm run dev
 
 ## Components
 
-### Functional Components
+```mdx-code-block
+<Tabs>
+<TabItem value="Function">
+```
 
-```javascript
+```jsx
 import "./global.css";
 
 export default function App() {
@@ -36,9 +43,12 @@ export default function App() {
 }
 ```
 
-### Class Based Components
+```mdx-code-block
+</TabItem>
+<TabItem value="Class">
+```
 
-```javascript
+```jsx
 import React from "react";
 
 class setStateExample extends React.Component {
@@ -66,6 +76,11 @@ class setStateExample extends React.Component {
 }
 
 export default setStateExample;
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ## Fragments
@@ -140,7 +155,12 @@ export default function App() {
 
 `useState` is a React hook that allows functional components to manage and update state.
 
-```javascript
+```mdx-code-block
+<Tabs>
+<TabItem value="Code">
+```
+
+```jsx
 import { useState } from "react";
 
 export default function App() {
@@ -159,6 +179,35 @@ export default function App() {
     </div>
   );
 }
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Live">
+```
+
+```jsx live
+function App() {
+  // destruct array         // Set initial value
+  const [count, setCount] = useState(1);
+
+  function increase() {
+    const newCount = count + 1;
+    setCount(newCount); // Set a new value
+  }
+
+  return (
+    <div className="container">
+      <h1>{count}</h1>
+      <button onClick={increase}>+</button>
+    </div>
+  );
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ## UseEffect
@@ -285,9 +334,7 @@ export function AuthContextProvider(props) {
   };
 
   return (
-    <AuthContext.Provider
-      value={{ isLoggedIn: isAuth, login: login, logout: logout }}
-    >
+    <AuthContext.Provider value={{ isLoggedIn: isAuth, login: login, logout: logout }}>
       {props.children}
     </AuthContext.Provider>
   );
@@ -662,9 +709,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Content from "./Content";
 
-const router = createBrowserRouter([
-  { path: "/content", element: <Content /> },
-]);
+const router = createBrowserRouter([{ path: "/content", element: <Content /> }]);
 
 export default function App() {
   return <RouterProvider router={router} />;
@@ -808,8 +853,7 @@ export default function UserForm() {
 
   return (
     <>
-      <button onClick={deleteHandler}>Delete</button>{" "}
-      {/* Not part of the form */}
+      <button onClick={deleteHandler}>Delete</button> {/* Not part of the form */}
     </>
   );
 }
@@ -910,11 +954,7 @@ export default function App() {
     <form>
       <h1>Hello</h1>
       <label>Name:</label>
-      <input
-        value={name}
-        onChange={updateInput}
-        className={!nameIsValid ? style.error : null}
-      />
+      <input value={name} onChange={updateInput} className={!nameIsValid ? style.error : null} />
       {!nameIsValid && <p>Name is required</p>}
       <button type="submit" onClick={submitHandler}>
         Submit
@@ -974,13 +1014,7 @@ export default function Names(props) {
   return (
     <form onSubmit={handleSubmit}>
       <label htmlFor="name">Name</label>
-      <input
-        type="text"
-        id="name"
-        name="name"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
+      <input type="text" id="name" name="name" value={username} onChange={(e) => setUsername(e.target.value)} />
       <button type="submit">Submit</button>
     </form>
   );
@@ -1154,9 +1188,7 @@ export default function App() {
       <div className={clicked && styles["dynamic-bg"]} onClick={clickHandler}>
         Click Me
       </div>
-      <h2 className={`${styles.heading} ${clicked && styles["dynamic-bg"]}`}>
-        Combined
-      </h2>
+      <h2 className={`${styles.heading} ${clicked && styles["dynamic-bg"]}`}>Combined</h2>
     </div>
   );
 }
@@ -1209,9 +1241,7 @@ useEffect(() => {
   If another button is pressed the current timer will reset 
   */
   const currentTimer = setTimeout(() => {
-    setFormIsValid(
-      enteredEmail.includes("@") && enteredPassword.trim().length > 6
-    );
+    setFormIsValid(enteredEmail.includes("@") && enteredPassword.trim().length > 6);
   }, 1000);
 });
 ```
@@ -1294,11 +1324,7 @@ describe("Async component", () => {
     });
 
     render(<App />);
-    const listItemElements = await screen.findAllByRole(
-      "listitem",
-      { exact: false },
-      { timeout: 1000 }
-    );
+    const listItemElements = await screen.findAllByRole("listitem", { exact: false }, { timeout: 1000 });
     expect(listItemElements).not.toHaveLength(0);
   });
 });

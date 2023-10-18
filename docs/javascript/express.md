@@ -232,7 +232,7 @@ app.listen(port, () => {
 
 #### Includes
 
-```html
+```html title="header.html"
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -243,7 +243,6 @@ app.listen(port, () => {
     <!-- the css root will be set to public -->
     <title><%= title %></title>
   </head>
-</html>
 ```
 
 ```html

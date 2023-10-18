@@ -108,7 +108,12 @@ export default function PageOne() {
         └── [postId].jsx
 ```
 
-```javascript title="/pages/index,jsx"
+```mdx-code-block
+<Tabs>
+<TabItem value="/pages/index.jsx">
+```
+
+```javascript
 import Link from "next/link";
 
 export default function Index() {
@@ -119,6 +124,11 @@ export default function Index() {
     </>
   );
 }
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="/pages/posts/index.jsx">
 ```
 
 ```javascript title="/pages/posts/index.jsx"
@@ -140,7 +150,12 @@ export default function News() {
 }
 ```
 
-```javascript title="/pages/posts/[postId].jsx"
+```mdx-code-block
+</TabItem>
+<TabItem value="/pages/posts/[postId].jsx">
+```
+
+```javascript
 import { useRouter } from "next/router";
 
 export default function Post() {
@@ -160,7 +175,12 @@ export default function Post() {
 }
 ```
 
-```javascript title="/pages/[dynamicFolder]/index.jsx"
+```mdx-code-block
+</TabItem>
+<TabItem value="/pages/[dynamicFolder]/index.jsx">
+```
+
+```javascript
 import { useRouter } from "next/router";
 
 export default function Post() {
@@ -178,6 +198,11 @@ export default function Post() {
     </>
   );
 }
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ## Get Static Props
