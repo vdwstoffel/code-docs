@@ -1,5 +1,6 @@
 ---
-sidebar_label: "Intro"
+sidebar_label: "Python"
+sidebar_position: 3
 ---
 
 # Math

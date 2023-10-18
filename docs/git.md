@@ -1,10 +1,10 @@
 ---
 sidebar_label: "Git"
-sidebar_position: 2
+sidebar_position: 1
 slug: /
 ---
 
-# Git Workflows
+# Git
 
 ## Start new repo
 
