@@ -11,16 +11,31 @@ import TabItem from "@theme/TabItem";
 
 ## Getting Started
 
+```mdx-code-block
+<Tabs>
+<TabItem value="Create React App">
+```
+
 ```bash
-# Create React App
 npx create-react-app my-app
 cd my-app
 npm start
+```
 
-# Vite
+```mdx-code-block
+</TabItem>
+<TabItem value="Vite">
+```
+
+```bash
 npm create vite@latest
 cd my-app
 npm run dev
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ## Components

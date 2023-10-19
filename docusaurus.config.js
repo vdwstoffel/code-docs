@@ -6,9 +6,9 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "My Site",
+  title: "CodeDocs",
   tagline: "Dinosaurs are cool",
-  favicon: "img/favicon.ico",
+  favicon: "img/codeLogo.ico",
 
   // Set the production url of your site here
   url: "https://your-docusaurus-test-site.com",
@@ -42,13 +42,13 @@ const config = {
           sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+          editUrl: "https://github.com/vdwstoffel/code_docs/blob/main/",
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+          editUrl: "https://github.com/vdwstoffel/code_docs/blob/main/",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -66,7 +66,7 @@ const config = {
         title: "CodeDocs",
         logo: {
           alt: "My Site Logo",
-          src: "img/logo.svg",
+          src: "img/codeLogo.svg",
         },
         items: [
           {
@@ -88,6 +88,10 @@ const config = {
                 label: "Tutorial",
                 to: "/docs/intro",
               },
+              {
+                label: "Replit",
+                href: "https://replit.com/@vdwstoffel",
+              },
             ],
           },
           {
@@ -95,7 +99,11 @@ const config = {
             items: [
               {
                 label: "GitHub",
-                href: "https://github.com/facebook/docusaurus",
+                href: "https://github.com/vdwstoffel/code_docs",
+              },
+              {
+                label: "Docusaurus",
+                href: "https://docusaurus.io/docs",
               },
             ],
           },

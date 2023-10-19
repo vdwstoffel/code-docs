@@ -3,6 +3,11 @@ sidebar_label: "CSS"
 sidebar_position: 4
 ---
 
+import CodeBlock from "@theme/CodeBlock";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import Position from "@site/src/components/cssExamples/Position"
+
 # CSS
 
 ## Include Stylesheet in HTML
@@ -12,6 +17,7 @@ sidebar_position: 4
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- set the path to css file-->
+  // highlight-next-line
   <link rel="stylesheet" href="path/to/file.css" />
   <title>Document</title>
 </head>
@@ -72,6 +78,55 @@ import GridPlacement from '@site/src/components/GridPlacement'
 | `fixed`        | Elements are positioned relative to the viewport (the browser window). They do not move when the page is scrolled.                                                |
 | `sticky`       | Elements are positioned based on the user's scroll position. They behave like `relative` until they reach a specified offset, then they become `fixed`.           |
 
+```mdx-code-block
+<Tabs>
+<TabItem value="Relative">
+```
+
+Elements are positioned relative to their normal position in the document flow. You can use `top`, `bottom`, `left`, or `right` properties to offset the element.
+
+```css
+position: relative;
+top: 30%;
+left: 60%;
+```
+
+<Position position={"relative"} top={"30%"} left={"60%"}/>
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Absolute">
+```
+
+Elements are removed from the normal document flow and positioned relative to the nearest positioned ancestor (or the initial containing block if none).
+
+```css
+position: absolute;
+top: 30%;
+left: 30%;
+```
+
+<Position position={"absolute"} top={"30%"} left={"30%"}/>
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Sticky">
+```
+
+Elements are positioned based on the user's scroll position. They behave like relative until they reach a specified offset, then they become fixed.
+
+```css
+position: sticky;
+top: 20px; /* space between element and parent*/
+```
+
+<Position position={"sticky"} top={"20%"} />
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
 ### Absolute-Realtive
 
 ```css
@@ -93,20 +148,6 @@ import GridPlacement from '@site/src/components/GridPlacement'
 ```
 
 ![absolute-position](./images/absolute.png)
-
-### Sticky
-
-```css
-position: sticky;
-top: 20px; /* space between element and parent*/
-```
-
-<div style={{width: "300px", height: "300px", backgroundColor: "black", overflow: "auto", color: "white", textAlign: "center"}}>
-<div style={{marginTop: "2em", padding: "1em"}}>
-<div style={{position: "sticky", top: "20px", backgroundColor: "gray"}}>Heading</div>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-</div>
-</div>
 
 ## Overflow
 
@@ -204,6 +245,17 @@ filter: opacity(25%);
 filter: saturate(30%);
 filter: sepia(60%);
 ```
+
+## Sizing
+
+| Unit / Size | Description                                                                                      |
+| ----------- | ------------------------------------------------------------------------------------------------ |
+| `px`        | Fixed unit of measurement. Provides precise control but doesn't adapt well to different screens. |
+| `%`         | Relative to the parent element's size. Useful for responsive layouts.                            |
+| `em`        | Relative to the font size of the element itself. Good for text-related sizing.                   |
+| `rem`       | Relative to the root (HTML) font size. More predictable than `em`.                               |
+| `vw`        | Relative to the viewport's width, useful for responsive designs.                                 |
+| `vh`        | Relative to the viewport's height, often used for responsive layouts.                            |
 
 ## Font Awesome
 

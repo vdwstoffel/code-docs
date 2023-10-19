@@ -9,6 +9,11 @@ import TabItem from "@theme/TabItem";
 
 # Node
 
+import DisplayLogo from "@site/src/components/DisplayLogo"
+import nodeLogo from "@site/static/img/nodejs.png"
+
+<DisplayLogo logo={nodeLogo}/>
+
 ## Getting Started
 
 ### Init

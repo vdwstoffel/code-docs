@@ -3,14 +3,18 @@ sidebar_label: "Python"
 sidebar_position: 3
 ---
 
-# Math
+# Python
+
+## Math
+
 ```python
 # Rounding
 print(round(2.5457457, 2))
 >>> 2.55
 ```
 
-# Pathlib
+## Pathlib
+
 ```python
 import pathlib
 
