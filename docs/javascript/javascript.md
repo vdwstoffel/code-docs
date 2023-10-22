@@ -14,24 +14,145 @@ import DisplayLogo from "@site/src/components/DisplayLogo"
 
 <DisplayLogo logo={JSLogo} />
 
-Basic concepts of JavaScript
-
 ## Arrays
 
-### Map
+```js
+const names = ["alpha", "bravo", "charlie"];
+```
+
+### View/Add/Remove
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Length">
+```
 
 ```js
-const names = ["alice", "bob", "charlie", "dave"];
+names.length; // 3
+```
 
-// Singleline
-const uppercaseNames = names.map((name) => name.toUpperCase());
+```mdx-code-block
+</TabItem>
+<TabItem value="Index">
+```
 
-// Multiline
+```js
+names[2]; // charlie
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Push">
+```
+
+```js
+names.push("delta"); // [ 'alpha', 'bravo', 'charlie', 'delta' ]
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Splice">
+```
+
+```js
+const index = names.indexOf("bravo");
+names.splice(index, 1);
+console.log(names); // [ 'alpha', 'charlie' ]
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Includes">
+```
+
+```js
+names.includes("charlie"); // true
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="join">
+```
+
+```js
+names.join(" "); // alpha charlie charlie
+names.join("-"); // alpha-bravo-charlie
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### Iteration
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Loop">
+```
+
+```js
+for (let i = 0; i < names.length; i++) {
+  console.log(names[i]);
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="forEach">
+```
+
+```js
+names.forEach((name) => {
+  console.log(name);
+});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Map">
+```
+
+```js
 const uppercaseNames = names.map((name) => {
   return name.toUpperCase();
 });
 
-console.log(uppercaseNames); // Output: ['ALICE', 'BOB', 'CHARLIE', 'DAVE']
+console.log(uppercaseNames); // [ 'ALPHA', 'BRAVO', 'CHARLIE' ]
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Filter">
+```
+
+```js
+const result = names.filter((name) => {
+  return name.length < 6;
+});
+
+console.log(result); // [ 'alpha', 'bravo' ]
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Reduce">
+```
+
+```js
+const numbers = [1, 2, 3, 4, 5];
+
+// Use the reduce method to find the sum of all elements in the array
+const sum = numbers.reduce((accumulator, currentValue) => {
+  return accumulator + currentValue;
+}, 0);
+
+console.log(sum); // Output: 15
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ## OOP
