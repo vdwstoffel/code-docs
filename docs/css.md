@@ -7,6 +7,8 @@ import CodeBlock from "@theme/CodeBlock";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import Position from "@site/src/components/cssExamples/Position"
+import GridDisplay from '@site/src/components/cssExamples/GridDisplay'
+import GridPlacement from '@site/src/components/cssExamples/GridPlacement'
 
 # CSS
 
@@ -23,20 +25,6 @@ import Position from "@site/src/components/cssExamples/Position"
 </head>
 ```
 
-## Reset all values
-
-```css
-* {
-  /* The width and height of the element include the content, padding, and border. */
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-}
-```
-
 ## Grid Display
 
 ```css
@@ -45,8 +33,6 @@ body {
   grid-template-columns: 1fr 1fr 1fr; /* Set 3 grid rows*/
 }
 ```
-
-import GridDisplay from '@site/src/components/GridDisplay'
 
 <GridDisplay />
 
@@ -63,8 +49,6 @@ import GridDisplay from '@site/src/components/GridDisplay'
   grid-row: span 2; /* takes x rows*/
 }
 ```
-
-import GridPlacement from '@site/src/components/GridPlacement'
 
 <GridPlacement />
 
@@ -117,7 +101,7 @@ Elements are positioned based on the user's scroll position. They behave like re
 
 ```css
 position: sticky;
-top: 20px; /* space between element and parent*/
+top: 20%; /* space between element and parent*/
 ```
 
 <Position position={"sticky"} top={"20%"} />
@@ -256,6 +240,20 @@ filter: sepia(60%);
 | `rem`       | Relative to the root (HTML) font size. More predictable than `em`.                               |
 | `vw`        | Relative to the viewport's width, useful for responsive designs.                                 |
 | `vh`        | Relative to the viewport's height, often used for responsive layouts.                            |
+
+## Reset all values
+
+```css
+* {
+  /* The width and height of the element include the content, padding, and border. */
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+```
 
 ## Font Awesome
 
