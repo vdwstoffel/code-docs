@@ -1,0 +1,34 @@
+.single {
+  width: 100px;
+  height: 100px;
+  background: red;
+  transition: width 2s;
+}
+
+.single:hover {
+  width: 300px;
+}
+
+.multiple {
+  width: 100px;
+  height: 100px;
+  background: red;
+  transition: width 2s, background-color 4s;
+}
+
+.multiple:hover {
+  width: 300px;
+  background-color: rgb(51, 182, 186);
+}
+
+.delay {
+  width: 100px;
+  height: 100px;
+  background: red;
+  transition: width 2s;
+  transition-delay: 1s;
+}
+
+.delay:hover {
+  width: 300px;
+}

@@ -8,6 +8,7 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import Position from "@site/src/components/cssExamples/Position"
 import GridDisplay from '@site/src/components/cssExamples/GridDisplay'
+import Transition from '@site/src/components/cssExamples/Transition'
 
 # CSS
 
@@ -128,14 +129,18 @@ top: 20%; /* space between element and parent*/
   left: 10%;
 }
 
-.box-1-1 {
+.box-2 {
   position: absolute;
   right: 10%;
   bottom: 10%;
 }
 ```
 
-![absolute-position](./images/absolute.png)
+<div style={{width: "300px", height: "300px", position: "relative", backgroundColor: "grey",  color: "black", margin: "auto" }}>Outer
+  <div style={{width: "200px", height: "200px", position: "absolute", bottom: "10%", left: "10%", backgroundColor: "red"}}>Box-1
+    <div style={{width: "100px", height: "100px", position: "absolute", bottom: "10%", right: "10%", backgroundColor: "black", color: "white"}}>Box-2</div>
+  </div>
+</div>
 
 ## Overflow
 
@@ -145,7 +150,7 @@ div {
 }
 ```
 
-<div style={{width: "200px", height: "100px", overflow: "auto", backgroundColor: "orange", color: "black", padding: "0.5em"}}>
+<div style={{width: "200px", height: "100px", overflow: "auto", backgroundColor: "orange", color: "black", padding: "0.5em", margin: "auto"}}>
   You can use the overflow property when you want to have better control of the layout. The overflow property specifies
   what happens if content overflows an element's box.
 </div>
@@ -200,7 +205,23 @@ body {
 </div>
 ```
 
-![center-ver-hor](./images/center-hor-ver.png)
+<div style={{
+  textAlign: "center",
+  height: "200px",
+  width: "400px",
+  position: "relative",
+  border: "3px solid green",
+}}>
+  <div style={{
+  margin: "0",
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)"
+}}>
+    <p>I am vertically and horizontally centered.</p>
+  </div>
+</div>
 
 ## Background
 
@@ -244,6 +265,79 @@ filter: sepia(60%);
 | `rem`       | Relative to the root (HTML) font size. More predictable than `em`.                               |
 | `vw`        | Relative to the viewport's width, useful for responsive designs.                                 |
 | `vh`        | Relative to the viewport's height, often used for responsive layouts.                            |
+
+## Transition
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Properties">
+```
+
+| Property                   | Description                                                                            |
+| -------------------------- | -------------------------------------------------------------------------------------- |
+| `transition`                 | A shorthand property for setting the four transition properties into a single property |
+| `transition-delay`           | Specifies a delay (in seconds) for the transition effect                               |
+| `transition-duration`        | Specifies how many seconds or milliseconds a transition effect takes to complete       |
+| `transition-property`        | Specifies the name of the CSS property the transition effect is for                    |
+| `transition-timing-function` | Specifies the speed curve of the transition effect                                     |
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Single Property">
+```
+
+```css
+.single {
+  transition: width 2s;
+}
+
+.single:hover {
+  width: 300px;
+}
+```
+
+<Transition value={"single"} />
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Several Properties">
+```
+
+```css
+.multiple {
+  transition: width 2s, background-color 4s;
+}
+
+.multiple:hover {
+  width: 300px;
+  background-color: rgb(51, 182, 186);
+}
+```
+
+<Transition value={"multiple"} />
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Delay">
+```
+
+```css
+.delay {
+  transition: width 2s;
+  transition-delay: 1s;
+}
+
+.delay:hover {
+  width: 300px;
+}
+```
+
+<Transition value={"delay"} />
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
 
 ## Reset all values
 
