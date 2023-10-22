@@ -9,6 +9,7 @@ import TabItem from "@theme/TabItem";
 import Position from "@site/src/components/cssExamples/Position"
 import GridDisplay from '@site/src/components/cssExamples/GridDisplay'
 import Transition from '@site/src/components/cssExamples/Transition'
+import Transform from '@site/src/components/cssExamples/Transform'
 
 # CSS
 
@@ -273,8 +274,8 @@ filter: sepia(60%);
 <TabItem value="Properties">
 ```
 
-| Property                   | Description                                                                            |
-| -------------------------- | -------------------------------------------------------------------------------------- |
+| Property                     | Description                                                                            |
+| ---------------------------- | -------------------------------------------------------------------------------------- |
 | `transition`                 | A shorthand property for setting the four transition properties into a single property |
 | `transition-delay`           | Specifies a delay (in seconds) for the transition effect                               |
 | `transition-duration`        | Specifies how many seconds or milliseconds a transition effect takes to complete       |
@@ -333,6 +334,65 @@ filter: sepia(60%);
 ```
 
 <Transition value={"delay"} />
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## Transform
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Rotate">
+```
+
+```css
+transform: rotate(180deg);
+```
+
+<Transform property={"rotate"} />
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Scale">
+```
+
+```css
+transform: scale(150%);
+```
+
+<Transform property={"scale"} />
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Translate">
+```
+
+```css
+transform: translateX(30%); /* moving the element along the X-axis */
+transform: translateY(30%); /* moving the element along the Y-axis */
+transform: translate(30%, 30%); /* moving the element along the X- and the Y-axis */
+```
+
+<Transform property={"translate"} />
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Transform + Transition">
+```
+
+```css
+.tt {
+  transition: transform 4s;
+}
+
+.tt:hover {
+  transform: rotate(360deg);
+}
+```
+
+<Transform property={"tt"} />
 
 ```mdx-code-block
 </TabItem>

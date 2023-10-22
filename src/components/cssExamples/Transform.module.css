@@ -1,0 +1,30 @@
+.container {
+  width: 200px;
+  height: 200px;
+  margin: auto;
+}
+
+.rotate:hover {
+  transform: rotate(180deg);
+}
+
+.scale:hover {
+  transform: scale(150%);
+}
+
+.translate:hover {
+  transform: translateX(30%); /* moving the element along the X-axis */
+  transform: translateY(30%); /* moving the element along the Y-axis */
+  transform: translate(30%, 30%); /* moving the element along the X- and the Y-axis */
+}
+
+.tt {
+  width: 200px;
+  height: 200px;
+  margin: auto;
+  transition: transform 4s;
+}
+
+.tt:hover {
+  transform: rotate(360deg);
+}
