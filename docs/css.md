@@ -8,7 +8,6 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import Position from "@site/src/components/cssExamples/Position"
 import GridDisplay from '@site/src/components/cssExamples/GridDisplay'
-import GridPlacement from '@site/src/components/cssExamples/GridPlacement'
 
 # CSS
 
@@ -39,18 +38,23 @@ import GridPlacement from '@site/src/components/cssExamples/GridPlacement'
 ### Grid Placement
 
 ```css
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
 .one {
   grid-column: span 2; /* takes x columns */
   grid-row: span 1; /* takes x rows*/
 }
 
-.two {
+.three {
   grid-column: span 1; /* takes x columns */
   grid-row: span 2; /* takes x rows*/
 }
 ```
 
-<GridPlacement />
+<GridDisplay placement={true} />
 
 ## Positioning
 

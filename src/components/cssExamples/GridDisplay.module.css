@@ -1,13 +1,24 @@
 .container {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr; /* Set 3 grid rows*/
+  grid-template-columns: 1fr 1fr 1fr; /* set 3 columns*/
+  gap: 10px;
 }
 
 .box {
-  width: 150px;
+  width: 100%;
   height: 50px;
   background-color: rgba(86, 85, 85, 0.589);
-  margin: 1em;
   border-radius: 5px;
   text-align: center;
+}
+
+.one {
+  grid-column: span 2; /* takes x columns */
+  grid-row: span 1; /* takes x rows*/
+}
+
+.three {
+  grid-column: span 1; /* takes x columns */
+  grid-row: span 2; /* takes x rows*/
+  height: 110px;
 }
