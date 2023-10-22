@@ -119,6 +119,10 @@ const config = {
         ],
         copyright: `Copyright © ${new Date().getFullYear()} CVDW. Built with Docusaurus.`,
       },
+      tableOfContents: {
+        minHeadingLevel: 2,
+        maxHeadingLevel: 5,
+      },
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,

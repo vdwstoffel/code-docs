@@ -26,7 +26,12 @@
   --ifm-color-primary-light: #29d5b0;
   --ifm-color-primary-lighter: #32d8b4;
   --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --docusaurus-highlighted-code-line-bg: rgba(195, 218, 18, 0.3);
+}
+
+/* Change to color of h2 heading to distinguish them from h3. This helps separate topics */
+h2 {
+  color: var(--ifm-color-primary);
 }
 
 .footer {
