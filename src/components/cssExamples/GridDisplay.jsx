@@ -1,3 +1,7 @@
+/**
+ * Used in css file to show grid size properties
+ */
+
 import React from "react";
 
 import style from "./GridDisplay.module.css";

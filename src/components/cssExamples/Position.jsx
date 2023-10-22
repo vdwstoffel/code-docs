@@ -1,3 +1,7 @@
+/**
+ * Used in the ccs markdown file to display the various position properties
+ */
+
 import React from "react";
 
 export default function Position(props) {

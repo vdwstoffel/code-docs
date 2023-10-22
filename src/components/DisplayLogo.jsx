@@ -1,3 +1,7 @@
+/**
+ * Used to display logo's in pages in a unified size
+ */
+
 import React from "react";
 
 import style from "./DisplayLogo.module.css";
