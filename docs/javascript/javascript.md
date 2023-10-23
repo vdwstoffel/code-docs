@@ -155,6 +155,45 @@ console.log(sum); // Output: 15
 </Tabs>
 ```
 
+## Async/Await
+
+```js
+const axios = require("axios");
+
+const url = "https://swapi.dev/api/";
+
+const getPeople = async () => {
+  const data = await axios.get(`${url}people/1`);
+  console.log(data.data.name);
+};
+
+getPeople();
+```
+
+### Multiple Promises
+
+To run multiple promises simultaneously
+
+```js
+const axios = require("axios");
+
+const getDogPic = async () => {
+  const husky_promise = axios.get(`https://dog.ceo/api/breed/husky/images/random`);
+  const doberman_promise = axios.get(`https://dog.ceo/api/breed/doberman/images/random`);
+  const hound_promise = axios.get(`https://dog.ceo/api/breed/hound/images/random`);
+
+  const all = await Promise.all([husky_promise, doberman_promise, hound_promise]);
+
+  const images = all.map((image) => {
+    return image.body.message;
+  });
+
+  console.log(images);
+};
+
+getDogPic();
+```
+
 ## OOP
 
 ```mdx-code-block
