@@ -100,7 +100,7 @@ export default setStateExample;
 
 ## Fragments
 
-```javascript
+```jsx
 import { Fragment } from "react";
 
 /*
@@ -121,7 +121,7 @@ export default function FragmentExample() {
 
 ## Props
 
-```javascript title="PropsExample.jsx"
+```jsx title="PropsExample.jsx"
 export default function PropsExample(props) {
   const { name, surname } = props;
   return (
@@ -132,7 +132,7 @@ export default function PropsExample(props) {
 }
 ```
 
-```javascript title="App.jsx"
+```jsx title="App.jsx"
 import PropsExample from "./PropsExample";
 
 export default function App() {
@@ -142,7 +142,7 @@ export default function App() {
 
 ## Conditionals
 
-```javascript
+```jsx
 export default function App() {
   const day = false;
   return <h1>{day ? "It is day" : "it is night"}</h1>;
@@ -151,7 +151,7 @@ export default function App() {
 
 ## Loops
 
-```javascript
+```jsx
 export default function App() {
   const fruits = ["banana", "maça", "laranja"];
 
@@ -229,7 +229,7 @@ function App() {
 
 `useEffect` is a React hook that enables functional components to perform side effects, such as data fetching or DOM manipulation, after rendering.
 
-```javascript
+```jsx
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -256,7 +256,7 @@ export default function App() {
 
 `useRef` is a React hook used to create a mutable reference that persists across renders and can be used to interact with DOM elements or store values without causing re-renders.
 
-```javascript
+```jsx
 import { useRef } from "react";
 
 /*
@@ -289,7 +289,7 @@ export default App;
 
 `useReducer` is a React hook that manages complex state logic by dispatching actions to a reducer function, allowing components to update state in a more organized and predictable manner.
 
-```javascript
+```jsx
 import { useReducer } from "react";
 
 export default function App() {
@@ -328,7 +328,7 @@ export default function App() {
 
 `useContext` is a React hook that allows components to access shared data or values from a parent component's context without the need for prop drilling.
 
-```javascript title="/context/auth-context.jsx"
+```jsx title="/context/auth-context.jsx"
 import { createContext, useState } from "react";
 
 const AuthContext = createContext({
@@ -359,7 +359,7 @@ export function AuthContextProvider(props) {
 export default AuthContext;
 ```
 
-```javascript title="App.jsx"
+```jsx title="App.jsx"
 import { useContext } from "react";
 import AuthContext from "./context/auth-context";
 
@@ -376,7 +376,7 @@ export default function App() {
 }
 ```
 
-```javascript title="main.jsx"
+```jsx title="main.jsx"
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
@@ -394,7 +394,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
 ## Custom Hooks
 
-```javascript title="/hooks/useToggler.jsx"
+```jsx title="/hooks/useToggler.jsx"
 import { useState } from "react";
 
 /* By convention prefix class with use */
@@ -409,7 +409,7 @@ export default function useToggler(value = false) {
 }
 ```
 
-```javascript title="App.jsx"
+```jsx title="App.jsx"
 import useToggler from "./hooks/useToggler";
 
 export default function App() {
@@ -432,7 +432,7 @@ export default function App() {
 npm i react-router-dom
 ```
 
-```javascript title="MainNavigation.jsx"
+```jsx title="MainNavigation.jsx"
 import { Link } from "react-router-dom";
 
 export default function MainNavigation() {
@@ -450,7 +450,7 @@ export default function MainNavigation() {
 }
 ```
 
-```javascript title="RootLayout.jsx"
+```jsx title="RootLayout.jsx"
 import { Outlet } from "react-router-dom";
 import MainNavigation from "./MainNavigation";
 
@@ -464,7 +464,7 @@ export default function RootLayout() {
 }
 ```
 
-```javascript title="App.jsx"
+```jsx title="App.jsx"
 import "./global.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom"; // npm i react-router-dom
@@ -490,13 +490,13 @@ export default function App() {
 }
 ```
 
-```javascript title="Home.jsx"
+```jsx title="Home.jsx"
 export default function Home() {
   return <h1>Welcome Home</h1>;
 }
 ```
 
-```javascript title="Products.jsx"
+```jsx title="Products.jsx"
 export default function Products() {
   return <h1>This is the Products page</h1>;
 }
@@ -504,7 +504,7 @@ export default function Products() {
 
 ### Dynamic Router
 
-```javascript title="App.jsx"
+```jsx title="App.jsx"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"; // npm i react-router-dom
 
 const router = createBrowserRouter([
@@ -523,7 +523,7 @@ export default function App() {
 }
 ```
 
-```javascript title="ProductItems.jsx"
+```jsx title="ProductItems.jsx"
 import { useParams } from "react-router-dom";
 
 export default function ProductItems() {
@@ -540,7 +540,7 @@ export default function ProductItems() {
 
 ### useNavigate
 
-```javascript title="Home.jsx"
+```jsx title="Home.jsx"
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
@@ -561,7 +561,7 @@ export default function Home() {
 
 ### Link
 
-```javascript
+```jsx
 import { Link } from "react-router-dom";
 
 export default function Page() {
@@ -571,7 +571,7 @@ export default function Page() {
 
 ### Navlink
 
-```javascript
+```jsx
 import { NavLink } from "react-router-dom";
 
 export default function App() {
@@ -583,7 +583,7 @@ export default function App() {
 
 Load the data before the page loads and pass the data to the page
 
-```javascript title="App.jsx"
+```jsx title="App.jsx"
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Content, { loader as eventLoader } from "./Content"; // import the loader function
@@ -597,7 +597,7 @@ export default function App() {
 }
 ```
 
-```javascript title="Content.jsx"
+```jsx title="Content.jsx"
 import { useLoaderData } from "react-router-dom";
 
 export default function Content() {
@@ -618,7 +618,7 @@ export async function loader() {
 
 ### useLoaderData Dynamic Routing
 
-```javascript title="Content.jsx"
+```jsx title="Content.jsx"
 import { useLoaderData } from "react-router-dom";
 
 export default function Content() {
@@ -638,7 +638,7 @@ export async function loader({ request, params }) {
 }
 ```
 
-```javascript title="App.jsx"
+```jsx title="App.jsx"
 import "./global.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -658,7 +658,7 @@ export default function App() {
 
 Create a custom error component and send error to it. Whenever an error occurs react will find the closest errorElement
 
-```javascript title="App.jsx"
+```jsx title="App.jsx"
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Content, { loader as eventLoader } from "./Content"; // import the loader function
@@ -678,7 +678,7 @@ export default function App() {
 }
 ```
 
-```javascript title="Content.jsx"
+```jsx title="Content.jsx"
 import { useLoaderData, json } from "react-router-dom";
 
 export default function Content() {
@@ -700,7 +700,7 @@ export async function loader() {
 }
 ```
 
-```javascript title="Error.jsx"
+```jsx title="Error.jsx"
 import { useRouteError } from "react-router-dom";
 
 export default function Error() {
@@ -719,7 +719,7 @@ export default function Error() {
 
 The useSearchParams hook is used in React Router to access and manage the query parameters of the current URL, allowing components to read and update the search parameters in the browser's address bar.
 
-```javascript title="App.jsx"
+```jsx title="App.jsx"
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Content from "./Content";
@@ -731,7 +731,7 @@ export default function App() {
 }
 ```
 
-```javascript title="Content.jsx"
+```jsx title="Content.jsx"
 import { useSearchParams } from "react-router-dom";
 
 export default function Products() {
@@ -750,7 +750,7 @@ export default function Products() {
 
 This hook makes the data at any currently rendered route available anywhere in the tree
 
-```javascript title="App.jsx"
+```jsx title="App.jsx"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"; // npm i react-router-dom
 
 import User from "./User";
@@ -771,7 +771,7 @@ export default function App() {
 }
 ```
 
-```javascript title="User.jsx"
+```jsx title="User.jsx"
 import { useRouteLoaderData } from "react-router-dom";
 
 export default function User() {
@@ -781,7 +781,7 @@ export default function User() {
 }
 ```
 
-```javascript title="getUsername.js"
+```jsx title="getUsername.js"
 export function getUsername() {
   return "Stoffel";
 }
@@ -789,7 +789,7 @@ export function getUsername() {
 
 ### Router Forms
 
-```javascript title="App.jsx"
+```jsx title="App.jsx"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"; // npm i react-router-dom
 
 import UserForm, { action as submitAction } from "./UserForm";
@@ -807,7 +807,7 @@ export default function App() {
 }
 ```
 
-```javascript title="UserForm.jsx"
+```jsx title="UserForm.jsx"
 import { Form, redirect } from "react-router-dom";
 
 export default function UserForm() {
@@ -838,7 +838,7 @@ export async function action({ request, params }) {
 
 ### Delete Request
 
-```javascript title="App.jsx"
+```jsx title="App.jsx"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"; // npm i react-router-dom
 
 import UserForm, { action as submitAction } from "./UserForm";
@@ -856,7 +856,7 @@ export default function App() {
 }
 ```
 
-```javascript title="UserForm.jsx"
+```jsx title="UserForm.jsx"
 import { redirect, useSubmit } from "react-router-dom";
 
 export default function UserForm() {
@@ -885,7 +885,7 @@ export async function action({ request, params }) {
 
 ## Forms
 
-```javascript title="App.jsx"
+```jsx title="App.jsx"
 import { useState } from "react";
 
 import useFormInput from "./useFormInput";
@@ -921,7 +921,7 @@ export default function App() {
 }
 ```
 
-```javascript title="useFormInput.jsx"
+```jsx title="useFormInput.jsx"
 import { useState } from "react";
 
 export default function useFormInput(initialValue) {
@@ -942,7 +942,7 @@ export default function useFormInput(initialValue) {
 
 ### Frontend Form Validation
 
-```javascript title="App.jsx"
+```jsx title="App.jsx"
 import { useState } from "react";
 import style from "./App.module.css";
 
@@ -987,7 +987,7 @@ export default function App() {
 
 ## Passing Data to Parent Prop
 
-```javascript title="App.jsx"
+```jsx title="App.jsx"
 import { useState } from "react";
 
 import Names from "./Names";
@@ -1013,7 +1013,7 @@ export default function App() {
 }
 ```
 
-```javascript title="Names.jsx"
+```jsx title="Names.jsx"
 import { useState } from "react";
 
 export default function Names(props) {
@@ -1038,7 +1038,7 @@ export default function Names(props) {
 
 ## Portals
 
-```javascript title="App.jsx"
+```jsx title="App.jsx"
 import ReactDOM from "react-dom";
 
 /*
@@ -1078,7 +1078,7 @@ npm i react-redux
 └── store.jsx
 ```
 
-```javascript title="main.jsx"
+```jsx title="main.jsx"
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux"; // npm i react-redux
 
@@ -1094,7 +1094,7 @@ root.render(
 );
 ```
 
-```javascript title="App.jsx"
+```jsx title="App.jsx"
 import { useSelector, useDispatch } from "react-redux";
 import { counterAction } from "./store/counterSlice";
 
@@ -1127,7 +1127,7 @@ export default function App() {
 }
 ```
 
-```javascript title="/store/counterslice.jsx"
+```jsx title="/store/counterslice.jsx"
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -1157,7 +1157,7 @@ export const counterAction = counterSlice.actions; // export to component
 export default counterSlice; // export to store
 ```
 
-```javascript title="/store/store.jsx"
+```jsx title="/store/store.jsx"
 import { configureStore } from "@reduxjs/toolkit";
 
 import counterSlice from "./counterSlice";
@@ -1178,7 +1178,7 @@ export default store; // will be imported in main as a Wrapper for the app
 
 ## Scoping CSS
 
-```javascript title="App.jsx"
+```jsx title="App.jsx"
 import { useState } from "react";
 
 // Name the .css file as a module and import as styles
@@ -1233,7 +1233,7 @@ export default function App() {
 
 ## Vite: Change Default Port
 
-```javascript title="vite.config.js"
+```jsx title="vite.config.js"
 // vite.config.js
 import { defineConfig } from "vite";
 
@@ -1249,7 +1249,7 @@ export default defineConfig({
 
 ### Timeout on input changes
 
-```javascript
+```jsx
 useEffect(() => {
   /*
   Instead of checking each button press, check after 1 sec of inactivity
@@ -1263,7 +1263,7 @@ useEffect(() => {
 
 ### Show current link page
 
-```javascript
+```jsx
 <NavLink
     to="/"
     className={({ isActive }) => (isActive ? style.active : undefined)} // className takes an function
@@ -1273,7 +1273,7 @@ useEffect(() => {
 
 ## Testing
 
-```javascript title="App.test.js"
+```jsx title="App.test.js"
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App"; // import the component
@@ -1324,7 +1324,7 @@ npm test
 
 ### Async Code
 
-```javascript title="App.test.js"
+```jsx title="App.test.js"
 import { render, screen } from "@testing-library/react";
 import App from "./App";
 import axios from "axios";
@@ -1377,7 +1377,7 @@ package.json
 
 - Create a setup tests file
 
-```javascript title="path/setup.ts"
+```jsx title="path/setup.ts"
 import { expect, afterEach } from "vitest";
 import { cleanup } from "@testing-library/react";
 import * as matchers from "@testing-library/jest-dom/matchers";
@@ -1391,7 +1391,7 @@ afterEach(() => {
 
 - Configure vite.config.js to use this setup
 
-```javascript title="vite.config.js"
+```jsx title="vite.config.js"
   plugins: [react()],
   test: {
     environment: 'jsdom',
@@ -1405,7 +1405,7 @@ afterEach(() => {
 
 note this should be a .tsx file
 
-```javascript
+```jsx
 import { render, screen } from "@testing-library/react";
 import App from "../src/App";
 
