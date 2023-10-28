@@ -91,6 +91,25 @@ fs.appendFile(`${__dirname}/textOut.txt`, textToAppend, (err) => {
 </Tabs>
 ```
 
+## Shell Commands
+
+```javascript
+const util = require("util");
+const exec = util.promisify(require("child_process").exec);
+
+async function runShellCommand() {
+  try {
+    const { stdout, stderr } = await exec("ls -al");
+    console.log("Standard Output:", stdout);
+    console.error("Standard Error:", stderr);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+runShellCommand();
+```
+
 ## Nodemon
 
 ```bash
