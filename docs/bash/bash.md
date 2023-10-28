@@ -1,5 +1,6 @@
 ---
-sidebar_label: "CLI"
+sidebar_label: "Bash"
+sidebar_position: 6
 ---
 
 # CLI
@@ -31,52 +32,6 @@ mv <source> <destination>   ## move file/folder
 mv currentname newname      ## rename file/folder
 
 cp <source> <destination>   ## copy file/folder
-```
-
-## Working with files and folder
-
-```bash
-## display the contents of a file
-less filename.txt
-```
-
-When viewing a file using less
-- press `space` or `f` to go to the next page of the file
-- press `b` to go back to the previous page
-- press `Enter` or `Down arrow` to scroll by one line
-- to search, type forward slash `/` followed by a pattern
-- press `q` to quit
-
-```bash
-cat filename.txt        ## printout file
-head filename.txt       ## print first 10 lines
-tail filename.txt       ## print last 10 lines
-```
-
-{% code title='Word Count' %}
-```bash
-## lines, word ,bytes, filename
-wc filename.txt
-#>> 52  244 1623 README.md
-
-wc -l filename.txt      ## number of words
-wc -w filename.txt      ## number of lines
-```
-{% endcode %}
-
-{% code title="Sort" %}
-```bash
-sort filename       ## sort lines from a-z
-sort -r filename    ## sort in reverse
-sort -n filename    ## sort numerically
-sort -u filename    ## ignore duplicates
-```
-{% endcode %}
-
-### Sort files via size
-
-```bash
-ls -lh | sort -rhk 5
 ```
 
 ## Redirection
@@ -203,29 +158,12 @@ unzip file.zip -d destination_folder
 sudo dpkg -i package-name-here.deb
 ```
 
-## Shortcuts
+## Creating A Symlink
+
+** Note ** Full file paths used
 
 ```bash
-## clear screen
-ctrl + l
-clear
-
-## Jump to start/end of line
-ctrl + a
-ctrl + e
-
-## Jump words left/right
-ctrl + left arrow
-ctrl + right arrow
-
-## remove workd
-ctrl + k
-## return last kileld word
-ctrl + y
-
-## view history
-history
-
-## search history
-ctrl + r
+ln -sf full/file/path/file.txt full/file/path/file.txt
 ```
+
+`f`: overwrite file if it exists

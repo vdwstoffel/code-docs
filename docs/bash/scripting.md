@@ -1,5 +1,5 @@
 ---
-sidebar_label: "Bash"
+sidebar_label: "Scripting"
 ---
 
 # Bash
