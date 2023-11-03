@@ -42,7 +42,7 @@ import Transform from '@site/src/components/cssExamples/Transform'
 ```css
 .container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .one {
