@@ -3,6 +3,10 @@ sidebar_label: "Express"
 sidebar_position: 2
 ---
 
+import CodeBlock from "@theme/CodeBlock";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 # Express
 
 ## Getting Started
@@ -29,25 +33,82 @@ app.listen(port, () => {
 
 ## Route methods
 
-```javascript
-// GET method route
-app.get("/", (req, res) => {
-  res.send("GET request to the homepage");
-});
+```mdx-code-block
+<Tabs>
+<TabItem value="Get">
+```
 
-// POST method route
-app.post("/", (req, res) => {
-  res.send("POST request to the homepage");
+```js
+app.get("/api", (req, res) => {
+  res.status(200).json({ status: "success", data: { info: mydata } });
 });
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Post">
+```
+
+When receiving **json** data
+
+```js
+app.use(express.json());
+
+app.post("/api", (req, res) => {
+  res.status(201).json({ status: "success", data: { info: mydata } });
+});
+```
+
+When receiving **html form** data
+
+```js
+app.use(express.urlencoded({ extended: true }));
+
+app.post("/api", (req, res) => {
+  res.status(201).json({ status: "success", data: { info: mydata } });
+});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Put/Patch">
+```
+
+```javascript
+app.patch("/api/tours/:id", (req, res) => {
+  const id = req.params.id;
+  // do update logic
+  res.status(200).json({ status: "success", data: { tours: selectedTour } });
+});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Delete">
+```
+
+```js
+app.delete("/api/tours/:id", (req, res) => {
+  const id = req.params.id;
+  // delete logic
+  res.status(202).json({ status: "success", data: null });
+});
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ## Route Parameters
 
+`mysite.com/api/tours/5`
+
 ```javascript
-// http://localhost:3000/users/stoffel/books/mtg
-app.get("/users/:userId/books/:bookId", (req, res) => {
-  res.send(req.params); // {"userId":"stoffel","bookId":"mtg"}
-});
+/app.get("/api/tours/:tourId", (req, res) => {
+    const id = req.params.tourId // 5
+    res.status(200).json({ status: "success", data: {tours: tourData[id]} })
+})
 ```
 
 ## Response Methods
@@ -57,6 +118,7 @@ app.get("/users/:userId/books/:bookId", (req, res) => {
 | `res.download()`   | Prompt a file to be downloaded.                                                       |
 | `res.end()`        | End the response process.                                                             |
 | `res.json()`       | Send a JSON response.                                                                 |
+| `res.status()`     | Add the status code in brackets and send it                                           |
 | `res.jsonp()`      | Send a JSON response with JSONP support.                                              |
 | `res.redirect()`   | Redirect a request.                                                                   |
 | `res.render()`     | Render a view template.                                                               |
@@ -106,31 +168,29 @@ const birds = require("./controllers/birds");
 // ...
 app.use("/birds", birds);
 
-// Start the server
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`http://localhost:${port}`);
-});
+app.listen(3000);
 ```
+
+Now go to mysite.com/birds/
 
 ## Middleware
 
 ### Run on each request
 
+`Hello Middleware` will be logged on each request
+
 ```javascript
-const addDate = (req, res, next) => {
-  req.addDate = new Date().toISOString();
-  next(); // call next middleware. If no next, the request will hang
-};
-app.use(addDate); // add the middleware to each request
+app.use((req, res, next) => {
+  console.log("Hello Middleware");
+  next(); // call next otherwise middleware will not complete
+});
 
 app.get("/", (req, res) => {
-  console.log(req.addDate); //send the date that was assigned with the middleware
   res.send("Hello World");
 });
 ```
 
-### Run on particular requests
+### Middleware on specific routes
 
 ```javascript
 app.use("/api", (req, res, next) => {
@@ -143,7 +203,7 @@ app.get("/api", addDate, (req, res) => {
 });
 ```
 
-### Middleware on specific routes
+### Run on particular requests
 
 ```javascript
 const protect = (req, res, next) => {
@@ -156,119 +216,62 @@ app.get("/secret", protect, (req, res) => {
 });
 ```
 
+### Edit req method
+
+You can also add a method to the request object
+
+```js
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  console.log(req.requestTime);
+  next();
+});
+```
+
+### Accessing parameters
+
+Use `app.param()` to gain access to the passed parameters.
+
+In the example below you have `/:id` so param = 5 if path is `/5`
+
+```js
+/*
+ * Value refers the the passed param (:id)
+ */
+const invalid = (req, res, next, value) => {
+  if (value > 5) {
+    // return otherwise next will run
+    return res.status(500).json({ status: "Error", response: "Invalid Param" });
+  }
+  next();
+};
+
+// assign middleware
+app.param("id", invalid); // check if id is passed as a param
+
+app.get("/:id", (req, res) => {
+  res.status(200).json({
+    status: "success",
+    response: "Good",
+  });
+});
+```
+
+### Chaining middleware
+
+```js
+
+app.get("/", middlewareOne, middlewareTwo, (req, res) => {
+  // ...
+})
+```
+
 ## Error route
 
 Add this as the last route. When no routes match this route will run
 
 ```javascript
 app.use((req, res) => {
-  res.status(404).send("Not Found");
-});
-```
-
-## Templates
-
-### EJS
-
-```bash
-npm i ejs
-```
-
-```bash
-.
-├── app.js
-├── models
-│   └── userModel.js
-├── public
-│   └── css
-│       └── style.css
-└── views
-    └── index.ejs
-```
-
-```javascript
-"use strict";
-
-const express = require("express");
-const app = express();
-
-// Set the view engine to EJS
-app.set("view engine", "ejs");
-
-// Set the directory for the views
-app.set("views", __dirname + "/views");
-
-// Use the built-in middleware to serve static files from the 'public' directory
-app.use(express.static("public"));
-
-// routes
-router.get("/users", async (req, res) => {
-  res.render("index", { user: "Stoffel" });
-});
-
-// Start the server
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`http://localhost:${port}`);
-});
-```
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/styles.css" />
-    <!-- the css root will be set to public -->
-    <title>Users Example</title>
-  </head>
-  <body>
-    <h1><%= user %></h1>
-  </body>
-</html>
-```
-
-#### Includes
-
-```html title="header.html"
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/styles.css" />
-    <!-- the css root will be set to public -->
-    <title><%= title %></title>
-  </head>
-```
-
-```html
-<%- include('header') %> <!-- Include any files in this page -->
-<body>
-    <h1>Welcome to Express</h1>
-</body>
-</html>
-```
-
-### Post data to server
-
-```html
-<form action="/" method="post">
-  <input type="text" name="num1" id="" placeholder="Weight" />
-  <input type="text" name="num2" placeholder="Height" />
-  <button type="submit" name="submit">Calculate</button>
-</form>
-```
-
-```javascript
-const express = require("express");
-const app = express();
-app.use(express.urlencoded({ extended: true }));
-
-app.post("/", (req, res) => {
-  const { num1, num2 } = req.body;
+  res.status(404).json({ status: "failure", message: "Failure Message" });
 });
 ```
