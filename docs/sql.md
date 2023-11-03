@@ -1,5 +1,6 @@
 ---
 sidebar_label: "SQL"
+sidebar_position: 4
 ---
 
 # SQL
