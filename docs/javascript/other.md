@@ -95,14 +95,28 @@ const deleteData = async () => {
 npm i dotenv
 ```
 
+```mdx-code-block
+<Tabs>
+<TabItem value="app.js">
+```
+
 ```javascript
-/*  module that loads environment variables
- *   Create a .env file in the root of your project
- *   S3_BUCKET="YOURS3BUCKET"
- *   console.log(process.env)
- */
-require("dotenv").config({ path: "../../.env" }); // npm i dotenv
-console.log(process.env["FIREBASE"]);
+require("dotenv").config({ path: "./.env" });
+console.log(process.env["S3_BUCKET"]);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value=".env">
+```
+
+```env
+S3_BUCKET="YOURS3BUCKET"
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ## bcrypt
@@ -147,4 +161,36 @@ npm i uud
 "use strict";
 const { v4: uuidv4 } = require("uuid"); // npm install uuid
 console.log(uuidv4()); // b8dff6a8-e942-417f-ade7-b62479d47c85
+```
+
+## EsLint
+
+```bash
+npm i eslint prettier eslint-config-prettier eslint-plugin-prettier eslint-config-airbnb eslint-plugin-node eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react --save-dev
+```
+
+Create a .eslintrc.json file
+
+Sample
+
+```json
+{
+  "extends": ["airbnb", "prettier", "plugin:node/recommended"],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": "error",
+    "spaced-comment": "off",
+    "no-console": "warn",
+    "consistent-return": "off",
+    "func-names": "off",
+    "object-shorthand": "off",
+    "no-process-exit": "off",
+    "no-param-reassign": "off",
+    "no-return-await": "off",
+    "no-underscore-dangle": "off",
+    "class-methods-use-this": "off",
+    "prefer-destructuring": ["error", { "object": true, "array": false }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "req|res|next|val" }]
+  }
+}
 ```
