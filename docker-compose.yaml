@@ -1,6 +1,7 @@
 version: "3.8"
 services:
   docs_server:
+    restart: always
     build:
       context: .
       dockerfile: ./Dockerfile
