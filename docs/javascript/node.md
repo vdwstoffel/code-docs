@@ -130,3 +130,69 @@ Then in the terminal run
 ```bash
 npm run start
 ```
+
+## Importing/Exporting
+
+### Common JS
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Single Function">
+```
+
+```js title="single_func.js"
+const hello = () => {
+  console.log("Hello");
+};
+
+module.exports = hello;
+```
+
+```js title="app.js"
+const hello = require("./single_func");
+
+hello();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Multiple Functions">
+```
+
+**Method 1**
+
+```js title="multiple.js"
+module.exports.funcOne = () => {
+  console.log("Func One");
+};
+
+module.exports.funcTwo = () => {
+  console.log("FuncTwo");
+};
+```
+
+**Method 2**
+
+```js
+const funcOne = () => {
+  console.log("Func One");
+};
+
+const funcTwo = () => {
+  console.log("Func Two");
+};
+
+module.exports = { funcOne, funcTwo };
+```
+
+```javascript
+const multiple = require("./multiple_func");
+
+multiple.funcOne();
+multiple.funcTwo();
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```

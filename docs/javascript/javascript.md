@@ -292,17 +292,3 @@ const myDog = new Dog("Buddy", "Golden Retriever");
 genericAnimal.speak(); // Output: Generic Animal makes a sound.
 myDog.speak(); // Output: Buddy the Golden Retriever barks.
 ```
-
-## Importing/Exporting
-
-### Common JS
-
-```js title="myModule.js"
-module.exports = () => {
-  // ...
-};
-```
-
-```js
-const myModule = require("./myModule");
-```
