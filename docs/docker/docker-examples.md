@@ -200,7 +200,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - /snippets:/var/lib/postgresql/data
+      - snippets:/var/lib/postgresql/data
 
   server:
     container_name: server
@@ -216,6 +216,9 @@ services:
       - .env
     depends_on:
       - database
+
+volumes:
+  snippets:
 ```
 
 ```mdx-code-block
