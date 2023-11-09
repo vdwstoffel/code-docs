@@ -260,10 +260,9 @@ app.get("/:id", (req, res) => {
 ### Chaining middleware
 
 ```js
-
 app.get("/", middlewareOne, middlewareTwo, (req, res) => {
   // ...
-})
+});
 ```
 
 ## Error route
