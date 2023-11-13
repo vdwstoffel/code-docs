@@ -11,16 +11,16 @@ const config = {
   favicon: "img/codeLogo.ico",
 
   // Set the production url of your site here
-  url: "https://your-docusaurus-test-site.com",
+  url: "https://vdwstoffel.github.io",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/",
+  baseUrl: "/code-docs",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: "vdwstoffel",
-  projectName: "code_docs",
-  deploymentBranch: 'gh-pages',
+  projectName: "code-docs",
+  deploymentBranch: "gh-pages",
   trailingSlash: false,
 
   onBrokenLinks: "throw",
