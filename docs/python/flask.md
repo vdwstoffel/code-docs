@@ -40,53 +40,7 @@ from flask import redirect, url_for
 return redirect(url_for('function_name'))
 ```
 
-## Templates
 
-```bash
-├── app.py
-└── templates
-    ├── base.html
-    └── index.html
-```
-
-Other html file will build of from base.html. So you can add css/bootstrap and all globals here
-
-```html title="base.html"
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- when extended content can be dynamically added -->
-    <title>{% block title %}{% endblock %}</title>
-  </head>
-  <body>
-    <!-- when extended content can be dynamically added -->
-    {% block body %} {% endblock %}
-  </body>
-</html>
-```
-
-```html title="index.html"
-<!-- use the base template -->
-{% extends 'base.html' %}
-
-<!-- dynamically add extra content -->
-{% block title %}Home{% endblock %} {% block body %}
-<h1>Welcome to Flask</h1>
-{% endblock %}
-```
-
-### Includes
-
-Including one page into another page ex header
-
-```html
-<body>
-  {% include "header.html" %}
-</body>
-```
 
 ### Rendering templates
 
