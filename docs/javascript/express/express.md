@@ -31,6 +31,16 @@ app.listen(port, () => {
 });
 ```
 
+## Error route
+
+Add this as the last route. When no routes match this route will run
+
+```javascript
+app.use((req, res) => {
+  res.status(404).json({ status: "failure", message: "Failure Message" });
+});
+```
+
 ## Route methods
 
 ```mdx-code-block
@@ -111,20 +121,36 @@ app.delete("/api/tours/:id", (req, res) => {
 })
 ```
 
+## Query Params
+
+`/api/tours?duration=5&difficulty=easy`
+
+```js
+app.get("/api/tours", (req, res) => {
+  console.log(req.query);
+  // { duration: '5', difficulty: 'easy' }
+});
+```
+
+### Remove fields from query
+
+Remove unwanted field from the query params
+
+```js
+const queryObj = { ...req.query }; // destructure to create new copy
+const excludeFields = ["page", "sort", "limit", "fields"]; // exclude from the params
+excludeFields.forEach((el) => delete queryObj[el]); // delete from the object
+console.log(queryObj);
+```
+
 ## Response Methods
 
-| Method             | Description                                                                           |
-| ------------------ | ------------------------------------------------------------------------------------- |
-| `res.download()`   | Prompt a file to be downloaded.                                                       |
-| `res.end()`        | End the response process.                                                             |
-| `res.json()`       | Send a JSON response.                                                                 |
-| `res.status()`     | Add the status code in brackets and send it                                           |
-| `res.jsonp()`      | Send a JSON response with JSONP support.                                              |
-| `res.redirect()`   | Redirect a request.                                                                   |
-| `res.render()`     | Render a view template.                                                               |
-| `res.send()`       | Send a response of various types.                                                     |
-| `res.sendFile()`   | Send a file as an octet stream.                                                       |
-| `res.sendStatus()` | Set the response status code and send its string representation as the response body. |
+| Method           | Description                                 |
+| ---------------- | ------------------------------------------- |
+| `res.status()`   | Add the status code in brackets and send it |
+| `res.json()`     | Send a JSON response.                       |
+| `res.redirect()` | Redirect a request.                         |
+| `res.render()`   | Render a view template.                     |
 
 ## app.route()
 
@@ -198,7 +224,7 @@ app.use("/api", (req, res, next) => {
   next(); // call next middleware. If no next, the request will hang
 });
 
-app.get("/api", addDate, (req, res) => {
+app.get("/api", (req, res) => {
   res.send({ route: "api", date: "Today" });
 });
 ```
@@ -262,15 +288,5 @@ app.get("/:id", (req, res) => {
 ```js
 app.get("/", middlewareOne, middlewareTwo, (req, res) => {
   // ...
-});
-```
-
-## Error route
-
-Add this as the last route. When no routes match this route will run
-
-```javascript
-app.use((req, res) => {
-  res.status(404).json({ status: "failure", message: "Failure Message" });
 });
 ```
