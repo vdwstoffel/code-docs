@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkcode_docs=self.webpackChunkcode_docs||[]).push([[2535],{5641:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Docusaurus code block tabs","permalink":"/blog/Docusaurus code block tabs"},{"title":"MongoDB","permalink":"/blog/MongoDB"}]}')}}]);
