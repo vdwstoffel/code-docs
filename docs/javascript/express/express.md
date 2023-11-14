@@ -184,11 +184,11 @@ app
 ```js title="controller/birdsController.js"
 const Birds = require("../models/birdsModel");
 
-exports.getAllBirds = async (req, res) => {
+module.exports.getAllBirds = async (req, res) => {
   // db logic
 };
 
-exports.addBird = async (req, res) => {
+module.exports.addBird = async (req, res) => {
   // db logic
 };
 ```
