@@ -239,3 +239,29 @@ const tourSchema = new Schema({
 
 const Tour = model("Tour", tourSchema);
 ```
+
+### Aggregation Pipelines
+
+```
+{ title: 'Book 1', author: 'Author 1', genre: 'Fiction', publishedYear: 2020, rating: 4.5 }
+{ title: 'Book 3', author: 'Author 1', genre: 'Fiction', publishedYear: 2019, rating: 4.2 }
+```
+
+```js
+// Aggregation pipeline stages
+const pipelineStages = [
+  { $match: { rating: { $gt: 4.0 } } }, // Match books with a rating greater than 4.0
+  { $group: { _id: "$genre", averageRating: { $avg: "$rating" } } }, // Group by genre and calculate average rating
+  { $sort: { averageRating: -1 } }, // Sort genres by average rating in descending order
+];
+
+// Execute the aggregation pipeline
+const result = await Book.aggregate(pipelineStages);
+```
+
+```bash
+{
+  "_id": "Fiction",
+  "averageRating": 4.3,
+}
+```
