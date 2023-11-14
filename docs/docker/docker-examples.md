@@ -157,8 +157,8 @@ app.listen(3000);
 
 ```env
 POSTGRES_DB="snippets"
-POSTGRES_USER="stoffel"
-POSTGRES_PASSWORD="StoffelJossie"
+POSTGRES_USER="myUsername"
+POSTGRES_PASSWORD="SecretPassword"
 POSTGRES_HOST="database"    # should match the service in docker-compose
 ```
 
