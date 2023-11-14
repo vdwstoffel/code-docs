@@ -116,9 +116,9 @@ app.delete("/api/tours/:id", (req, res) => {
 
 ```javascript
 app.get("/api/tours/:tourId", (req, res) => {
-    const id = req.params.tourId // 5
-    res.status(200).json({ status: "success", data: {tours: tourData[id]} })
-})
+  const id = req.params.tourId; // 5
+  res.status(200).json({ status: "success", data: { tours: tourData[id] } });
+});
 ```
 
 ## Query Params
@@ -170,29 +170,47 @@ app
 
 ## Controllers
 
-```javascript title="controllers/birds.js"
+```js
+.
+├── controllers
+│   ├── birdsController.js
+├── models
+│   ├── birdsModel.js
+├── routes
+│   ├── birdsRoute.js
+├── app.js
+```
+
+```js title="controller/birdsController.js"
+const Birds = require("../models/birdsModel");
+
+exports.getAllBirds = async (req, res) => {
+  // db logic
+};
+
+exports.addBird = async (req, res) => {
+  // db logic
+};
+```
+
+```js title="routes/birdsRoute.js"
 const express = require("express");
 const router = express.Router();
 
-// define the home page route
-router.get("/", (req, res) => {
-  res.send("Birds home page");
-});
-// define the about route
-router.get("/about", (req, res) => {
-  res.send("About birds");
-});
+const birdsController = require("../controller/birdsController");
+
+router.route("/").get(birdsController.getAllBirds).post(birdsController.addBird);
 
 module.exports = router;
 ```
 
-```javascript title="app.js"
+```js title="app.js"
 const express = require("express");
 const app = express();
 
-const birds = require("./controllers/birds");
+const birdsRouter = require("./routes/birdsRoutes");
 // ...
-app.use("/birds", birds);
+app.use("/birds", birdsRouter);
 
 app.listen(3000);
 ```
