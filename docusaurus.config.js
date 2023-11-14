@@ -20,7 +20,7 @@ const config = {
   // If you aren't using GitHub pages, you don't need these.
   organizationName: "vdwstoffel",
   projectName: "code-docs",
-  deploymentBranch: "main",
+  deploymentBranch: "deploy",
   trailingSlash: false,
 
   onBrokenLinks: "warn",
