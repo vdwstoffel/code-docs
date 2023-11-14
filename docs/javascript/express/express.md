@@ -115,7 +115,7 @@ app.delete("/api/tours/:id", (req, res) => {
 `mysite.com/api/tours/5`
 
 ```javascript
-/app.get("/api/tours/:tourId", (req, res) => {
+app.get("/api/tours/:tourId", (req, res) => {
     const id = req.params.tourId // 5
     res.status(200).json({ status: "success", data: {tours: tourData[id]} })
 })

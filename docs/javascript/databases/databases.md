@@ -193,7 +193,7 @@ const tourSchema = new Schema({
     type: String,
     required: [true, "Name required"],
     unique: true,
-    trim: true
+    trim: true,
   },
   rating: {
     type: Number,
@@ -209,6 +209,7 @@ const Tour = model("Tour", tourSchema);
 ```
 
 #### Set an array type
+
 ```js
 const { Schema, model } = require("mongoose");
 
@@ -220,3 +221,21 @@ const Tour = model("Tour", tourSchema);
 
 ```
 
+#### Exclude Field from return
+
+Excludes the field when a request is made
+
+```js
+const { Schema, model } = require("mongoose");
+
+const tourSchema = new Schema({
+  rating: {
+    type: Number,
+    default: 4.5,
+    // highlight-next-line
+    select: false,
+  },
+});
+
+const Tour = model("Tour", tourSchema);
+```
