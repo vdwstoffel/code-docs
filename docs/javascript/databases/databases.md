@@ -7,6 +7,8 @@ import CodeBlock from "@theme/CodeBlock";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
+# Databases
+
 ## PostgreSQL
 
 ```bash
@@ -242,26 +244,294 @@ const Tour = model("Tour", tourSchema);
 
 ### Aggregation Pipelines
 
-```
-{ title: 'Book 1', author: 'Author 1', genre: 'Fiction', publishedYear: 2020, rating: 4.5 }
-{ title: 'Book 3', author: 'Author 1', genre: 'Fiction', publishedYear: 2019, rating: 4.2 }
+```js
+const bookData = [
+  { title: "Book 1", author: "Author 1", genre: "Fiction", publishedYear: 2020, rating: 4.5 },
+  { title: "Book 2", author: "Author 2", genre: "Science Fiction", publishedYear: 2021, rating: 4.2 },
+  { title: "Book 3", author: "Author 3", genre: "Mystery", publishedYear: 2019, rating: 3.8 },
+  { title: "Book 4", author: "Author 1", genre: "Fantasy", publishedYear: 2020, rating: 4.5 },
+  { title: "Book 5", author: "Author 4", genre: "Non-fiction", publishedYear: 2022, rating: 3.9 },
+  { title: "Book 6", author: "Author 2", genre: "Science Fiction", publishedYear: 2018, rating: 4.1 },
+];
 ```
 
 ```js
-// Aggregation pipeline stages
-const pipelineStages = [
-  { $match: { rating: { $gt: 4.0 } } }, // Match books with a rating greater than 4.0
-  { $group: { _id: "$genre", averageRating: { $avg: "$rating" } } }, // Group by genre and calculate average rating
-  { $sort: { averageRating: -1 } }, // Sort genres by average rating in descending order
-];
-
-// Execute the aggregation pipeline
-const result = await Book.aggregate(pipelineStages);
+const pipelineStages = async () => {
+  const result = await Author.aggregate([
+    // Match authors with a rating greater than or equal to 3.9
+    { $match: { rating: { $gte: 3.9 } } },
+    // Group authors by genre and calculate the average rating for each genre
+    { $group: { _id: "$genre", avgRating: { $avg: "$rating" } } },
+    // Add a new field 'genre' with the value from '_id'
+    { $addFields: { genre: "$_id" } },
+    // Project the fields to include only 'genre' and 'avgRating', and exclude '_id'
+    { $project: { _id: 0 } },
+    // Sort the result by average rating in descending order
+    { $sort: { avgRating: -1 } },
+    // Limit the result to the top 10 genres based on average rating
+    { $limit: 10 },
+  ]);
+};
 ```
 
-```bash
+```js
+[
+  { avgRating: 4.5, genre: "Fiction" },
+  { avgRating: 4.5, genre: "Fantasy" },
+  { avgRating: 4.15, genre: "Science Fiction" },
+  { avgRating: 3.9, genre: "Non-fiction" },
+];
+```
+
+### Virtuals
+
+Virtuals are additional fields for a model that are not stored in the database but can be computed or derived from other fields.
+
+```js
+const tourSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+    },
+    duration: {
+      type: Number,
+    },
+  },
+
+  // highlight-next-line
+  { toJSON: { virtuals: true }, toObject: { virtuals: true } }
+);
+
+//highlight-start
+tourSchema.virtual("durationWeeks").get(function () {
+  return this.duration / 7;
+});
+//highlight-end
+
+const Tour = mongoose.model("Tour", tourSchema);
+```
+
+```js
 {
-  "_id": "Fiction",
-  "averageRating": 4.3,
+  name: 'stoffel',
+  duration: 7,
+  durationWeeks: 1
 }
+```
+
+### Document Middleware
+
+Document middleware in Mongoose allows you to define functions that run on a document instance before or after certain operations, such as saving or removing a document. This provides a way to execute custom logic at specific points in the lifecycle of a document
+
+<Tabs>
+<TabItem value="Pre">
+
+```js
+const tourSchema = new mongoose.Schema({
+  name: {
+    type: String,
+  },
+  duration: {
+    type: Number,
+  },
+  combo: {
+    type: String,
+  },
+});
+
+// pre middleware: run before event
+tourSchema.pre("save", function (next) {
+  // on save
+  this.combo = `${name}-${duration}`; // add a new property
+  console.log(this); // this is a copy of the document
+  next();
+});
+
+const Tour = mongoose.model("Tour", tourSchema);
+```
+
+```js
+{
+  name: 'stoffel',
+  duration: 3,
+  combo: 'stoffel-3'
+}
+```
+
+</TabItem>
+<TabItem value="Post">
+
+```js
+const tourSchema = new mongoose.Schema({
+  name: {
+    type: String,
+  },
+  duration: {
+    type: Number,
+  },
+});
+
+tourSchema.post("save", function (doc, next) {
+  console.log(doc); // prints the document that was saved
+  next();
+});
+
+const Tour = mongoose.model("Tour", tourSchema);
+```
+
+```js
+{
+  name: 'stoffel',
+  duration: 3,
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Query Middleware
+
+Query middleware in Mongoose provides a way to execute functions or modify the query before or after it is sent to the database. It allows you to intercept and modify queries, providing a level of control over the query execution process.
+
+<Tabs>
+<TabItem value="Pre">
+
+```js
+const tourSchema = new mongoose.Schema({
+  name: {
+    type: String,
+  },
+  duration: {
+    type: Number,
+  },
+});
+
+// regex for all find methods
+tourSchema.pre(/^find/, function (next) {
+  console.log(this); // refers to the query
+  this.find({ duration: { $gte: 5 } }); //only return 5 or greater
+  next();
+});
+
+const Tour = mongoose.model("Tour", tourSchema);
+```
+
+</TabItem>
+<TabItem value="Post">
+
+```js
+const tourSchema = new mongoose.Schema({
+  name: {
+    type: String,
+  },
+  duration: {
+    type: Number,
+  },
+});
+
+// regex for all find methods
+tourSchema.post(/^find/, function (docs, next) {
+  console.log(docs);
+  next();
+});
+
+const Tour = mongoose.model("Tour", tourSchema);
+```
+
+</TabItem>
+</Tabs>
+
+### Aggregation Middleware
+
+Aggregation middleware in Mongoose allows you to define functions that run before or after an aggregation pipeline is executed. This provides a way to perform custom logic, transformations, or validations during the aggregation process.
+
+<Tabs>
+<TabItem value="Pre">
+
+```js
+schema.pre("aggregate", function (next) {
+  // Modify or add stages to the aggregation pipeline
+  this.pipeline().unshift({ $match: { isActive: true } });
+  next();
+});
+```
+
+</TabItem>
+<TabItem value="Post">
+
+```js
+// Example post-hook after aggregation
+schema.post("aggregate", function (result) {
+  // Process or log the aggregation result
+});
+```
+
+</TabItem>
+</Tabs>
+
+### Validators
+
+<Tabs>
+<TabItem value="Strings">
+
+```js
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: [true, "Username is required"],
+    unique: true,
+    minlength: [3, "Username must be at least 3 characters long"],
+    maxlength: [20, "Username cannot exceed 20 characters"],
+  },
+  role: {
+    type: String,
+    enum: { values: ["user", "admin", "editor"], message: "Choose a valid Role" },
+    default: "user", // Default value if not provided
+  },
+});
+```
+
+</TabItem>
+<TabItem value="Numbers">
+
+```js
+const userSchema = new mongoose.Schema({
+  age: {
+    type: Number,
+    min: [18, "Must be at least 18 years old"],
+    max: [99, "Cannot be more than 99 years old"],
+  },
+});
+```
+
+</TabItem>
+<TabItem value="Custom">
+
+```js
+const userSchema = new mongoose.Schema({
+  priceDiscount: {
+    type: Number,
+    validate: {
+      validator: function (val) {
+        return val < this.price;
+      },
+      message: "Discount to high",
+    },
+  },
+});
+```
+
+</TabItem>
+</Tabs>
+
+**[Validator - npm](https://www.npmjs.com/package/validator)**
+
+```js
+const validator = require("validator")
+
+name: {
+      type: String,
+      required: [true, "Name required"],
+      validator: [validator.isAlpha, 'Error']
+    }
 ```
