@@ -50,6 +50,13 @@ git stash
 git stash pop
 ```
 
+## Cleaning changes
+
+```bash
+git reset --hard # remove/reset tracked files
+git clean -df # remove untracked files
+```
+
 ## Submodules
 
 ```bash

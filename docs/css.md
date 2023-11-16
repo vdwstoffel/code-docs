@@ -120,26 +120,26 @@ top: 20%; /* space between element and parent*/
 ### Absolute-Realtive
 
 ```css
-.outer {
+.grey {
   position: relative;
 }
 
-.box-1 {
+.red {
   position: absolute;
   bottom: 10%;
   left: 10%;
 }
 
-.box-2 {
+.black {
   position: absolute;
   right: 10%;
   bottom: 10%;
 }
 ```
 
-<div style={{width: "300px", height: "300px", position: "relative", backgroundColor: "grey",  color: "black", margin: "auto" }}>Outer
-  <div style={{width: "200px", height: "200px", position: "absolute", bottom: "10%", left: "10%", backgroundColor: "red"}}>Box-1
-    <div style={{width: "100px", height: "100px", position: "absolute", bottom: "10%", right: "10%", backgroundColor: "black", color: "white"}}>Box-2</div>
+<div style={{width: "300px", height: "300px", position: "relative", backgroundColor: "grey", margin: "auto" }}>
+  <div style={{width: "200px", height: "200px", position: "absolute", bottom: "10%", left: "10%", backgroundColor: "red"}}>
+    <div style={{width: "100px", height: "100px", position: "absolute", bottom: "10%", right: "10%", backgroundColor: "black"}}></div>
   </div>
 </div>
 
