@@ -36,8 +36,8 @@ app.listen(port, () => {
 Add this as the last route. When no routes match this route will run
 
 ```javascript
-app.use((req, res) => {
-  res.status(404).json({ status: "failure", message: "Failure Message" });
+app.all("*", (req, res) => {
+  res.status(404).json({ status: "failure", message: `Cant find ${req.originalUrl}` });
 });
 ```
 
