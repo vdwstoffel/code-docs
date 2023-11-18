@@ -128,7 +128,7 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
-        additionalLanguages: ["bash", "docker", "yaml", "json"],
+        additionalLanguages: ["bash", "docker", "yaml", "json", "robotframework"],
       },
     }),
   themes: ["@docusaurus/theme-live-codeblock"],
