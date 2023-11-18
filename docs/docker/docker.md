@@ -195,7 +195,7 @@ docker logs <container_name>
 
 ## Dockerfile
 
-```docker
+```dockerfile
 FROM baseImage
 
 WORKDIR /the/workdir/path
