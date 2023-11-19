@@ -167,7 +167,7 @@ POSTGRES_HOST="database"    # should match the service in docker-compose
 <TabItem value="Dockerfile">
 ```
 
-```Dockerfile
+```docker
 FROM node:latest
 
 WORKDIR /app
@@ -301,7 +301,7 @@ app.listen(3001);
 <TabItem value="Dockerfile">
 ```
 
-```dockerfile
+```docker
 FROM node:latest
 
 WORKDIR /app
@@ -375,7 +375,7 @@ export default function App() {
 <TabItem value="Dockerfile">
 ```
 
-```dockerfile
+```docker
 FROM node:latest
 
 WORKDIR /app

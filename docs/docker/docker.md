@@ -248,7 +248,7 @@ docker build -t my-images:my-tag --build-arg DEFAULT_PORT=8080
 
 Files/Folder to ignore
 
-```Dockerfile
+```docker
 node_module/
 Dockerfile
 .git
@@ -313,7 +313,7 @@ build:
 
 Note that the copy should end with a `/` to specify a folder in the docker/Dockerfile
 
-```Dockerfile
+```docker
 COPY package*.json ./
 ```
 
@@ -343,7 +343,7 @@ docker-compose down -v
 
 A utility container is a Docker container that is specifically designed to perform a single task or provide a specialized service to other containers.
 
-```dockerfile title="Dockerfile"
+```docker title="Dockerfile"
 FROM node:18-alpine
 
 WORKDIR /app
