@@ -7,7 +7,7 @@ services:
       dockerfile: ./Dockerfile
     container_name: codeDocs
     ports:
-      - "9000:3000"
+      - "9000:9000"
     volumes:
       - ./src:/app/src
       - ./docs:/app/docs

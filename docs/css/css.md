@@ -1,6 +1,6 @@
 ---
 sidebar_label: "CSS"
-sidebar_position: 4
+sidebar_position: 101
 ---
 
 import CodeBlock from "@theme/CodeBlock";
@@ -24,6 +24,20 @@ import Transform from '@site/src/components/cssExamples/Transform'
   <link rel="stylesheet" href="path/to/file.css" />
   <title>Document</title>
 </head>
+```
+
+## Reset all values
+
+```css
+* {
+  /* The width and height of the element include the content, padding, and border. */
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
 ```
 
 ## Grid Display
@@ -256,6 +270,46 @@ filter: saturate(30%);
 filter: sepia(60%);
 ```
 
+## Borders
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Borders">
+```
+
+```css
+.container {
+  border-width: 0.5em;
+  border-style: solid;
+  border-color: black;
+}
+```
+<div style={{backgroundColor: "gray", padding: "1.5em"}}>
+<div style={{width: "300px", height: "300px", backgroundColor: "darkgreen", margin: "auto", borderWidth: "0.5em", borderStyle: "solid", borderColor: "black"}} ></div>
+</div>
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Border Raduis">
+```
+
+```css
+.container {
+  border: solid black 1em; /* shorthand */
+  border-radius: 5%;
+}
+```
+<div style={{backgroundColor: "gray", padding: "1.5em"}}>
+<div style={{width: "300px", height: "300px", backgroundColor: "darkgreen", margin: "auto", borderWidth: "0.5em", borderStyle: "solid", borderColor: "black", borderRadius: "5%"}} ></div>
+</div>
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+
+
 ## Sizing
 
 | Unit / Size | Description                                                                                      |
@@ -399,17 +453,20 @@ transform: translate(30%, 30%); /* moving the element along the X- and the Y-axi
 </Tabs>
 ```
 
-## Reset all values
+## CSS Variables
 
 ```css
-* {
-  /* The width and height of the element include the content, padding, and border. */
-  box-sizing: border-box;
+:root {
+    --success-color: #2ecc71;
+    --error-color: #e74c3c;
 }
 
-body {
-  margin: 0;
-  padding: 0;
+.success {
+    border-color: var(--success-color);
+}
+
+.error {
+    border-color: var(--error-color);
 }
 ```
 
