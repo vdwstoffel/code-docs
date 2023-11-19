@@ -66,6 +66,20 @@ document.querySelector("input").addEventListener("keyup", () => {
 });
 ```
 
+### Submit
+
+Prevent the form from submitting and reloading the page
+
+```js
+const form = document.querySelector("#form")
+const username = document.querySelector("#username");
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault()
+    console.log(username.value)
+})
+```
+
 ### Inspecting element
 
 ```js
@@ -84,4 +98,12 @@ document.querySelector(".btn").classList.remove("hidden");
 
 //toggle class
 document.querySelector(".btn").classList.toggle("hidden");
+```
+
+## Manipulating Elements
+
+```js
+const text = document.querySelector("p");
+
+text.innerText = "Hello World";
 ```
