@@ -1,6 +1,6 @@
 ---
 sidebar_label: "Git"
-sidebar_position: 1
+sidebar_position: 000
 slug: /
 ---
 

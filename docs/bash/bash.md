@@ -1,6 +1,6 @@
 ---
 sidebar_label: "Bash"
-sidebar_position: 6
+sidebar_position: 402
 ---
 
 # CLI

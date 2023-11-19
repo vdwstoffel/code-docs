@@ -1,6 +1,6 @@
 ---
 sidebar_label: "Linux"
-sidebar_position: 9
+sidebar_position: 401
 ---
 
 # Linux
