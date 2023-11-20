@@ -41,6 +41,14 @@ h4 {
   color: rgb(146, 30, 146);
 }
 
+/* Sidebar */
+.theme-doc-sidebar-item-category-level-1, .theme-doc-sidebar-item-link-level-1 {
+  border-bottom: 1px inset rgba(255, 255, 255, 0.052);
+  padding: 0.5em 0;
+}
+
+/*----------------------------------------------*/
+
 .footer {
   padding: 1em;
 }
