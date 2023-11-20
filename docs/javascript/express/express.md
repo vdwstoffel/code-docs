@@ -308,3 +308,18 @@ app.get("/", middlewareOne, middlewareTwo, (req, res) => {
   // ...
 });
 ```
+
+## Error Handeling
+
+[See Examples](express/examples#custom-error-class)
+
+### Universal error handler for Unhandled Rejections
+
+```js
+const server = app.listen(port);
+
+process.on("uncaughtException", (err) => {
+  console.error(err.name, err.message);
+  server.close().then(process.exit(1));
+});
+```
