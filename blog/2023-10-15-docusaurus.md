@@ -1,6 +1,6 @@
 ---
-slug: Docusaurus code block tabs
-title: Docusaurus code block tabs
+slug: docusaurus
+title: Docusaurus
 authors:
   name: Christoff van der Walt
   title: Author
@@ -70,3 +70,5 @@ console.log("Hello World");
 </TabItem>
 </Tabs>
 ```
+
+
