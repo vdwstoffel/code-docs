@@ -64,9 +64,10 @@ const app = express();
 const AppError = require("./utils/appError");
 const catchAsync = require("./utils/catchAsync");
 
-// Normal Error
+// Normal Error, Use return to go directly to global error function
 app.get("/", (req, res, next) => {
-  res.status(200).json({ status: "success", data: "Hello World" });
+  //... some error
+  return next(new AppError(`Some error`, 404));;
 });
 
 // Async Error: wrap in catchAsync to offload errors
@@ -104,6 +105,8 @@ app.listen(port, () => {
 </TabItem>
 <TabItem value="utils/appError.js">
 
+Errors will be passed to the global error handler in server
+
 ```js
 // Define a custom error class extending the built-in Error class
 class AppError extends Error {
@@ -130,7 +133,7 @@ module.exports = AppError;
 
 ```js
 // A function called catchAsync that takes another function (fn) as an argument
-module.exports = catchAsync = (fn) => {
+module.exports = fn => {
   // Returns a new function that accepts req, res, and next as parameters
   return (req, res, next) => {
     // Executes the provided function (fn) with req, res, and next,

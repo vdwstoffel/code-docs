@@ -65,6 +65,7 @@ When receiving **json** data
 app.use(express.json());
 
 app.post("/api", (req, res) => {
+  const mydata = req.body;
   res.status(201).json({ status: "success", data: { info: mydata } });
 });
 ```
@@ -75,6 +76,7 @@ When receiving **html form** data
 app.use(express.urlencoded({ extended: true }));
 
 app.post("/api", (req, res) => {
+  const mydata = req.body;
   res.status(201).json({ status: "success", data: { info: mydata } });
 });
 ```
@@ -168,7 +170,9 @@ app
   });
 ```
 
-## Controllers
+## MVC
+
+MVC (Model-View-Controller) is a software architectural pattern that separates an application into three interconnected components: the data (Model), user interface (View), and application logic (Controller), facilitating better code organization and maintenance.
 
 ```js
 .
@@ -322,4 +326,24 @@ process.on("uncaughtException", (err) => {
   console.error(err.name, err.message);
   server.close().then(process.exit(1));
 });
+```
+
+## Authentication
+
+### JWT
+
+Secret should be at least 32 characters
+
+```js
+/* jwt.sign(payload, secretOrPrivateKey, [options, callback]) */
+const token = jwt.sign({ id: newUser._id }, "secret", { expiresIn: 1000 * 60 * 60 * 24 * 7 });
+
+res.status(201).json({ status: "success", token: token });
+```
+
+```json
+{
+  "status": "success",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NWQxYjA0MWZhNGRlODg5YjQzMmUzMiIsImlhdCI6MTcwMDYwNTM5MSwiZXhwIjoyMzA1NDA1MzkxfQ.YlPIU9hlzpt6SEXA-gD1Y2RKv6-eWU4RrgagXST9Uzg"
+}
 ```
