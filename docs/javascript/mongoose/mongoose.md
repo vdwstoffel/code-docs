@@ -444,6 +444,9 @@ const userSchema = new mongoose.Schema({
 
 ```js
 const userSchema = new mongoose.Schema({
+  price: {
+    type: Number
+  }
   priceDiscount: {
     type: Number,
     validate: {
@@ -469,4 +472,40 @@ name: {
       required: [true, "Name required"],
       validator: [validator.isAlpha, 'Error']
     }
+```
+
+## Adding functions to documents
+
+```js
+const { Schema, model } = require("mongoose");
+
+const tourSchema = new Schema({
+  name: {
+    type: String,
+    required: [true, "Name required"],
+    unique: true,
+    trim: true,
+  },
+  rating: {
+    type: Number,
+    default: 4.5,
+  },
+  price: {
+    type: Number,
+    required: [true, "Price required"],
+  },
+});
+
+//highlight-start
+UserSchema.methods.greet = function () {
+  return `Hello ${this.name}`;
+};
+//highlight-end
+
+const Tour = model("Tour", tourSchema);
+```
+
+```js
+const UserModel = require("./xxx")
+UserModel.greet()
 ```
