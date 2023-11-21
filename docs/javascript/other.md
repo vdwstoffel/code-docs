@@ -128,12 +128,9 @@ npm i bcrypt
 ```
 
 ```javascript
-const bcrypt = require("bcrypt"); // npm i bcrypt
+const bcrypt = require("bcrypt");
 
-const saltRounds = 12;
-const myPassword = "Stoffel";
-
-const storePassword = async () => {
+const storePassword = async (myPassword, saltRounds) => {
   const hashedPW = await bcrypt.hash(myPassword, saltRounds);
   return hashedPW;
 };
@@ -143,12 +140,21 @@ const checkPassword = async (plain, hash) => {
   return result;
 };
 
-storePassword().then((hashedPW) => {
-  console.log(hashedPW);
-  checkPassword(myPassword, hashedPW).then((result) => {
-    console.log(result);
-  });
-});
+const test = async () => {
+  const saltRounds = 12;
+  const myPassword = "Stoffel";
+
+  const hashedPW = await storePassword(myPassword, saltRounds);
+  console.log(hashedPW); // $2b$12$eyi.sLJKvsx/KvIbabndYuqUpvzAXgPXRROoIKgfh1QR2dl/McA7u
+
+  const result = await checkPassword(myPassword, hashedPW);
+  console.log(result); // true
+
+  const wrong = await checkPassword("SomeRandomString", hashedPW);
+  console.log(wrong); // false
+};
+
+test();
 ```
 
 ## UUID
