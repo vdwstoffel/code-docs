@@ -67,7 +67,7 @@ const catchAsync = require("./utils/catchAsync");
 // Normal Error, Use return to go directly to global error function
 app.get("/", (req, res, next) => {
   //... some error
-  return next(new AppError(`Some error`, 404));;
+  return next(new AppError(`Some error`, 404));
 });
 
 // Async Error: wrap in catchAsync to offload errors
@@ -133,7 +133,7 @@ module.exports = AppError;
 
 ```js
 // A function called catchAsync that takes another function (fn) as an argument
-module.exports = fn => {
+module.exports = (fn) => {
   // Returns a new function that accepts req, res, and next as parameters
   return (req, res, next) => {
     // Executes the provided function (fn) with req, res, and next,
@@ -145,3 +145,47 @@ module.exports = fn => {
 
 </TabItem>
 </Tabs>
+
+## Protecting API routes
+
+```js
+const express = require("express");
+const jwt = require("jsonwebtoken");
+
+const app = express();
+
+// Middleware to parse JSON request bodies
+app.use(express.json());
+
+// Middleware to check the validity of the token
+const checkToken = (req, res, next) => {
+  let token = req.headers.authorization;
+  token = token.split(" ")[1]; // Extract the token from the Authorization header
+  try {
+    jwt.verify(token, "superSecret"); // Verify the token using the secret key
+    next(); // Move to the next middleware if the token is valid
+  } catch (err) {
+    throw err; // Throw an error to the global error handler if the token is invalid
+  }
+};
+
+app.get("/", (req, res) => {
+  const token = jwt.sign({ id: "901001" }, "superSecret", { expiresIn: "1w" });
+  // Generate a new token with a payload and sign it with the secret key
+  res.status(200).json({ status: "success", token: token }); // Respond with the generated token
+});
+
+// Protected route that requires a valid token (GET request to '/secret')
+app.get("/secret", checkToken, (req, res) => {
+  // This route is protected and requires a valid token, enforced by the checkToken middleware
+  res.status(200).json({ status: "success", message: "You reached the protected area" });
+});
+
+// Global error handling middleware
+app.use((err, req, res, next) => {
+  // Handle errors thrown by the checkToken middleware or other parts of the application
+  res.status(400).json({ status: "denied", message: "No Valid Token" }); // Respond with an error message
+});
+
+app.listen(3000);
+```

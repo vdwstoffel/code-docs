@@ -332,13 +332,70 @@ process.on("uncaughtException", (err) => {
 
 ### JWT
 
+```bash
+npm i jsonwebtoken
+```
+
 Secret should be at least 32 characters
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Sign">
+```
 
 ```js
 /* jwt.sign(payload, secretOrPrivateKey, [options, callback]) */
-const token = jwt.sign({ id: newUser._id }, "secret", { expiresIn: 1000 * 60 * 60 * 24 * 7 });
 
-res.status(201).json({ status: "success", token: token });
+const token = jwt.sign({ id: userID }, "superSecret", { expiresIn: "1w" });
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Verify">
+```
+
+```js
+const token = req.headers.authorization;
+
+/* jwt.verify(token, secretOrPublicKey, [options, callback]) */
+const verifiedToken = jwt.verify(token, "superSecret");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+```js
+const express = require("express");
+const jwt = require("jsonwebtoken");
+
+const app = express();
+app.use(express.json());
+
+app.get("/", (req, res) => {
+  const token = jwt.sign({ id: "901001" }, "superSecret", { expiresIn: "1w" });
+  res.status(200).json({ status: "success", token: token });
+});
+
+// post request: headers Bearer aasfwrwetwet...
+app.post("/", (req, res) => {
+  let token = req.headers.authorization;
+  token = token.split(" ")[1]; // split between token and header an take the header
+  try {
+    const verifiedToken = jwt.verify(token, "superSecret");
+    res.status(200).json({ status: "success", message: verifiedToken });
+  } catch (err) {
+    res.status(401).json({ status: "fail", message: err });
+  }
+});
+
+app.listen(3000);
+```
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Get">
 ```
 
 ```json
@@ -347,3 +404,37 @@ res.status(201).json({ status: "success", token: token });
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NWQxYjA0MWZhNGRlODg5YjQzMmUzMiIsImlhdCI6MTcwMDYwNTM5MSwiZXhwIjoyMzA1NDA1MzkxfQ.YlPIU9hlzpt6SEXA-gD1Y2RKv6-eWU4RrgagXST9Uzg"
 }
 ```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Post: success">
+```
+
+```js
+"status": "success",
+    "message": {
+        "id": "901001",
+        "iat": 1700675405,
+        "exp": 1701280205
+    }
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Post: fail">
+```
+
+```js
+ "status": "fail",
+    "message": {
+        "name": "JsonWebTokenError",
+        "message": "invalid token"
+    }
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+[How to protect routes](/javascript/express/examples#protecting-api-routes)
