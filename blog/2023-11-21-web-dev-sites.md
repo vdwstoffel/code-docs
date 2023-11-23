@@ -12,3 +12,7 @@ tags: [web dev, interesting]
 ## Security
 
 * [Testing JWT Tokens](https://jwt.io/)
+
+## Emails
+
+* Test sending emails with [mailtrap](https://mailtrap.io/home)
