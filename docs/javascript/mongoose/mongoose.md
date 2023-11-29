@@ -506,6 +506,30 @@ const Tour = model("Tour", tourSchema);
 ```
 
 ```js
-const UserModel = require("./xxx")
-UserModel.greet()
+const UserModel = require("./xxx");
+UserModel.greet();
+```
+
+## Mongo Sanitize
+
+Object keys starting with a $ or containing a . are reserved for use by MongoDB as operators. Without this sanitization, malicious users could send an object containing a $ operator, or including a ., which could change the context of a database operation. Most notorious is the $where operator, which can execute arbitrary JavaScript on the database.
+
+```bash
+npm i express-mongo-sanitize
+```
+
+```js
+const express = require("express");
+const app = express();
+//highlight-next-line
+const mongoSanitize = require("express-mongo-sanitize");
+
+//highlight-next-line
+app.use(mongoSanitize());
+
+app.get("/", (req, res) => {
+  res.send("hello world");
+});
+
+app.listen(3000);
 ```
