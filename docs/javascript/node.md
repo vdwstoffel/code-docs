@@ -196,3 +196,38 @@ multiple.funcTwo();
 </TabItem>
 </Tabs>
 ```
+
+## Email
+
+```bash
+npm i nodemailer
+npm i dotenv
+```
+
+```js
+const nodemailer = require("nodemailer");
+require("dotenv").config({ path: "../../config.env" });
+
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.EMAIL_FROM,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+});
+
+const sendMail = async (options) => {
+  const info = await transporter.sendMail({
+    from: `Test <${process.env.EMAIL_FROM}>`,
+    to: process.env.EMAIL_TO,
+    subject: "Hello Mail",
+    text: "Some text",
+    html: "<h1>Some HTML<h1>",
+  });
+  console.log(info.messageId);
+};
+
+sendMail();
+```

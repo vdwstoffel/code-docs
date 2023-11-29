@@ -31,6 +31,30 @@ app.listen(port, () => {
 });
 ```
 
+## HTTP Response Headers
+
+```bash
+npm i helmet
+```
+
+Helmet helps secure Express apps by setting HTTP response headers.
+
+```js
+import express from "express";
+import helmet from "helmet";
+
+const app = express();
+
+// Use Helmet!
+app.use(helmet());
+
+app.get("/", (req, res) => {
+  res.send("Hello world!");
+});
+
+app.listen(8000);
+```
+
 ## Error route
 
 Add this as the last route. When no routes match this route will run
@@ -65,6 +89,7 @@ When receiving **json** data
 app.use(express.json());
 
 app.post("/api", (req, res) => {
+  const mydata = req.body;
   res.status(201).json({ status: "success", data: { info: mydata } });
 });
 ```
@@ -75,6 +100,7 @@ When receiving **html form** data
 app.use(express.urlencoded({ extended: true }));
 
 app.post("/api", (req, res) => {
+  const mydata = req.body;
   res.status(201).json({ status: "success", data: { info: mydata } });
 });
 ```
@@ -168,7 +194,9 @@ app
   });
 ```
 
-## Controllers
+## MVC
+
+MVC (Model-View-Controller) is a software architectural pattern that separates an application into three interconnected components: the data (Model), user interface (View), and application logic (Controller), facilitating better code organization and maintenance.
 
 ```js
 .
@@ -307,4 +335,244 @@ app.get("/:id", (req, res) => {
 app.get("/", middlewareOne, middlewareTwo, (req, res) => {
   // ...
 });
+```
+
+## Error Handeling
+
+[See Examples](express/examples#custom-error-class)
+
+### Universal error handler for Unhandled Rejections
+
+```js
+const server = app.listen(port);
+
+process.on("uncaughtException", (err) => {
+  console.error(err.name, err.message);
+  server.close().then(process.exit(1));
+});
+```
+
+## Authentication
+
+### JWT
+
+```bash
+npm i jsonwebtoken
+```
+
+Secret should be at least 32 characters
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Sign">
+```
+
+```js
+/* jwt.sign(payload, secretOrPrivateKey, [options, callback]) */
+
+const token = jwt.sign({ id: userID }, "superSecret", { expiresIn: "1w" });
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Verify">
+```
+
+```js
+const token = req.headers.authorization;
+
+/* jwt.verify(token, secretOrPublicKey, [options, callback]) */
+const verifiedToken = jwt.verify(token, "superSecret");
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+```js
+const express = require("express");
+const jwt = require("jsonwebtoken");
+
+const app = express();
+app.use(express.json());
+
+app.get("/", (req, res) => {
+  const token = jwt.sign({ id: "901001" }, "superSecret", { expiresIn: "1w" });
+  res.status(200).json({ status: "success", token: token });
+});
+
+// post request: headers Bearer aasfwrwetwet...
+app.post("/", (req, res) => {
+  let token = req.headers.authorization;
+  token = token.split(" ")[1]; // split between token and header an take the header
+  try {
+    const verifiedToken = jwt.verify(token, "superSecret");
+    res.status(200).json({ status: "success", message: verifiedToken });
+  } catch (err) {
+    res.status(401).json({ status: "fail", message: err });
+  }
+});
+
+app.listen(3000);
+```
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Get">
+```
+
+```json
+{
+  "status": "success",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NWQxYjA0MWZhNGRlODg5YjQzMmUzMiIsImlhdCI6MTcwMDYwNTM5MSwiZXhwIjoyMzA1NDA1MzkxfQ.YlPIU9hlzpt6SEXA-gD1Y2RKv6-eWU4RrgagXST9Uzg"
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Post: success">
+```
+
+```js
+"status": "success",
+    "message": {
+        "id": "901001",
+        "iat": 1700675405,
+        "exp": 1701280205
+    }
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Post: fail">
+```
+
+```js
+ "status": "fail",
+    "message": {
+        "name": "JsonWebTokenError",
+        "message": "invalid token"
+    }
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### Cookies
+
+```js
+res.cookie("jwt", token, { expires: new Date(Date.now() + 900000), secure: true, httpOnly: true });
+```
+
+| Property | Type    | Description                                                                               |
+| -------- | ------- | ----------------------------------------------------------------------------------------- |
+| expires  | Date    | Expiry date of the cookie in GMT. If not specified or set to 0, creates a session cookie. |
+| secure   | Boolean | Marks the cookie to be used with HTTPS only.                                              |
+| httpOnly | Boolean | Flags the cookie to be accessible only by the web server.                                 |
+
+[see more](https://expressjs.com/en/5x/api.html#res.cookie)
+
+[How to protect routes](/javascript/express/examples#protecting-api-routes)
+
+## Rate Limiting
+
+```bash
+npm i express-rate-limit
+```
+
+```js title="main.js"
+const rateLimit = require("express-rate-limit");
+
+const limiter = rateLimit({
+  limit: 5,
+  windowMs: 15 * 60 * 1000,
+  message: "Too many requests. Try again in an hour",
+});
+
+app.use(limiter); // use globally
+app.use("/api", limiter); // use on /api route
+```
+
+## Sanitize Input
+
+Node.js Connect middleware to sanitize user input coming from POST body, GET queries, and url params. Works with Express, Restify, or any other Connect app.
+
+```bash
+npm i xss-clean
+```
+
+```js
+const express = require("express");
+const app = express();
+//highlight-next-line
+const xss = require("xss-clean");
+
+//highlight-start
+// make sure this comes before any routes
+app.use(xss());
+//highlight-end
+
+app.get("/", (req, res) => {
+  res.send("hello world");
+});
+
+app.listen(3000);
+```
+
+## Usefull Middleware
+
+### Morgan
+
+HTTP request logger middleware for node.js
+
+```bash
+npm install morgan
+```
+
+As early as possible add
+
+```js
+app.use(morgan("dev"));
+```
+
+### Paramter Poluttion
+
+Express middleware to protect against HTTP Parameter Pollution attacks
+
+ex `/api/getAll?sort=price&sort=date`
+
+```bash
+npm i hpp
+```
+
+```js
+const express = require("express");
+const app = express();
+//highlight-next-line
+const hpp = require("hpp");
+
+app.use(bodyParser.urlencoded()); // Make sure the body is parsed beforehand.
+
+//highlight-next-line
+app.use(hpp({ whitelist: ["duration", "ratingsQuantity", "ratingAverage", "maxGroupSize", "difficulty", "price"] }));
+
+app.get("/", (req, res) => {
+  res.send("hello world");
+});
+
+app.listen(3000);
+```
+
+#### Whitelisting Specific Parameters
+
+```js
+// Secure all routes at first.
+// You could add separate HPP middlewares to each route individually but the day will come when you forget to secure a new route.
+app.use(hpp());
+
+// Add a second HPP middleware to apply the whitelist only to this route.
+app.use("/search", hpp({ whitelist: ["filter"] }));
 ```

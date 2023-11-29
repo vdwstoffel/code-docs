@@ -1,6 +1,6 @@
 ---
-slug: Docusaurus code block tabs
-title: Docusaurus code block tabs
+slug: docusaurus
+title: Docusaurus
 authors:
   name: Christoff van der Walt
   title: Author
@@ -69,4 +69,30 @@ console.log("Hello World");
 ```mdx-code-block
 </TabItem>
 </Tabs>
+```
+
+## Highlight Code
+
+`//` Should reflect the language comment
+
+```md
+// highlight-next-line
+```
+
+```js
+// highlight-next-line
+console.log("HEllo");
+```
+
+```md
+// highlight-start
+....
+// highlight-end
+```
+
+```python
+# highlight-start
+x = "something"
+print(x)
+# highlight-end
 ```

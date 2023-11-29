@@ -292,3 +292,20 @@ const myDog = new Dog("Buddy", "Golden Retriever");
 genericAnimal.speak(); // Output: Generic Animal makes a sound.
 myDog.speak(); // Output: Buddy the Golden Retriever barks.
 ```
+
+## Regex
+
+```js
+const text = `One Ring to rule them all
+One Ring to find them
+One Ring to bring them all
+and in the darkness bind them`;
+
+const pattern = /.+bind them/;
+
+const match = text.match(pattern);
+console.log(match); // prints out the match object
+console.log(match.toString()); // and in the darkness bind them
+
+console.log(pattern.test(text)); // true
+```

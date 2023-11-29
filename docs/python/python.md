@@ -3,6 +3,10 @@ sidebar_label: "Python"
 sidebar_position: 201
 ---
 
+import CodeBlock from "@theme/CodeBlock";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 # Python
 
 ## Decorators
@@ -51,6 +55,62 @@ def hello(name):
 # Invoking the decorated hello function with an argument "stoffel"
 result = hello("stoffel")
 print(result)  # Output: Hello, STOFFEL
+```
+
+## Regex
+
+```python
+text = """
+One Ring to rule them all
+One Ring to find them
+One Ring to bring them all
+and in the darkness bind them
+"""
+```
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Search">
+```
+
+Returns a Match object if there is a match anywhere in the string
+
+```python
+import re
+
+search = re.search(r'.+bind them', text)
+print(search.group(0))  # and in the darkness bind them
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Findall">
+```
+
+Returns a list containing all matches
+
+```python
+import re
+
+find = re.findall(r'.+ them all', text)
+print(find)  # ['One Ring to rule them all', 'One Ring to bring them all']
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Sub">
+```
+
+```python
+import re
+
+sub = re.sub(r'R.+g', 'card', text)
+print(sub)  # One card to rule them all ...
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ## Math
