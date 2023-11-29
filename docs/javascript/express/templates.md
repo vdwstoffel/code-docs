@@ -1,6 +1,6 @@
 ---
 sidebar_label: "Templates"
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 import CodeBlock from "@theme/CodeBlock";

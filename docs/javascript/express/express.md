@@ -31,6 +31,30 @@ app.listen(port, () => {
 });
 ```
 
+## HTTP Response Headers
+
+```bash
+npm i helmet
+```
+
+Helmet helps secure Express apps by setting HTTP response headers.
+
+```js
+import express from "express";
+import helmet from "helmet";
+
+const app = express();
+
+// Use Helmet!
+app.use(helmet());
+
+app.get("/", (req, res) => {
+  res.send("Hello world!");
+});
+
+app.listen(8000);
+```
+
 ## Error route
 
 Add this as the last route. When no routes match this route will run
@@ -437,5 +461,118 @@ app.listen(3000);
 </Tabs>
 ```
 
+### Cookies
+
+```js
+res.cookie("jwt", token, { expires: new Date(Date.now() + 900000), secure: true, httpOnly: true });
+```
+
+| Property | Type    | Description                                                                               |
+| -------- | ------- | ----------------------------------------------------------------------------------------- |
+| expires  | Date    | Expiry date of the cookie in GMT. If not specified or set to 0, creates a session cookie. |
+| secure   | Boolean | Marks the cookie to be used with HTTPS only.                                              |
+| httpOnly | Boolean | Flags the cookie to be accessible only by the web server.                                 |
+
+[see more](https://expressjs.com/en/5x/api.html#res.cookie)
+
 [How to protect routes](/javascript/express/examples#protecting-api-routes)
 
+## Rate Limiting
+
+```bash
+npm i express-rate-limit
+```
+
+```js title="main.js"
+const rateLimit = require("express-rate-limit");
+
+const limiter = rateLimit({
+  limit: 5,
+  windowMs: 15 * 60 * 1000,
+  message: "Too many requests. Try again in an hour",
+});
+
+app.use(limiter); // use globally
+app.use("/api", limiter); // use on /api route
+```
+
+## Sanitize Input
+
+Node.js Connect middleware to sanitize user input coming from POST body, GET queries, and url params. Works with Express, Restify, or any other Connect app.
+
+```bash
+npm i xss-clean
+```
+
+```js
+const express = require("express");
+const app = express();
+//highlight-next-line
+const xss = require("xss-clean");
+
+//highlight-start
+// make sure this comes before any routes
+app.use(xss());
+//highlight-end
+
+app.get("/", (req, res) => {
+  res.send("hello world");
+});
+
+app.listen(3000);
+```
+
+## Usefull Middleware
+
+### Morgan
+
+HTTP request logger middleware for node.js
+
+```bash
+npm install morgan
+```
+
+As early as possible add
+
+```js
+app.use(morgan("dev"));
+```
+
+### Paramter Poluttion
+
+Express middleware to protect against HTTP Parameter Pollution attacks
+
+ex `/api/getAll?sort=price&sort=date`
+
+```bash
+npm i hpp
+```
+
+```js
+const express = require("express");
+const app = express();
+//highlight-next-line
+const hpp = require("hpp");
+
+app.use(bodyParser.urlencoded()); // Make sure the body is parsed beforehand.
+
+//highlight-next-line
+app.use(hpp({ whitelist: ["duration", "ratingsQuantity", "ratingAverage", "maxGroupSize", "difficulty", "price"] }));
+
+app.get("/", (req, res) => {
+  res.send("hello world");
+});
+
+app.listen(3000);
+```
+
+#### Whitelisting Specific Parameters
+
+```js
+// Secure all routes at first.
+// You could add separate HPP middlewares to each route individually but the day will come when you forget to secure a new route.
+app.use(hpp());
+
+// Add a second HPP middleware to apply the whitelist only to this route.
+app.use("/search", hpp({ whitelist: ["filter"] }));
+```
