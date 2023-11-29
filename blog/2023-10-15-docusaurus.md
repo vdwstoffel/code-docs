@@ -71,4 +71,28 @@ console.log("Hello World");
 </Tabs>
 ```
 
+## Highlight Code
 
+`//` Should reflect the language comment
+
+```md
+// highlight-next-line
+```
+
+```js
+// highlight-next-line
+console.log("HEllo");
+```
+
+```md
+// highlight-start
+....
+// highlight-end
+```
+
+```python
+# highlight-start
+x = "something"
+print(x)
+# highlight-end
+```
