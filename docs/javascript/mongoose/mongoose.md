@@ -145,17 +145,44 @@ const tourSchema = new Schema({
 const Tour = model("Tour", tourSchema);
 ```
 
-## Set an array type
+### Types
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Array">
+```
 
 ```js
-const { Schema, model } = require("mongoose");
-
 const tourSchema = new Schema({
   items = [String]
 });
+```
 
-const Tour = model("Tour", tourSchema);
+```mdx-code-block
+</TabItem>
+<TabItem value="GeoJson">
+```
 
+```js
+const citySchema = new mongoose.Schema({
+  name: String,
+  location: {
+    type: {
+      type: String, // Don't do `{ location: { type: String } }`
+      enum: ["Point"], // 'location.type' must be 'Point'
+      required: true,
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+  },
+});
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ## Exclude Field from return
@@ -532,4 +559,58 @@ app.get("/", (req, res) => {
 });
 
 app.listen(3000);
+```
+
+## Embedding Documents
+
+Embedding a document in MongoDB refers to the practice of nesting one document (or schema) within another document.
+
+```js
+const mongoose = require("mongoose");
+
+// Define the Address schema separately
+const addressSchema = new mongoose.Schema({
+  street: String,
+  city: String,
+  country: String,
+});
+
+// Create the Address model
+const Address = mongoose.model("Address", addressSchema);
+
+// Define the Person schema with a reference to the Address model
+const personSchema = new mongoose.Schema({
+  name: String,
+  age: Number,
+  address: { type: mongoose.Schema.ObjectId, ref: "Address" }, // Reference to Address model
+});
+
+const Person = mongoose.model("Person", personSchema);
+```
+
+```js
+// Assuming an existing addressId for an Address document
+const existingAddressId = "1234567890";
+
+const newPerson = new Person({
+  name: "John Doe",
+  age: 30,
+  address: existingAddressId, // Assigning the addressId to the address field in Person
+});
+```
+
+```js
+const user = await Person.findById(personId).populate("address");
+
+{
+  "_id": "000000000",
+  "name": "John Doe",
+  "age": 30,
+  "address": {
+    "_id": "1234567890",
+    "street": "123 Main St",
+    "city": "Exampleville",
+    "country": "Exampleland"
+  }
+}
 ```
