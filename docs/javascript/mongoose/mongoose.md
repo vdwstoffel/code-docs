@@ -160,6 +160,33 @@ const tourSchema = new Schema({
 
 ```mdx-code-block
 </TabItem>
+<TabItem value="String">
+```
+
+```js
+const mongoose = require("mongoose");
+
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+});
+
+const User = mongoose.model("User", userSchema);
+```
+
+```mdx-code-block
+</TabItem>
 <TabItem value="GeoJson">
 ```
 
@@ -176,6 +203,30 @@ const citySchema = new mongoose.Schema({
       type: [Number],
       required: true,
     },
+  },
+});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Date">
+```
+
+```js
+const UsersSchema = new Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  age: {
+    type: Number,
+    min: [1, "Invalid Age"], // Show a error message if age is less than 1
+    max: 99,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now, // This will set the default value to the current date and time
   },
 });
 ```
@@ -613,4 +664,59 @@ const user = await Person.findById(personId).populate("address");
     "country": "Exampleland"
   }
 }
+```
+
+### Only return certain fields
+
+```js
+/**
+ * Find a person by their ID and populate their address field with the street and city properties.
+ */
+const user = await Person.findById(personId).populate("address", "street city");
+
+{
+  "_id": "000000000",
+  "name": "John Doe",
+  "age": 30,
+  "address": {
+    "street": "123 Main St",
+    "city": "Exampleville"
+  }
+}
+
+```
+
+### Virtual Populate
+
+```js
+const mongoose = require("mongoose");
+
+// Define the Post schema
+const postSchema = new mongoose.Schema({
+  title: String,
+  content: String,
+});
+
+// Define the Comment schema
+const commentSchema = new mongoose.Schema({
+  text: String,
+  post: { type: mongoose.Schema.Types.ObjectId, ref: "Post" }, // Reference to Post model
+});
+
+// Create the models
+const Post = mongoose.model("Post", postSchema);
+const Comment = mongoose.model("Comment", commentSchema);
+
+// Define the virtual populate
+postSchema.virtual("comments", {
+  ref: "Comment", // 
+  localField: "_id", // local field to reference
+  foreignField: "post", // field in Schema
+});
+
+// Retrieve a post and populate its comments
+const getPostWithComments = async (postId) => {
+  const post = await Post.findById(postId).populate("comments");
+  return post;
+};
 ```
