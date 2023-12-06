@@ -147,6 +147,45 @@ app.get("/api/tours/:tourId", (req, res) => {
 });
 ```
 
+### Nested Routes
+
+This option allows you to access the params of parent routers.
+
+In this example, router2 is a middleware for router1. When a request is made to /post/:postId/comment/:commentId, router2 can access the postId param from router1 because mergeParams is set to true.
+
+```js
+const express = require("express");
+const router1 = express.Router();
+const router2 = express.Router({ mergeParams: true });
+
+// Define a route on router1
+router1.get("/post/:postId", (req, res) => {
+  res.send("Post ID is: " + req.params.postId);
+});
+
+// Define a route on router2
+router2.get("/comment/:commentId", (req, res) => {
+  res.send("Post ID is: " + req.params.postId + ", Comment ID is: " + req.params.commentId);
+});
+
+// Use router2 as a middleware for router1
+router1.use("/post/:postId", router2);
+
+// Create an Express app and use router1
+const app = express();
+app.use("/", router1);
+
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});
+```
+
+```
+// http://localhost:3000/post/3             => Post ID is: 3
+// http://localhost:3000/post/3/comment/4   => Post ID is: 3, Comment ID is: 4
+// http://localhost:3000/comment/4          => Cannot GET /comment/4 Since the route was never mounted
+```
+
 ## Query Params
 
 `/api/tours?duration=5&difficulty=easy`
@@ -514,8 +553,7 @@ app.get("/cookie", (req, res) => {
 
 // Starting the server on port 3000
 app.listen(3000);
-s
-
+s;
 ```
 
 ```json
