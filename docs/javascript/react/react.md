@@ -1074,8 +1074,13 @@ npm i react-redux
 ├── App.jsx
 ├── main.jsx
 └── store
-├── counterSlice.jsx
-└── store.jsx
+  ├── counterSlice.jsx
+  └── store.jsx
+```
+
+```mdx-code-block
+<Tabs>
+<TabItem value="main.js">
 ```
 
 ```jsx title="main.jsx"
@@ -1092,6 +1097,11 @@ root.render(
     <App />
   </Provider>
 );
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="App.jsx">
 ```
 
 ```jsx title="App.jsx"
@@ -1127,6 +1137,11 @@ export default function App() {
 }
 ```
 
+```mdx-code-block
+</TabItem>
+<TabItem value="/store/counterslice.jsx">
+```
+
 ```jsx title="/store/counterslice.jsx"
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -1157,6 +1172,11 @@ export const counterAction = counterSlice.actions; // export to component
 export default counterSlice; // export to store
 ```
 
+```mdx-code-block
+</TabItem>
+<TabItem value="/store/store.jsx">
+```
+
 ```jsx title="/store/store.jsx"
 import { configureStore } from "@reduxjs/toolkit";
 
@@ -1174,6 +1194,11 @@ export default store; // will be imported in main as a Wrapper for the app
  *       reducer: { counterSlicer: counterSlice.reducer, auth: authSlice.reducer },
  *   });
  */
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ## Scoping CSS
