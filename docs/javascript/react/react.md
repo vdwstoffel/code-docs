@@ -789,22 +789,9 @@ export function getUsername() {
 
 ### Router Forms
 
-```jsx title="App.jsx"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"; // npm i react-router-dom
-
-import UserForm, { action as submitAction } from "./UserForm";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <UserForm />,
-    action: submitAction, // action to be performed upon submit click
-  },
-]);
-
-export default function App() {
-  return <RouterProvider router={router} />;
-}
+```mdx-code-block
+<Tabs>
+<TabItem value="Component">
 ```
 
 ```jsx title="UserForm.jsx"
@@ -834,6 +821,34 @@ export async function action({ request, params }) {
 
   return redirect("/"); //redirect to any defined route
 }
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="App">
+```
+
+```jsx title="App.jsx"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"; // npm i react-router-dom
+
+import UserForm, { action as submitAction } from "./UserForm";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <UserForm />,
+    action: submitAction, // action to be performed upon submit click
+  },
+]);
+
+export default function App() {
+  return <RouterProvider router={router} />;
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ### Delete Request
@@ -882,6 +897,8 @@ export async function action({ request, params }) {
   return redirect("/event"); //redirect to any defiend route
 }
 ```
+
+## Authentication
 
 ## Forms
 
