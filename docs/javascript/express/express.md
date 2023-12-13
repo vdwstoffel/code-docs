@@ -568,7 +568,7 @@ s;
 
 [see more](https://expressjs.com/en/5x/api.html#res.cookie)
 
-[How to protect routes](/javascript/express/examples#protecting-api-routes)
+### [How to protect routes](/javascript/express/examples#protecting-api-routes)
 
 ## Rate Limiting
 
