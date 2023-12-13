@@ -65,7 +65,7 @@ app.all("*", (req, res) => {
 });
 ```
 
-## Route methods
+## Route methods (Dynamic Routes)
 
 ```mdx-code-block
 <Tabs>
