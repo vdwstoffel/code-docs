@@ -236,6 +236,66 @@ const UsersSchema = new Schema({
 </Tabs>
 ```
 
+## Adding functions to documents
+
+### Instance methods
+
+Instances of Models are documents. Documents have many of their own built-in instance methods. We may also define our own custom document instance methods.
+
+```js
+const { Schema, model } = require("mongoose");
+
+const animalSchema = new Schema({
+  type: {
+    type: String,
+  },
+});
+
+//highlight-start
+animalSchema.methods.findSimilarTypes = function (cb) {
+  return mongoose.model("Animal").find({ type: this.type }, cb);
+};
+//highlight-end
+
+module.exports = model("Animal", animalSchema);
+```
+
+```js
+const Animal = require("./xxx");
+const dog = new Animal({ type: "dog" });
+
+dog.findSimilarTypes((err, dogs) => {
+  console.log(dogs); // woof
+});
+```
+
+### Statics
+
+Statics are added to the model itself. They are not available on the instances (documents) of the model. You can think of statics as static/class methods.
+
+```js
+const { Schema, model } = require("mongoose");
+
+const animalSchema = new Schema({
+  type: {
+    type: String,
+  },
+});
+
+//highlight-start
+animalSchema.statics.findByName = function (name) {
+  return this.find({ name: new RegExp(name, "i") });
+};
+//highlight-end
+
+module.exports = model("Animal", animalSchema);
+```
+
+```js
+const Animal = require("./xxx");
+const animals = await Animal.findByName("fido");
+```
+
 ## Exclude Field from return
 
 Excludes the field when a request is made
@@ -552,42 +612,6 @@ name: {
     }
 ```
 
-## Adding functions to documents
-
-```js
-const { Schema, model } = require("mongoose");
-
-const tourSchema = new Schema({
-  name: {
-    type: String,
-    required: [true, "Name required"],
-    unique: true,
-    trim: true,
-  },
-  rating: {
-    type: Number,
-    default: 4.5,
-  },
-  price: {
-    type: Number,
-    required: [true, "Price required"],
-  },
-});
-
-//highlight-start
-UserSchema.methods.greet = function () {
-  return `Hello ${this.name}`;
-};
-//highlight-end
-
-const Tour = model("Tour", tourSchema);
-```
-
-```js
-const UserModel = require("./xxx");
-UserModel.greet();
-```
-
 ## Mongo Sanitize
 
 Object keys starting with a $ or containing a . are reserved for use by MongoDB as operators. Without this sanitization, malicious users could send an object containing a $ operator, or including a ., which could change the context of a database operation. Most notorious is the $where operator, which can execute arbitrary JavaScript on the database.
@@ -709,7 +733,7 @@ const Comment = mongoose.model("Comment", commentSchema);
 
 // Define the virtual populate
 postSchema.virtual("comments", {
-  ref: "Comment", // 
+  ref: "Comment", //
   localField: "_id", // local field to reference
   foreignField: "post", // field in Schema
 });
