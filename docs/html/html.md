@@ -3,6 +3,10 @@ sidebar_label: "HTML"
 sidebar_position: 100
 ---
 
+import CodeBlock from "@theme/CodeBlock";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 # HTML
 
 ## Getting Started
@@ -24,6 +28,51 @@ Highlighted: to add css and javascript
     <script src="script.js"></script>
   </body>
 </html>
+```
+
+## Lists
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Unordered List">
+```
+
+```html
+<ul>
+  <li>The opening tag</li>
+  <li>The closing tag</li>
+  <li>The actual element</li>
+</ul>
+```
+
+<ul>
+  <li>The opening tag</li>
+  <li>The closing tag</li>
+  <li>The actual element</li>
+</ul>
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Ordered List">
+```
+
+```html
+<ol>
+  <li>The opening tag</li>
+  <li>The closing tag</li>
+  <li>The actual element</li>
+</ol>
+```
+
+<ol>
+  <li>The opening tag</li>
+  <li>The closing tag</li>
+  <li>The actual element</li>
+</ol>
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ## Forms
@@ -104,3 +153,9 @@ Highlighted: to add css and javascript
   <label for="css">CSS</label><br/>
   <input type="radio" id="javascript" name="fav_language" value="JavaScript"/>
   <label for="javascript">JavaScript</label>
+
+## Image
+
+```html
+<img src="./post-img.jpg" alt="post-img" />
+```
