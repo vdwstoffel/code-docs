@@ -1,6 +1,6 @@
 ---
 sidebar_label: "Testing"
-siedbar_position: 7
+sidebar_position: 7
 ---
 
 import CodeBlock from "@theme/CodeBlock";
