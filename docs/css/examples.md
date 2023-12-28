@@ -17,6 +17,8 @@ import ImageOverlay from "@site/src/components/cssExamples/ImageOverlay"
 <TabItem value="Dark Overlay">
 ```
 
+<ImageOverlay text={"Beautiful image with dark overlay"} effect={"darkOverlay"}/>
+
 ```html
 <div class="test">
   <p>Beautiful image with dark overlay</p>
@@ -44,12 +46,12 @@ import ImageOverlay from "@site/src/components/cssExamples/ImageOverlay"
 }
 ```
 
-<ImageOverlay text={"Beautiful image with dark overlay"} effect={"darkOverlay"}/>
-
 ```mdx-code-block
 </TabItem>
 <TabItem value="Text Box">
 ```
+
+<ImageOverlay text={"Beautiful image with some text in a box"} effect={"textBox"}/>
 
 ```html
 <div class="test">
@@ -82,12 +84,12 @@ import ImageOverlay from "@site/src/components/cssExamples/ImageOverlay"
 }
 ```
 
-<ImageOverlay text={"Beautiful image with some text in a box"} effect={"textBox"}/>
-
 ```mdx-code-block
 </TabItem>
 <TabItem value="Floor Fade">
 ```
+
+<ImageOverlay text={"Beautiful image with floor fade"} effect={"floorFade"}/>
 
 ```html
 <div class="test">
@@ -115,8 +117,6 @@ import ImageOverlay from "@site/src/components/cssExamples/ImageOverlay"
   left: 25px;
 }
 ```
-
-<ImageOverlay text={"Beautiful image with floor fade"} effect={"floorFade"}/>
 
 ```mdx-code-block
 </TabItem>

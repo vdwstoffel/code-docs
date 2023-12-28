@@ -145,17 +145,155 @@ const tourSchema = new Schema({
 const Tour = model("Tour", tourSchema);
 ```
 
-## Set an array type
+### Types
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Array">
+```
+
+```js
+const tourSchema = new Schema({
+  items = [String]
+});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="String">
+```
+
+```js
+const mongoose = require("mongoose");
+
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+});
+
+const User = mongoose.model("User", userSchema);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="GeoJson">
+```
+
+```js
+const citySchema = new mongoose.Schema({
+  name: String,
+  location: {
+    type: {
+      type: String, // Don't do `{ location: { type: String } }`
+      enum: ["Point"], // 'location.type' must be 'Point'
+      required: true,
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+  },
+});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Date">
+```
+
+```js
+const UsersSchema = new Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  age: {
+    type: Number,
+    min: [1, "Invalid Age"], // Show a error message if age is less than 1
+    max: 99,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now, // This will set the default value to the current date and time
+  },
+});
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## Adding functions to documents
+
+### Instance methods
+
+Instances of Models are documents. Documents have many of their own built-in instance methods. We may also define our own custom document instance methods.
 
 ```js
 const { Schema, model } = require("mongoose");
 
-const tourSchema = new Schema({
-  items = [String]
+const animalSchema = new Schema({
+  type: {
+    type: String,
+  },
 });
 
-const Tour = model("Tour", tourSchema);
+//highlight-start
+animalSchema.methods.findSimilarTypes = function (cb) {
+  return mongoose.model("Animal").find({ type: this.type }, cb);
+};
+//highlight-end
 
+module.exports = model("Animal", animalSchema);
+```
+
+```js
+const Animal = require("./xxx");
+const dog = new Animal({ type: "dog" });
+
+dog.findSimilarTypes((err, dogs) => {
+  console.log(dogs); // woof
+});
+```
+
+### Statics
+
+Statics are added to the model itself. They are not available on the instances (documents) of the model. You can think of statics as static/class methods.
+
+```js
+const { Schema, model } = require("mongoose");
+
+const animalSchema = new Schema({
+  type: {
+    type: String,
+  },
+});
+
+//highlight-start
+animalSchema.statics.findByName = function (name) {
+  return this.find({ name: new RegExp(name, "i") });
+};
+//highlight-end
+
+module.exports = model("Animal", animalSchema);
+```
+
+```js
+const Animal = require("./xxx");
+const animals = await Animal.findByName("fido");
 ```
 
 ## Exclude Field from return
@@ -474,42 +612,6 @@ name: {
     }
 ```
 
-## Adding functions to documents
-
-```js
-const { Schema, model } = require("mongoose");
-
-const tourSchema = new Schema({
-  name: {
-    type: String,
-    required: [true, "Name required"],
-    unique: true,
-    trim: true,
-  },
-  rating: {
-    type: Number,
-    default: 4.5,
-  },
-  price: {
-    type: Number,
-    required: [true, "Price required"],
-  },
-});
-
-//highlight-start
-UserSchema.methods.greet = function () {
-  return `Hello ${this.name}`;
-};
-//highlight-end
-
-const Tour = model("Tour", tourSchema);
-```
-
-```js
-const UserModel = require("./xxx");
-UserModel.greet();
-```
-
 ## Mongo Sanitize
 
 Object keys starting with a $ or containing a . are reserved for use by MongoDB as operators. Without this sanitization, malicious users could send an object containing a $ operator, or including a ., which could change the context of a database operation. Most notorious is the $where operator, which can execute arbitrary JavaScript on the database.
@@ -532,4 +634,113 @@ app.get("/", (req, res) => {
 });
 
 app.listen(3000);
+```
+
+## Embedding Documents
+
+Embedding a document in MongoDB refers to the practice of nesting one document (or schema) within another document.
+
+```js
+const mongoose = require("mongoose");
+
+// Define the Address schema separately
+const addressSchema = new mongoose.Schema({
+  street: String,
+  city: String,
+  country: String,
+});
+
+// Create the Address model
+const Address = mongoose.model("Address", addressSchema);
+
+// Define the Person schema with a reference to the Address model
+const personSchema = new mongoose.Schema({
+  name: String,
+  age: Number,
+  address: { type: mongoose.Schema.ObjectId, ref: "Address" }, // Reference to Address model
+});
+
+const Person = mongoose.model("Person", personSchema);
+```
+
+```js
+// Assuming an existing addressId for an Address document
+const existingAddressId = "1234567890";
+
+const newPerson = new Person({
+  name: "John Doe",
+  age: 30,
+  address: existingAddressId, // Assigning the addressId to the address field in Person
+});
+```
+
+```js
+const user = await Person.findById(personId).populate("address");
+
+{
+  "_id": "000000000",
+  "name": "John Doe",
+  "age": 30,
+  "address": {
+    "_id": "1234567890",
+    "street": "123 Main St",
+    "city": "Exampleville",
+    "country": "Exampleland"
+  }
+}
+```
+
+### Only return certain fields
+
+```js
+/**
+ * Find a person by their ID and populate their address field with the street and city properties.
+ */
+const user = await Person.findById(personId).populate("address", "street city");
+
+{
+  "_id": "000000000",
+  "name": "John Doe",
+  "age": 30,
+  "address": {
+    "street": "123 Main St",
+    "city": "Exampleville"
+  }
+}
+
+```
+
+### Virtual Populate
+
+```js
+const mongoose = require("mongoose");
+
+// Define the Post schema
+const postSchema = new mongoose.Schema({
+  title: String,
+  content: String,
+});
+
+// Define the Comment schema
+const commentSchema = new mongoose.Schema({
+  text: String,
+  post: { type: mongoose.Schema.Types.ObjectId, ref: "Post" }, // Reference to Post model
+});
+
+// Create the models
+const Post = mongoose.model("Post", postSchema);
+const Comment = mongoose.model("Comment", commentSchema);
+
+// Define the virtual populate
+postSchema.virtual("comments", {
+  ref: "Comment", //
+  localField: "_id", // local field to reference
+  foreignField: "post", // field in Schema
+});
+
+// Retrieve a post and populate its comments
+const getPostWithComments = async (postId) => {
+  const post = await Post.findById(postId).populate("comments");
+  return post;
+};
 ```

@@ -789,22 +789,9 @@ export function getUsername() {
 
 ### Router Forms
 
-```jsx title="App.jsx"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"; // npm i react-router-dom
-
-import UserForm, { action as submitAction } from "./UserForm";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <UserForm />,
-    action: submitAction, // action to be performed upon submit click
-  },
-]);
-
-export default function App() {
-  return <RouterProvider router={router} />;
-}
+```mdx-code-block
+<Tabs>
+<TabItem value="Component">
 ```
 
 ```jsx title="UserForm.jsx"
@@ -834,6 +821,34 @@ export async function action({ request, params }) {
 
   return redirect("/"); //redirect to any defined route
 }
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="App">
+```
+
+```jsx title="App.jsx"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"; // npm i react-router-dom
+
+import UserForm, { action as submitAction } from "./UserForm";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <UserForm />,
+    action: submitAction, // action to be performed upon submit click
+  },
+]);
+
+export default function App() {
+  return <RouterProvider router={router} />;
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ### Delete Request
@@ -882,6 +897,8 @@ export async function action({ request, params }) {
   return redirect("/event"); //redirect to any defiend route
 }
 ```
+
+## Authentication
 
 ## Forms
 
@@ -1074,8 +1091,13 @@ npm i react-redux
 ├── App.jsx
 ├── main.jsx
 └── store
-├── counterSlice.jsx
-└── store.jsx
+  ├── counterSlice.jsx
+  └── store.jsx
+```
+
+```mdx-code-block
+<Tabs>
+<TabItem value="main.js">
 ```
 
 ```jsx title="main.jsx"
@@ -1092,6 +1114,11 @@ root.render(
     <App />
   </Provider>
 );
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="App.jsx">
 ```
 
 ```jsx title="App.jsx"
@@ -1127,6 +1154,11 @@ export default function App() {
 }
 ```
 
+```mdx-code-block
+</TabItem>
+<TabItem value="/store/counterslice.jsx">
+```
+
 ```jsx title="/store/counterslice.jsx"
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -1157,6 +1189,11 @@ export const counterAction = counterSlice.actions; // export to component
 export default counterSlice; // export to store
 ```
 
+```mdx-code-block
+</TabItem>
+<TabItem value="/store/store.jsx">
+```
+
 ```jsx title="/store/store.jsx"
 import { configureStore } from "@reduxjs/toolkit";
 
@@ -1174,6 +1211,11 @@ export default store; // will be imported in main as a Wrapper for the app
  *       reducer: { counterSlicer: counterSlice.reducer, auth: authSlice.reducer },
  *   });
  */
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ## Scoping CSS

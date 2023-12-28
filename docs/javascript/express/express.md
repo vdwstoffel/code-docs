@@ -65,7 +65,7 @@ app.all("*", (req, res) => {
 });
 ```
 
-## Route methods
+## Route methods (Dynamic Routes)
 
 ```mdx-code-block
 <Tabs>
@@ -145,6 +145,45 @@ app.get("/api/tours/:tourId", (req, res) => {
   const id = req.params.tourId; // 5
   res.status(200).json({ status: "success", data: { tours: tourData[id] } });
 });
+```
+
+### Nested Routes
+
+This option allows you to access the params of parent routers.
+
+In this example, router2 is a middleware for router1. When a request is made to /post/:postId/comment/:commentId, router2 can access the postId param from router1 because mergeParams is set to true.
+
+```js
+const express = require("express");
+const router1 = express.Router();
+const router2 = express.Router({ mergeParams: true });
+
+// Define a route on router1
+router1.get("/post/:postId", (req, res) => {
+  res.send("Post ID is: " + req.params.postId);
+});
+
+// Define a route on router2
+router2.get("/comment/:commentId", (req, res) => {
+  res.send("Post ID is: " + req.params.postId + ", Comment ID is: " + req.params.commentId);
+});
+
+// Use router2 as a middleware for router1
+router1.use("/post/:postId", router2);
+
+// Create an Express app and use router1
+const app = express();
+app.use("/", router1);
+
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});
+```
+
+```
+// http://localhost:3000/post/3             => Post ID is: 3
+// http://localhost:3000/post/3/comment/4   => Post ID is: 3, Comment ID is: 4
+// http://localhost:3000/comment/4          => Cannot GET /comment/4 Since the route was never mounted
 ```
 
 ## Query Params
@@ -463,19 +502,73 @@ app.listen(3000);
 
 ### Cookies
 
-```js
-res.cookie("jwt", token, { expires: new Date(Date.now() + 900000), secure: true, httpOnly: true });
-```
-
 | Property | Type    | Description                                                                               |
 | -------- | ------- | ----------------------------------------------------------------------------------------- |
 | expires  | Date    | Expiry date of the cookie in GMT. If not specified or set to 0, creates a session cookie. |
 | secure   | Boolean | Marks the cookie to be used with HTTPS only.                                              |
 | httpOnly | Boolean | Flags the cookie to be accessible only by the web server.                                 |
 
+```js
+res.cookie("jwt", token, { expires: new Date(Date.now() + 900000), secure: true, httpOnly: true });
+res.status(statusCode).json({ status: "success", data: data });
+```
+
+### Cookie-Parser
+
+```bash
+npm i cookie-parser
+```
+
+```js
+const express = require("express");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
+
+const app = express();
+
+// Using cookie-parser middleware to parse cookies in incoming requests
+app.use(cookieParser());
+
+// Setting view engine as EJS and specifying views directory
+app.set("view engine", "ejs");
+app.set("views", __dirname + "/views");
+
+// Route handling for the root URL "/"
+app.get("/", (req, res) => {
+  // Generating a JWT token with name as payload and setting it in a cookie
+  const token = jwt.sign({ name: "Stoffel" }, "superSecret", { expiresIn: "1w" });
+  res.cookie("jwt", token, { expires: new Date(Date.now() + 900000), httpOnly: true });
+  res.render("index");
+});
+
+// Route handling for "/cookie" to display all cookies sent by the client
+app.get("/cookie", (req, res) => {
+  // Retrieving all cookies from the request object
+  const token = req.cookies.jwt;
+  const decodedToken = jwt.verify(token, "superSecret");
+
+  // Sending the cookies back as a JSON response
+  res.json({ cookie: decodedToken });
+});
+
+// Starting the server on port 3000
+app.listen(3000);
+s;
+```
+
+```json
+{
+  "cookie": {
+    "name": "Stoffel",
+    "iat": 1701376467,
+    "exp": 1701981267
+  }
+}
+```
+
 [see more](https://expressjs.com/en/5x/api.html#res.cookie)
 
-[How to protect routes](/javascript/express/examples#protecting-api-routes)
+### [How to protect routes](/javascript/express/examples#protecting-api-routes)
 
 ## Rate Limiting
 
@@ -557,7 +650,7 @@ const hpp = require("hpp");
 app.use(bodyParser.urlencoded()); // Make sure the body is parsed beforehand.
 
 //highlight-next-line
-app.use(hpp({ whitelist: ["duration", "ratingsQuantity", "ratingAverage", "maxGroupSize", "difficulty", "price"] }));
+app.use(hpp());
 
 app.get("/", (req, res) => {
   res.send("hello world");
