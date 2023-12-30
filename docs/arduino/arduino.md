@@ -12,6 +12,22 @@ void loop() {
 }
 ```
 
+## Variables
+
+```c
+int SLEEP_TIME = 3000;
+
+void setup() {
+pinMode(7, OUTPUT);
+}
+
+void loop() {
+    digitalWrite(7, HIGH);
+    delay(SLEEP_TIME);
+    digitalWrite(7, LOW);
+}
+```
+
 ## LED
 
 For this example attach the pin to Pin 7
