@@ -114,3 +114,124 @@ app.post("/", (req, res) => {
   const { num1, num2 } = req.body;
 });
 ```
+
+## Pug
+
+### Getting Started
+
+```bash
+npm i pug
+```
+
+```
+.
+├── app.js
+├── models
+│   └── userModel.js
+├── public
+│   └── css
+│       └── style.css
+└── views
+    └── index.pug
+```
+
+```js
+const express = require("express");
+const app = express();
+const path = require("path");
+
+// Set the view engine to pug
+app.set("view engine", "pug");
+
+// Set the views directory
+app.set("views", path.join(__dirname, "views"));
+
+// Use the built-in middleware to serve static files from the 'public' directory
+app.use(express.static("public"));
+
+app.get("/", (req, res) => {
+  res.status(200).render("index", { title: "Home Page", message: "Welcome to our website!" });
+});
+
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});
+```
+
+```pug title="index.pug"
+html
+  head
+    title= title
+    link(rel='stylesheet', href='css/style.css')
+  body
+    // normal h1
+    h1 Hello World
+    // variable
+    h1= message
+    // text + varialbe
+    h1 hello #{username}
+```
+
+### Adding class names
+
+```pug
+body
+    //- in ccs we have a class name PageHeader
+    header.PageHeader
+```
+
+### Using include
+
+```
+views
+    └── index.pug
+    └── header.pug
+```
+
+```pug title="header.pug"
+header
+  button
+```
+
+```pug title="main.pug"
+include header
+
+section.main
+  h1 Hellow
+```
+
+### Extends
+
+In Pug, you can use the extends keyword to inherit HTML structures from a base template
+
+In this example, base.pug is the base template that provides a basic HTML structure. index.pug extends base.pug and fills in the content block with its own HTML.
+
+```pug title="base.pug"
+body
+  h1 My Header
+  block content
+  h1 My Footer
+```
+
+```pug  title="index.pug"
+extends base
+
+block content
+    p This is an index page
+```
+**index.pug** renders:
+
+<html>
+  <body>
+    <h1>My Header</h1>
+    <p>This is an index page</p>
+    <h1>My Footer</h1>
+  </body>
+</html>
+
+### Loops
+
+```pug
+each item in items
+  p= item
+```
