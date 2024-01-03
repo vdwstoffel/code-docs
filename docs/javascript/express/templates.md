@@ -235,3 +235,22 @@ block content
 each item in items
   p= item
 ```
+
+### Mixin
+
+Mixins in Pug are essentially functions that can be used to generate reusable pieces of HTML
+
+```pug
+mixin list(items)
+  ul
+    each item in items
+      li= item
+
++list(['Item 1', 'Item 2', 'Item 3'])
+```
+
+<ul>
+  <li>Item 1</li>
+  <li>Item 2</li>
+  <li>Item 3</li>
+</ul>
