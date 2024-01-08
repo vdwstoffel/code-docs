@@ -47,7 +47,15 @@ const getData = async () => {
 ```js
 const postData = async () => {
   try {
-    await axios.post(endpoint, { hello: "World" });
+    await axios.post(
+      endpoint,
+      { hello: "World" },
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
   } catch (err) {
     console.log(err);
   }
