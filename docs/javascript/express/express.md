@@ -509,11 +509,21 @@ app.listen(3000);
 | httpOnly | Boolean | Flags the cookie to be accessible only by the web server.                                 |
 
 ```js
-res.cookie("jwt", token, { expires: new Date(Date.now() + 900000), secure: true, httpOnly: true });
-res.status(statusCode).json({ status: "success", data: data });
+const express = require("express");
+const app = express();
+
+app.get("/", (req, res) => {
+  // Set a cookie named 'myCookie' with a value of 'Hello World'
+  res.cookie("myCookie", "Hello World", { expires: new Date(Date.now() + 900000), secure: true, httpOnly: true });
+  res.send("Cookie has been set");
+});
+
+app.listen(3000);
 ```
 
 ### Cookie-Parser
+
+cookie-parser is a middleware in Express.js that parses Cookie header and populates req.cookies with an object keyed by the cookie names.
 
 ```bash
 npm i cookie-parser
@@ -521,49 +531,16 @@ npm i cookie-parser
 
 ```js
 const express = require("express");
-const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 
 const app = express();
-
-// Using cookie-parser middleware to parse cookies in incoming requests
 app.use(cookieParser());
 
-// Setting view engine as EJS and specifying views directory
-app.set("view engine", "ejs");
-app.set("views", __dirname + "/views");
-
-// Route handling for the root URL "/"
 app.get("/", (req, res) => {
-  // Generating a JWT token with name as payload and setting it in a cookie
-  const token = jwt.sign({ name: "Stoffel" }, "superSecret", { expiresIn: "1w" });
-  res.cookie("jwt", token, { expires: new Date(Date.now() + 900000), httpOnly: true });
-  res.render("index");
+  console.log("Cookies: ", req.cookies);
 });
 
-// Route handling for "/cookie" to display all cookies sent by the client
-app.get("/cookie", (req, res) => {
-  // Retrieving all cookies from the request object
-  const token = req.cookies.jwt;
-  const decodedToken = jwt.verify(token, "superSecret");
-
-  // Sending the cookies back as a JSON response
-  res.json({ cookie: decodedToken });
-});
-
-// Starting the server on port 3000
 app.listen(3000);
-s;
-```
-
-```json
-{
-  "cookie": {
-    "name": "Stoffel",
-    "iat": 1701376467,
-    "exp": 1701981267
-  }
-}
 ```
 
 [see more](https://expressjs.com/en/5x/api.html#res.cookie)
