@@ -515,7 +515,7 @@ const app = express();
 app.get("/", (req, res) => {
   // Set a cookie named 'myCookie' with a value of 'Hello World'
   res.cookie("myCookie", "Hello World", { expires: new Date(Date.now() + 900000), secure: true, httpOnly: true });
-  res.send("Cookie has been set");
+  res.status(200).json({ message: "Cookie has been set" });
 });
 
 app.listen(3000);
