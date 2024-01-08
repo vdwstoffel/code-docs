@@ -254,3 +254,32 @@ mixin list(items)
   <li>Item 2</li>
   <li>Item 3</li>
 </ul>
+
+### Conditionals
+
+```pug
+- var user = 'John';
+
+if user
+  p Welcome back, #{user}!
+else
+  p Please log in.
+```
+
+## Locals
+
+In Express.js, res.locals is an object that contains response local variables scoped to the request. These variables are available to the view during the rendering process.
+
+```js
+app.get('/', (req, res) => {
+  res.locals.user = 'John';
+  res.render('index');
+});
+```
+
+```pug
+if user
+  p Welcome back, #{user}!
+else
+  p Please log in.
+```
