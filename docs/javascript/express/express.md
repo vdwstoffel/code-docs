@@ -65,6 +65,24 @@ app.all("*", (req, res) => {
 });
 ```
 
+## Receiving Form Data
+
+```js
+const express = require('express');
+const app = express();
+
+app.use(express.urlencoded({ extended: true }));
+
+app.post('/submit-form', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  // Now you can use the form data
+  res.send(`Received data: ${username}, ${password}`);
+});
+
+app.listen(3000);
+```
+
 ## Route methods (Dynamic Routes)
 
 ```mdx-code-block
