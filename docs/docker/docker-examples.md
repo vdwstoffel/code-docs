@@ -188,37 +188,38 @@ CMD [ "node", "app.js" ]
 <TabItem value="docker-compose.yaml">
 ```
 
-```yaml
-version: "3.18"
+```yml
+version: "3.8"
 services:
   database:
     image: postgres
+    container_name: website_database
     restart: always
-    container_name: database
     env_file:
-      - ./.env
+      - ./server/.env
     ports:
       - "5432:5432"
     volumes:
-      - snippets:/var/lib/postgresql/data
+      - userDB:/var/lib/postgresql/data
 
   server:
-    container_name: server
+    container_name: website_server
+    restart: unless-stopped
     build:
-      context: ./
-      dockerfile: ./Dockerfile
+      context: ./server
+      dockerfile: docker/Dockerfile
     ports:
-      - "3000:3000"
+      - "3001:3001"
     volumes:
-      - ./:/app
-      - /app/node_modules/
+      - /app/node_modules
+      - ./server:/app
     env_file:
-      - .env
+      - ./server/.env
     depends_on:
       - database
 
 volumes:
-  snippets:
+  userDB:
 ```
 
 ```mdx-code-block
@@ -394,4 +395,47 @@ CMD [ "npm", "run", "dev" ]
 ```mdx-code-block
 </TabItem>
 </Tabs>
+```
+
+## Robot Utility Container
+
+```
+├── robot
+│   ├── docker
+│     ├── Dockerfile
+└── server
+    ├── Dockerfile
+    ├── package.json
+    ├── package-lock.json
+    └── server.js
+```
+
+```yaml
+version: "3.8"
+services:
+  server:
+    container_name: ayame_server
+    restart: unless-stopped
+    build:
+      context: ./server
+      dockerfile: docker/Dockerfile
+    ports:
+      - "3001:3001"
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    env_file:
+      - ./server/.env
+
+  ## Utility container for running robot tests
+  ## docker-compose run --rm robot robot ./robot/tests
+  robot:
+    container_name: robot_tests
+    build:
+      context: .
+      dockerfile: ./robot/docker/Dockerfile
+    volumes:
+      - ./:/app/
+    depends_on:
+      - server
 ```
