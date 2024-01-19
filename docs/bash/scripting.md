@@ -34,25 +34,18 @@ fi
 ```bash
 #! /usr/bin/bash
 
-folder='test_folder'
-file='test_file'
+first=$1
+second=$2
 
-if [ -d $folder ] 
+# Check if arguments was passed
+if [ $1 ]
 then
-  echo 'folder logs exists'
-  rm -r $folder
-else
-  echo 'Folder logs does not exists'
-  mkdir $folder
+  echo "First argument: $first"
 fi
 
-if [ ! -f $file ]
+if [ $2 ]
 then
-  echo 'file does not exists'
-  touch $file
-else 
-  echo 'file exists'
-  rm $file
+  echo "Second argument: $second"
 fi
 ```
 
