@@ -439,3 +439,15 @@ services:
     depends_on:
       - server
 ```
+Robot dockerfile
+
+```dockerfile
+FROM python:3
+
+WORKDIR /app
+
+COPY ./robot/requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . ./
+```

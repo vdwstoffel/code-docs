@@ -391,3 +391,9 @@ docker-compose up -d frontend
 ```
 
 This will launch all the dependent services
+
+### Run command in running container
+
+```bash
+docker-compose exec <container_name> npm install <package_name>
+```
