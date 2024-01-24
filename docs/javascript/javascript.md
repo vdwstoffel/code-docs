@@ -309,3 +309,29 @@ console.log(match.toString()); // and in the darkness bind them
 
 console.log(pattern.test(text)); // true
 ```
+
+## Docstring
+
+```js
+/**
+ * Calculate the sum of two numbers.
+ *
+ * This function takes two numbers as parameters and returns their sum.
+ *
+ * @param {number} a - The first number.
+ * @param {number} b - The second number.
+ * @returns {number} The sum of the two numbers.
+ * @throws {Error} Will throw an error if either parameter is not a number.
+ *
+ * @example
+ * const result = addNumbers(3, 5);
+ * console.log(result); // Output: 8
+ */
+function addNumbers(a, b) {
+  if (typeof a !== "number" || typeof b !== "number") {
+    throw new Error("Both parameters must be numbers");
+  }
+
+  return a + b;
+}
+```
