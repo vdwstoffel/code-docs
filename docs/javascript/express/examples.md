@@ -51,6 +51,43 @@ const port = process.env.PORT || 3000;
 app.listen(port);
 ```
 
+## Upload and resize Image
+
+```bash
+npm i sharp
+npm i multer
+```
+
+```js
+const multer = require("multer");
+const sharp = require("sharp");
+
+const multerStorage = multer.memoryStorage(); // save in memory to pass to image processing
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(new AppError("Not an image", 400), false); // custom error function
+  }
+};
+
+const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
+module.exports.uploadUserPhoto = upload.single("photo");
+
+module.exports.resizeUserPhoto = (req, res, next) => {
+  if (!req.file) return next(); // go to the next middleware if there is no file
+
+  sharp(req.file.buffer) // get image stored in memory
+    .resize(500, 500)
+    .toFormat("jpeg")
+    .jpeg({ quality: 90 })
+    .toFile(`path/to/destination`);
+
+  next();
+};
+```
+
 ## Custom Error Class
 
 <Tabs>
