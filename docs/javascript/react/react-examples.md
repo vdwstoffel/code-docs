@@ -22,3 +22,16 @@ server: {
 ```javascript title="App.jsx"
 const res = await axios.get("api/backend-route");
 ```
+
+## Vite: Change Default Port
+
+```jsx title="vite.config.js"
+// vite.config.js
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  server: {
+    port: 8000,
+    host: true, // needed for docker
+  },
+});
