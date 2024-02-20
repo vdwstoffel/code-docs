@@ -16,11 +16,11 @@ import DisplayLogo from "@site/src/components/DisplayLogo"
 
 ## Arrays
 
+### View/Add/Remove
+
 ```js
 const names = ["alpha", "bravo", "charlie"];
 ```
-
-### View/Add/Remove
 
 ```mdx-code-block
 <Tabs>
@@ -153,6 +153,18 @@ console.log(sum); // Output: 15
 ```mdx-code-block
 </TabItem>
 </Tabs>
+```
+
+### Destructuring an array
+
+```js
+const names = ["John", "Jane", "Alice"];
+
+const [firstName, secondName, thirdName] = names;
+
+console.log(firstName); // Output: "John"
+console.log(secondName); // Output: "Jane"
+console.log(thirdName); // Output: "Alice"
 ```
 
 ## Async/Await

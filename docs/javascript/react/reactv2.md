@@ -37,7 +37,7 @@ npm start
 </Tabs>
 ```
 
-## Basic Component
+## Components
 
 ```jsx
 import React from "react";
@@ -51,6 +51,87 @@ export default function MyComponent() {
 }
 ```
 
+### Importing Components
+
+```jsx
+import Pizza from "./Pizza";
+
+export default function App() {
+  return (
+    <>
+      <Pizza />
+    </>
+  );
+}
+```
+
+### Passing Props
+
+```mdx-code-block
+<Tabs>
+<TabItem value="App.jsx">
+```
+
+```jsx
+export default function App() {
+  return (
+    <>
+      <Pizza name={"Focaccia"} ingredients={"Bread with italian olive oil and rosemary"} />
+    </>
+  );
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Pizza.jsx">
+```
+
+```jsx
+export default function Pizza(props) {
+  const { name, ingredients } = props;
+  return (
+    <>
+      <h1>{name}</h1>
+      <h2>{ingredients}</h2>
+    </>
+  );
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## JS
+
+### Iteration
+
+```jsx
+// pizzaData...
+
+export default function Menu() {
+  return (
+    <>
+      {pizzaData.map((el, idx) => {
+        return <Pizza key={idx} name={el.name} ingredients={el.ingredients} />;
+      })}
+    </>
+  );
+}
+```
+
+### Conditionals
+
+```jsx
+export default function Footer() {
+  const isOpen = true;
+
+  return <footer>{isOpen ? "We are open" : "Closed"}</footer>;
+}
+```
+
 ## Hooks
 
 ### useState
@@ -58,7 +139,7 @@ export default function MyComponent() {
 `useState` is a Hook in React that lets you add state to your functional components.
 
 ```jsx
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function Counter() {
   const [count, setCount] = useState(0);
@@ -67,11 +148,7 @@ export default function Counter() {
     setCount(count + 1);
   }
 
-  return (
-    <button onClick={handleClick}>
-      You pressed me {count} times
-    </button>
-  );
+  return <button onClick={handleClick}>You pressed me {count} times</button>;
 }
 ```
 
@@ -89,11 +166,11 @@ export default function MyComponent() {
     const res = await fetch("https://api.adviceslip.com/advice");
     const data = await res.json();
     setAdvice(data.slip.advice);
-  }
+  };
 
-  useEffect(function() {
-    getAdvice()
-  },[]) // dependency array
+  useEffect(function () {
+    getAdvice();
+  }, []); // dependency array
 
   return (
     <>
@@ -102,4 +179,47 @@ export default function MyComponent() {
     </>
   );
 }
+```
+
+## Styling Apps
+
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Scoped CSS">
+```
+
+CODE SNIPPET
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Global CSS">
+```
+```jsx
+import "./index.css"
+
+export default function App() {
+  return (
+    <div className="container">
+      <Header />
+    </div>
+  );
+}
+```
+
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Inline CSS">
+```
+
+```jsx
+export default function Header() {
+  return <h1 style={{ color: "red"; width: "3px"; }}>Fast React Pizza co.</h1>;
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
