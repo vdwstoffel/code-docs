@@ -132,6 +132,19 @@ export default function Footer() {
 }
 ```
 
+#### Conditionally adding a class
+
+```jsx
+export default function Pizza(props) {
+  const { soldOut } = props.data;
+  return (
+    <li className={`pizza ${soldOut ? "sold-out" : null}`}>
+      // other code
+    </li>
+  );
+}
+```
+
 ## Hooks
 
 ### useState
@@ -181,8 +194,24 @@ export default function MyComponent() {
 }
 ```
 
-## Styling Apps
+## Fragments
 
+React Fragments let you group a list of children without adding extra nodes to the DOM.
+
+```jsx
+import { Fragment } from "react";
+
+export default function Example() {
+  return (
+    <Fragment>
+      <ChildA />
+      <ChildB />
+    </Fragment>
+  );
+}
+```
+
+## Styling Apps
 
 ```mdx-code-block
 <Tabs>
@@ -195,8 +224,9 @@ CODE SNIPPET
 </TabItem>
 <TabItem value="Global CSS">
 ```
+
 ```jsx
-import "./index.css"
+import "./index.css";
 
 export default function App() {
   return (
@@ -206,7 +236,6 @@ export default function App() {
   );
 }
 ```
-
 
 ```mdx-code-block
 </TabItem>
