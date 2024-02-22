@@ -35,3 +35,19 @@ export default defineConfig({
     host: true, // needed for docker
   },
 });
+```
+
+## Events
+
+### Handle button click
+
+```jsx
+export default function App() {
+  
+  const clickHandler = () => {
+    alert("Hello");
+  };
+
+  return <button onClick={clickHandler}>Press</button>;
+}
+```

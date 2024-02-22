@@ -158,7 +158,7 @@ export default function Counter() {
   const [count, setCount] = useState(0);
 
   function handleClick() {
-    setCount(count + 1);
+    setCount((c) => c + 1); // it’s common to name the pending state argument for the first letter of the state variable name
   }
 
   return <button onClick={handleClick}>You pressed me {count} times</button>;
@@ -244,7 +244,7 @@ export default function App() {
 
 ```jsx
 export default function Header() {
-  return <h1 style={{ color: "red"; width: "3px"; }}>Fast React Pizza co.</h1>;
+  return <h1 style={{ color: "red", width: "3px"; }}>Fast React Pizza co.</h1>;
 }
 ```
 
