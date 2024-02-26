@@ -137,11 +137,7 @@ export default function Footer() {
 ```jsx
 export default function Pizza(props) {
   const { soldOut } = props.data;
-  return (
-    <li className={`pizza ${soldOut ? "sold-out" : null}`}>
-      // other code
-    </li>
-  );
+  return <li className={`pizza ${soldOut ? "sold-out" : null}`}>// other code</li>;
 }
 ```
 
@@ -178,7 +174,7 @@ export default function MyComponent() {
   const getAdvice = async () => {
     const res = await fetch("https://api.adviceslip.com/advice");
     const data = await res.json();
-    setAdvice(data.slip.advice);
+    setAdvice((a) => data.slip.advice);
   };
 
   useEffect(function () {
@@ -190,6 +186,56 @@ export default function MyComponent() {
       <h1>Advice: {advice}</h1>
       <button onClick={getAdvice}>Get Advice</button>
     </>
+  );
+}
+```
+
+## Forms
+
+```jsx
+export default function Form() {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Submit");
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <button>Submit</button>
+    </form>
+  );
+}
+```
+
+### Controlled Elements
+
+In React, a "controlled component" is a component where the state within the component is controlled by the React state.
+
+For form elements, this means the form data is handled by a React component's state. The value of the form field is directly linked to the state of the component, and updates to the field are immediately reflected in the state.
+
+```jsx
+import { useState } from "react";
+
+export default function ControlledForm() {
+  const [name, setName] = useState("");
+
+  const handleChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    alert("A name was submitted: " + name);
+    event.preventDefault();
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Name:
+        <input type="text" value={name} onChange={handleChange} />
+      </label>
+      <button>Submit</button>
+    </form>
   );
 }
 ```
