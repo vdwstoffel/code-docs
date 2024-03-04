@@ -190,6 +190,33 @@ export default function MyComponent() {
 }
 ```
 
+## Lifting State Up
+
+"Lifting state up" in React refers to the process of moving state from child components up to a common ancestor component. This allows multiple components to share and manipulate the same state, which is often necessary when those components need to stay in sync.
+
+```jsx
+import { useState } from "react";
+
+function Parent() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <ChildA count={count} />
+      <ChildB setCount={setCount} />
+    </div>
+  );
+}
+
+function ChildA({ count }) {
+  return <div>Count: {count}</div>;
+}
+
+function ChildB({ setCount }) {
+  return <button onClick={() => setCount((count) => count + 1)}>Increment</button>;
+}
+```
+
 ## Forms
 
 ```jsx

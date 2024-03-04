@@ -43,11 +43,27 @@ export default defineConfig({
 
 ```jsx
 export default function App() {
-  
+
   const clickHandler = () => {
     alert("Hello");
   };
 
   return <button onClick={clickHandler}>Press</button>;
+}
+```
+
+### Passing arguments
+
+```jsx
+export default function Example() {
+  const handleClick = (message) => {
+    alert(message);
+  };
+
+  return (
+    <button onClick={() => handleClick('Hello, world!')}>
+      Click me
+    </button>
+  );
 }
 ```
