@@ -19,39 +19,49 @@ import DisplayLogo from "@site/src/components/DisplayLogo"
 ### Validate a non empty string
 
 ```js
-const existingNonEmptyString = (str) => {
-    if (typeof str === "string" && str.trim().length > 0) {
-        console.log( str + " is a valid string");
-    }
+const str = "Hello World"
+if (typeof str === "string" && str.trim().length > 0) {
+    console.log( str + " is a valid string");
 }
 ```
 
 ### Convert number to string
 
 ```js
-const convertNumericValueToFormattedString = (int) => {
-    // formats to value to a string
-    console.log(int.toFixed(3)) // ads x amount of decimal places
-    console.log(int + "") // converts the actual number to a string
-}
+const someNumber = 12.984754
+
+console.log(someNumber.toFixed(3))  // "12.985"
+console.log(someNumber + "")        // "12.984754"
 ```
 
 ### String Literals
 
 ```js
-const stringLiteral = (str) => {
-    console.log(`This is your string: ${str}`)
-}
+const literal =  "Hello World";
+
+console.log(`This is your string: ${literal}`) // This is your string: Hello World
 ```
 
 ### Check that string match
 
 ```js
-const checkLocalCompare = (a, b) => {
-    if (a.localeCompare(b, undefined,  {sensitivity: "base"}) === 0) {
-        // use sensitivity: 'accent' to check that a === á is false
-        console.log("Local Compare case match")
-    }
+const a = "hello";
+const b = "HELLO";
+
+if (a.toLowerCase() === b.toLowerCase()) {
+  // We end up here, because the lowercase versions of both strings match
+}
+```
+use sensitivity: 'accent' to check that a === á is false
+
+use sensitivity: 'base' to check that a === á is true
+
+```js
+const nameA = "abc";
+const nameB = "ábc";
+
+if (nameA.localeCompare(nameB, undefined,  {sensitivity: "base"}) === 0) {
+    console.log("Names match")
 }
 ```
 
