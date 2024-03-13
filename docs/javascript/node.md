@@ -255,3 +255,10 @@ const sendMail = async (options) => {
 
 sendMail();
 ```
+
+## ESLint
+
+```bash
+npm install eslint --save-dev
+npx eslint --init
+```

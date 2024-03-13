@@ -14,6 +14,80 @@ import DisplayLogo from "@site/src/components/DisplayLogo"
 
 <DisplayLogo logo={JSLogo} />
 
+## Strings
+
+### Validate a non empty string
+
+```js
+const existingNonEmptyString = (str) => {
+    if (typeof str === "string" && str.trim().length > 0) {
+        console.log( str + " is a valid string");
+    }
+}
+```
+
+### Convert number to string
+
+```js
+const convertNumericValueToFormattedString = (int) => {
+    // formats to value to a string
+    console.log(int.toFixed(3)) // ads x amount of decimal places
+    console.log(int + "") // converts the actual number to a string
+}
+```
+
+### String Literals
+
+```js
+const stringLiteral = (str) => {
+    console.log(`This is your string: ${str}`)
+}
+```
+
+### Check that string match
+
+```js
+const checkLocalCompare = (a, b) => {
+    if (a.localeCompare(b, undefined,  {sensitivity: "base"}) === 0) {
+        // use sensitivity: 'accent' to check that a === á is false
+        console.log("Local Compare case match")
+    }
+}
+```
+
+### Check if substring exists
+
+```js
+const containsSubstring = (fullString, subString) => {
+    if (fullString.includes(subString)) {
+        console.log("Substring was found")
+    }
+}
+```
+
+### Replace
+
+```js
+const replaceAllString = (fullString, originalWord, replaceWord) => {
+    console.log(fullString.replaceAll(originalWord, replaceWord))
+}
+```
+
+### Turn String into an array
+
+```js
+const languages = "C, C++, Python, Javascript"
+languages.split(",")  //[ 'C', ' C++', ' Python', ' Javascript' ]
+```
+
+### Converting the First Letter of a String to Uppercase
+
+```js
+const original = 'if you cut an orange, there is a risk it will orbisculate.';
+const fixed = original[0].toUpperCase() + original.slice(1);
+// fixed = 'If you cut an orange, there is a risk it will orbisculate.';
+```
+
 ## Arrays
 
 ### View/Add/Remove
@@ -320,6 +394,42 @@ console.log(match); // prints out the match object
 console.log(match.toString()); // and in the darkness bind them
 
 console.log(pattern.test(text)); // true
+```
+
+```js
+const original = "Now is the time, this is the tame"
+const match = original.match(/t\w{2}e/g)
+console.log(match)
+// [ 'time', 'tame' ]
+```
+
+### Finding all instances of a pattern
+
+```js
+const searchString = 'Now is the time and this is the time and that is the time';
+const regex = /t\w*e/g; // starts with an t and ends with an e
+const matches = searchString.matchAll(regex);
+for (const match of matches) {
+    console.log(match[0])
+}
+//the
+// time
+// the
+// time
+// the
+// time
+```
+
+### Validate email address
+
+```js 
+const emailValid = "abeLincoln@gmail.com";
+const emailInvalid = "abeLincoln@gmail .com";
+const regex = /\S+@\S+\.\S+/;
+
+if (regex.test(emailValid)) {
+    console.log("This email is valid")
+}
 ```
 
 ## Docstring
