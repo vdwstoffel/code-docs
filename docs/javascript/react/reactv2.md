@@ -37,6 +37,43 @@ npm start
 </Tabs>
 ```
 
+## JS
+
+### Iteration
+
+```jsx
+// pizzaData...
+
+export default function Menu() {
+  return (
+    <>
+      {pizzaData.map((el, idx) => {
+        return <Pizza key={idx} name={el.name} ingredients={el.ingredients} />;
+      })}
+    </>
+  );
+}
+```
+
+### Conditionals
+
+```jsx
+export default function Footer() {
+  const isOpen = true;
+
+  return <footer>{isOpen ? "We are open" : "Closed"}</footer>;
+}
+```
+
+#### Conditionally adding a class
+
+```jsx
+export default function Pizza(props) {
+  const { soldOut } = props.data;
+  return <li className={`pizza ${soldOut ? "sold-out" : null}`}>// other code</li>;
+}
+```
+
 ## Components
 
 ```jsx
@@ -104,40 +141,23 @@ export default function Pizza(props) {
 </Tabs>
 ```
 
-## JS
+### Child Props
 
-### Iteration
+In React, `props.children` is used to display whatever you include between the opening and closing tags when invoking a component.
 
 ```jsx
-// pizzaData...
+import React from "react";
 
-export default function Menu() {
+function ParentComponent(props) {
+  return <div>{props.children}</div>;
+}
+
+function App() {
   return (
-    <>
-      {pizzaData.map((el, idx) => {
-        return <Pizza key={idx} name={el.name} ingredients={el.ingredients} />;
-      })}
-    </>
+    <ParentComponent>
+      <h1>Hello, world!</h1>
+    </ParentComponent>
   );
-}
-```
-
-### Conditionals
-
-```jsx
-export default function Footer() {
-  const isOpen = true;
-
-  return <footer>{isOpen ? "We are open" : "Closed"}</footer>;
-}
-```
-
-#### Conditionally adding a class
-
-```jsx
-export default function Pizza(props) {
-  const { soldOut } = props.data;
-  return <li className={`pizza ${soldOut ? "sold-out" : null}`}>// other code</li>;
 }
 ```
 
