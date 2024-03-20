@@ -4,7 +4,9 @@ sidebar_label: CICD
 
 # CICD
 
-## SonarCube
+## SonarQube
+
+### Docker
 
 ```bash
 docker pull sonarqube
@@ -50,4 +52,38 @@ docker run \
     -e SONAR_TOKEN="sqp_307bb384a6dac2e730c52b592679e0a8def78fe6" \
     -v "./:/usr/src" \
     sonarsource/sonar-scanner-cli
+```
+
+### Docker-compose
+
+```yml
+version: "3.1"
+services:
+  sonarqube:
+    image: sonarqube
+    container_name: sonarqube
+    ports:
+      - "9050:9000"
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    volumes:
+    - sonarqube_data:/opt/sonarqube/data # to persist data
+
+  ## Utility container for sonar code code analysis
+  ## docker-compose run --rm sonar_scanner
+  sonar_scanner:
+    image: sonarsource/sonar-scanner-cli
+    container_name: sonar_scanner
+    depends_on:
+      - sonarqube
+    environment:
+      - SONAR_HOST_URL=http://sonarqube:9000/ # container_name:internal_port
+      - SONAR_SCANNER_OPTS=-Dsonar.projectKey=my_project
+      - SONAR_TOKEN=sqp_34402c40743e43e47173955c437dbf9187597a9b
+    volumes:
+      - ./:/usr/src
+
+volumes:
+  sonarqube_data:
+
 ```
