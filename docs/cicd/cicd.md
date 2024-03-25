@@ -28,17 +28,16 @@ Create a file called `sonar-project.properties`
 ```yaml
 # must be unique in a given SonarQube instance
 sonar.projectKey=my:project
-
 # --- optional properties ---
 
 # defaults to project key
 #sonar.projectName=My project
 # defaults to 'not provided'
 #sonar.projectVersion=1.0
- 
+
 # Path is relative to the sonar-project.properties file. Defaults to .
 #sonar.sources=.
- 
+
 # Encoding of the source code. Default is default system encoding
 #sonar.sourceEncoding=UTF-8
 ```
@@ -63,11 +62,27 @@ services:
     image: sonarqube
     container_name: sonarqube
     ports:
-      - "9050:9000"
+      - "9000:9000"
     environment:
       - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+      - SONAR_JDBC_URL=jdbc:postgresql://sonar_postgres:5432/sonar
+      - SONAR_JDBC_USERNAME=sonar
+      - SONAR_JDBC_PASSWORD=sonar
     volumes:
-    - sonarqube_data:/opt/sonarqube/data # to persist data
+      - sonarqube_data:/opt/sonarqube/data
+    depends_on:
+      - sonar_postgres
+
+  sonar_postgres:
+    image: postgres
+    container_name: sonarqube_postgres
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+      - POSTGRES_DB=sonar
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
 
   ## Utility container for sonar code code analysis
   ## docker-compose run --rm sonar_scanner
@@ -85,5 +100,6 @@ services:
 
 volumes:
   sonarqube_data:
-
+  postgresql_data:
+  postgresql:
 ```
