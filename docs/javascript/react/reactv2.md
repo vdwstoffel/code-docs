@@ -146,17 +146,17 @@ export default function Pizza(props) {
 In React, `props.children` is used to display whatever you include between the opening and closing tags when invoking a component.
 
 ```jsx
-import React from "react";
-
-function ParentComponent(props) {
-  return <div>{props.children}</div>;
+function Button({ children, clickHandler }) {
+  return (
+    <button onClick={clickHandler} className="button" type="select">
+      {children}
+    </button>
+  );
 }
 
 function App() {
   return (
-    <ParentComponent>
-      <h1>Hello, world!</h1>
-    </ParentComponent>
+    <Button clickHandler={() => console.log("Add")}>Add Friend</Button>
   );
 }
 ```
