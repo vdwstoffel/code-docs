@@ -2,7 +2,7 @@
 sidebar_label: CICD
 ---
 
-# CICD
+# CI/CD
 
 ## SonarQube
 
@@ -103,3 +103,29 @@ volumes:
   postgresql_data:
   postgresql:
 ```
+
+## Jenkins
+
+[Github](https://github.com/jenkinsci/docker/blob/master/README.md)
+
+```bash
+docker run -d --name jenkins -p 8080:8080 -p 50000:50000 --restart=on-failure -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts-jdk17
+```
+
+### Setup ssh keys in Docker
+
+Open a terminal in the container
+
+```bash
+docker exec -it <container_id> bash
+```
+
+```bash
+ssh-keygen
+```
+
+Add SSH Key to GitHub: Add the generated SSH public key (id_rsa.pub) to your GitHub account's SSH keys.
+
+Configure Jenkins Credentials: In your Jenkins instance, add the private key (id_rsa) as a secret text credential.
+
+Configure Jenkins Pipeline: Create or modify your Jenkins pipeline script to use the SSH key for authentication when checking out code from GitHub.
