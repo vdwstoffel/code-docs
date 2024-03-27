@@ -37,43 +37,6 @@ npm start
 </Tabs>
 ```
 
-## JS
-
-### Iteration
-
-```jsx
-// pizzaData...
-
-export default function Menu() {
-  return (
-    <>
-      {pizzaData.map((el, idx) => {
-        return <Pizza key={idx} name={el.name} ingredients={el.ingredients} />;
-      })}
-    </>
-  );
-}
-```
-
-### Conditionals
-
-```jsx
-export default function Footer() {
-  const isOpen = true;
-
-  return <footer>{isOpen ? "We are open" : "Closed"}</footer>;
-}
-```
-
-#### Conditionally adding a class
-
-```jsx
-export default function Pizza(props) {
-  const { soldOut } = props.data;
-  return <li className={`pizza ${soldOut ? "sold-out" : null}`}>// other code</li>;
-}
-```
-
 ## Components
 
 ```jsx
@@ -160,7 +123,29 @@ function App() {
   );
 }
 ```
+```jsx
+import React from 'react';
 
+function ParentComponent({ children }) {
+  return (
+    <div className='parent-component'>
+      {children}
+    </div>
+  );
+}
+
+function ChildComponent({message}) {
+  return <div className='child-component'>{message}</div>;
+}
+
+function App() {
+  return (
+    <ParentComponent>
+      <ChildComponent message="HEllo" />
+    </ParentComponent>
+  );
+}
+```
 ## Hooks
 
 ### useState
@@ -344,4 +329,40 @@ export default function Header() {
 ```mdx-code-block
 </TabItem>
 </Tabs>
+```
+## JS
+
+### Iteration
+
+```jsx
+// pizzaData...
+
+export default function Menu() {
+  return (
+    <>
+      {pizzaData.map((el, idx) => {
+        return <Pizza key={idx} name={el.name} ingredients={el.ingredients} />;
+      })}
+    </>
+  );
+}
+```
+
+### Conditionals
+
+```jsx
+export default function Footer() {
+  const isOpen = true;
+
+  return <footer>{isOpen ? "We are open" : "Closed"}</footer>;
+}
+```
+
+#### Conditionally adding a class
+
+```jsx
+export default function Pizza(props) {
+  const { soldOut } = props.data;
+  return <li className={`pizza ${soldOut ? "sold-out" : null}`}>// other code</li>;
+}
 ```
