@@ -1,5 +1,5 @@
 ---
-sidebar_label: CICD
+sidebar_label: CI/CD
 ---
 
 # CI/CD
@@ -129,3 +129,92 @@ Add SSH Key to GitHub: Add the generated SSH public key (id_rsa.pub) to your Git
 Configure Jenkins Credentials: In your Jenkins instance, add the private key (id_rsa) as a secret text credential.
 
 Configure Jenkins Pipeline: Create or modify your Jenkins pipeline script to use the SSH key for authentication when checking out code from GitHub.
+
+### Setup a new Agent on host machine
+
+- Installing Java
+
+```bash
+sudo apt-get update
+sudo apt install -y --no-install-recommends openjdk-17-jdk-headless
+```
+
+- Creating Jenkins user
+
+```bash
+sudo adduser --group --home /home/jenkins --shell /bin/bash jenkins
+```
+
+- Create Node
+
+Go to your Jenkins dashboard
+
+Go to Manage Jenkins option in the main menu
+
+Go to Manage Nodes and clouds item
+
+Go to New Node option in the side menu
+
+Click on the Create button
+
+As Remote root directory, enter the directory where you want to install the agent (/home/jenkins for me) \*\*recommended
+
+- Run your Jenkins agent as a service
+
+Create a directory called jenkins or jenkins-service in your home directory or anywhere else where you have access
+
+```bash
+sudo mkdir -p /usr/local/jenkins-service
+```
+
+Download the agent from found in the Jenkins page
+
+```bash
+curl -sO http://<ip>:8080/jnlpJars/agent.jar
+```
+
+Now (in /usr/local/jenkins-service) create a start-agent.sh file with the Jenkins java command we’ve seen earlier as the file’s content.
+
+```bash
+touch start-agent.sh
+```
+
+Copy the curl and java command from Jenkins agent details
+
+```bash
+#!/bin/bash
+cd /usr/local/jenkins-service
+# Just in case we would have upgraded the controller, we need to make sure that the agent is using the latest version of the agent.jar
+curl -sO http://my_ip:8080/jnlpJars/agent.jar
+java -jar agent.jar -jnlpUrl http://my_ip:8080/computer/My%20New%20Ubuntu%2022%2E04%20Node%20with%20Java%20and%20Docker%20installed/jenkins-agent.jnlp -secret my_secret -workDir "/home/jenkins"
+exit 0
+```
+
+Make the script executable
+
+```bash
+chmod +x start-agent.sh
+```
+
+Now create a /etc/systemd/system/jenkins-agent.service file with the following content:
+
+```
+[Unit]
+Description=Jenkins Agent
+
+[Service]
+User=jenkins
+WorkingDirectory=/home/jenkins
+ExecStart=/bin/bash /usr/local/jenkins-service/start-agent.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Enable the daemon with the following command
+
+```bash
+sudo systemctl enable jenkins-agent.service
+sudo systemctl start jenkins-agent.service
+```
