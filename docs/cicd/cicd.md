@@ -55,7 +55,7 @@ docker run \
 
 ### Docker-compose
 
-```yml
+```yaml
 version: "3.1"
 services:
   sonarqube:
@@ -110,6 +110,52 @@ volumes:
 
 ```bash
 docker run -d --name jenkins -p 8080:8080 -p 50000:50000 --restart=on-failure -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts-jdk17
+```
+
+### Jenkinsfile
+```groovy
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            environment {
+                MY_ENV_VAR = 'This is the build environment'
+            }
+            steps {
+                dir('/path/to/dir') {
+                    echo "Building in ${env.WORKSPACE}"
+                    echo "${env.MY_ENV_VAR}"
+                    // Your build steps go here
+                }
+            }
+        }
+        stage('Test') {
+            environment {
+                MY_ENV_VAR = 'This is the test environment'
+            }
+            steps {
+                dir('/path/to/dir') {
+                    echo "Testing in ${env.WORKSPACE}"
+                    echo "${env.MY_ENV_VAR}"
+                    // Your test steps go here
+                }
+            }
+        }
+        stage('Deploy') {
+            environment {
+                MY_ENV_VAR = 'This is the deploy environment'
+            }
+            steps {
+                dir('/path/to/dir') {
+                    echo "Deploying in ${env.WORKSPACE}"
+                    echo "${env.MY_ENV_VAR}"
+                    // Your deploy steps go here
+                }
+            }
+        }
+    }
+}
 ```
 
 ### Setup ssh keys in Docker
