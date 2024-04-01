@@ -2,6 +2,10 @@
 sidebar_label: CI/CD
 ---
 
+import CodeBlock from "@theme/CodeBlock";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 # CI/CD
 
 ## SonarQube
@@ -115,7 +119,11 @@ docker run -d --name jenkins -p 8080:8080 -p 50000:50000 --restart=on-failure -v
 ### Jenkinsfile
 ```groovy
 pipeline {
-    agent any
+     agent {
+        node {
+            label 'my-pc'
+        }
+    }
 
     stages {
         stage('Build') {
@@ -263,4 +271,86 @@ Enable the daemon with the following command
 ```bash
 sudo systemctl enable jenkins-agent.service
 sudo systemctl start jenkins-agent.service
+```
+
+### Setting Up Jenkins Pipeline with Robot Framework
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Jenkinsfile">
+```
+
+```groovy
+/* Requires the Docker Pipeline plugin and Robot Framework Plugin */
+pipeline {
+    agent {
+        node {
+            label "main"
+        }
+    }
+
+    stages {
+        stage("Run Test") {
+            steps {
+                sh "pip install robotframework"
+                dir("examples/ci_cd/jenkins_robot_framework") {
+                    sh "./run_tests.sh"
+                }
+            }
+        }
+
+        stage("Publish Test Results") {
+            steps {
+                dir("examples/ci_cd/jenkins_robot_framework") {
+                    step([
+                        $class              : 'RobotPublisher',
+                        outputPath          : '.',
+                        logFileName         : 'log.html',
+                        outputFileName      : 'output.xml',
+                        reportFileName      : 'report.hml',
+                        disableArchiveOutput: false,
+                        passThreshold       : 100,
+                        unstableThreshold   : 75.0,
+                        otherFiles          : '*.png',
+                    ])
+                }
+            }
+        }
+    }
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="run_test.sh">
+```
+```bash
+#!/usr/bin/bash
+
+python -m robot mock_test.robot
+
+exit 0  # By default Robot returns an error if anyt test fails.
+        # So return 0 to avoid Jenkins marking the build as failed.
+        # Robot Plugin will mark the test according to your defined thresholds.
+```
+
+
+```mdx-code-block
+</TabItem>
+<TabItem value="mock_test.robot">
+```
+
+```robot
+*** Settings ***
+Documentation
+...    An example of a Jenkins job running a test in Robot Framework
+
+*** Test Cases ***
+Equality
+    Should Be Equal    ${1}    ${1}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
