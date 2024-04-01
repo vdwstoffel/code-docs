@@ -178,11 +178,11 @@ docker exec -it <container_id> bash
 ssh-keygen
 ```
 
-Add SSH Key to GitHub: Add the generated SSH public key (id_rsa.pub) to your GitHub account's SSH keys.
+- Add SSH Key to GitHub: Add the generated SSH public key (id_rsa.pub) to your GitHub account's SSH keys.
 
-Configure Jenkins Credentials: In your Jenkins instance, add the private key (id_rsa) as a secret text credential.
+- Configure Jenkins Credentials: In your Jenkins instance, Select to add credentials and select `SSH Username with private key` fill in `ID` and `Username` and add the id_rsa key to the `Private Key` field.
 
-Configure Jenkins Pipeline: Create or modify your Jenkins pipeline script to use the SSH key for authentication when checking out code from GitHub.
+- Configure Jenkins Pipeline: Create or modify your Jenkins pipeline script to use the SSH key for authentication when checking out code from GitHub.
 
 ### Setup a new Agent on host machine
 
