@@ -118,34 +118,49 @@ function Button({ children, clickHandler }) {
 }
 
 function App() {
-  return (
-    <Button clickHandler={() => console.log("Add")}>Add Friend</Button>
-  );
+  return <Button clickHandler={() => console.log("Add")}>Add Friend</Button>;
 }
 ```
+
+### React Composition - Passing Data to child component
+
+The App component demonstrates composition by using ParentComponent to wrap ChildComponent. The ChildComponent is passed as a child to ParentComponent, creating a parent-child relationship between the components. This is a powerful feature of React that allows for more flexible and reusable components.
+
 ```jsx
-import React from 'react';
+import React from "react";
 
 function ParentComponent({ children }) {
-  return (
-    <div className='parent-component'>
-      {children}
-    </div>
-  );
+  return <div className="parent-component">{children}</div>;
 }
 
-function ChildComponent({message}) {
-  return <div className='child-component'>{message}</div>;
+function ChildComponent({ message }) {
+  return <div className="child-component">{message}</div>;
 }
 
 function App() {
   return (
     <ParentComponent>
-      <ChildComponent message="HEllo" />
+      <ChildComponent message="Hello" />
     </ParentComponent>
   );
 }
 ```
+
+### PropTypes (Prop Validation)
+
+```jsx
+import PropTypes from "prop-types";
+
+StarRating.propTypes = {
+    maxRating: PropTypes.number.isRequired,
+    color: PropTypes.string
+}
+
+export default function StarRating({ maxRating, color }) {
+  // ....
+}
+```
+
 ## Hooks
 
 ### useState
@@ -330,6 +345,7 @@ export default function Header() {
 </TabItem>
 </Tabs>
 ```
+
 ## JS
 
 ### Iteration
