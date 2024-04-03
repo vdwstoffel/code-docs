@@ -105,43 +105,29 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 describe("Birds Route /Get", () => {
-  it("Should return correct response", (done) => {
-    chai
-      .request(app)
-      .get("/birds")
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.be.a("object");
-        res.body.should.have.property("status").eql("success");
-        res.body.should.have.property("data");
-        done();
-      });
+  it("Should return correct response", async () => {
+    const res = await chai.request(app).get("/birds");
+    res.should.have.status(200);
+    res.body.should.be.a("object");
+    res.body.should.have.property("status").eql("success");
+    res.body.should.have.property("data");
   });
 });
 
 describe("Birds Controller /Post", () => {
-  it("Should return success if all fields are filed in", (done) => {
-    chai
-      .request(app)
-      .post("/birds?title=birds&text=all_birds")
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.have.property("status").eql("success");
-        done();
-      });
+  it("Should return success if all fields are filed in", async () => {
+    const res = await chai.request(app).post("/birds?title=birds&text=all_birds");
+    res.should.have.status(200);
+    res.body.should.have.property("status").eql("success");
   });
 
-  it("Should fail in not all fields are filled", (done) => {
-    chai
-      .request(app)
-      .post("/birds?title=bird")
-      .end((err, res) => {
-        res.should.have.status(400);
-        res.body.should.have.property("message").eql("Invalid Input");
-        done();
-      });
+  it("Should fail in not all fields are filled", async () => {
+    const res = await chai.request(app).post("/birds?title=bird");
+    res.should.have.status(400);
+    res.body.should.have.property("message").eql("Invalid Input");
   });
 });
+
 ```
 
 ```mdx-code-block
