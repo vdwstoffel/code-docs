@@ -8,12 +8,9 @@ import TabItem from "@theme/TabItem";
 
 # Unit Testing
 
-```bash
-npm i -D mocha
-npm i -D chai@4.3.6 # version ^5 only supports modules
-npm i -D chai-http
-npm i -D nyc        # code coverage
-```
+## Demo App
+
+### App
 
 ```
 ├── app.js
@@ -96,6 +93,25 @@ module.exports.createBird = async (req, res) => {
 <TabItem value="test/birds.test.js">
 ```
 
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### Tests
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Mocha + Chai">
+```
+
+```bash
+npm i -D mocha
+npm i -D chai@4.3.6 # version ^5 only supports modules
+npm i -D chai-http
+npm i -D nyc        # code coverage
+```
+
 ```js
 const chai = require("chai");
 const chaiHttp = require("chai-http");
@@ -127,12 +143,6 @@ describe("Birds Controller /Post", () => {
     res.body.should.have.property("message").eql("Invalid Input");
   });
 });
-
-```
-
-```mdx-code-block
-</TabItem>
-</Tabs>
 ```
 
 ```json title="package.json"
@@ -147,41 +157,141 @@ npm test
 npm run coverage
 ```
 
-## Test Skeleton
+```mdx-code-block
+</TabItem>
+<TabItem value="Jest + Supertest">
+```
+
+```bash
+npm i -D jest
+npm i -D supertest
+```
 
 ```js
-describe("What does the suite cover", () => {
-  it("what does the test do", (done) => {
-    let blog = {
-      body: "This is the body",
-    };
+const request = require("supertest");
+const app = require("../app");
 
-    chai
-      .request(app)
-      .post("/endpoint")
-      .send(blog)
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.be.a("object");
-        res.body.should.have.property("errors");
-        res.body.errors.should.have.property("title");
-        res.body.errors.title.should.have.property("kind").eql("required");
-        done();
-      });
+describe("Get /birds", () => {
+  beforeAll(() => {
+    console.log("Setup");
   });
 
-  it("another test", (done) => {
-    chai
-      .request(app)
-      .post("/another/endpoint")
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.be.a("array");
-        res.body.should.have.property("message").eql("Blog successfully added!");
-        res.body.blog.should.have.property("title");
-        res.body.blog.should.have.property("body");
-        done();
-      });
+  afterAll(() => {
+    console.log("Teardown");
+  });
+
+  it("Should get data", async () => {
+    const res = await request(app).get("/birds");
+    expect(res.statusCode).toBe(200);
+    expect(res.body.status).toBe("success");
+    expect(res.body.data.type).toBe("bird");
   });
 });
+
+describe("Post /birds", () => {
+  it("Should fail if params are wrong", async () => {
+    const res = await request(app).post("/birds?title=birds");
+    expect(res.statusCode).toBe(400);
+    expect(res.body.status).toBe("error");
+    expect(res.body.message).toBe("Invalid Input");
+  });
+
+  it("Should pass if params are correct", async () => {
+    const res = await request(app).post("/birds?title=birds&text=all_birds");
+    expect(res.statusCode).toBe(200);
+    expect(res.body.data.title).toBe("birds");
+    expect(res.body.data.text).toBe("all_birds");
+  });
+});
+```
+
+```json
+ "scripts": {
+    "test": "jest --testTimeout=5000",
+    "coverage": "npx jest --coverage"
+  },
+```
+
+```bash
+npm test
+npm run coverage
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## Test Skeleton Examples
+
+```mdx-code-block
+<Tabs>
+<TabItem value="GET">
+```
+
+```js
+describe("GET /api/products/:id", () => {
+  it("should return a product", async () => {
+    const res = await request(app).get("/api/products/6331abc9e9ececcc2d449e44");
+    expect(res.statusCode).toBe(200);
+    expect(res.body.name).toBe("Product 1");
+  });
+});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="POST">
+```
+
+```js
+describe("POST /api/products", () => {
+  it("should create a product", async () => {
+    const res = await request(app).post("/api/products").send({
+      name: "Product 2",
+      price: 1009,
+      description: "Description 2",
+    });
+    expect(res.statusCode).toBe(201);
+    expect(res.body.name).toBe("Product 2");
+  });
+});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PUT">
+```
+
+```js
+describe("PUT /api/products/:id", () => {
+  it("should update a product", async () => {
+    const res = await request(app).patch("/api/products/6331abc9e9ececcc2d449e44").send({
+      name: "Product 4",
+      price: 104,
+      description: "Description 4",
+    });
+    expect(res.statusCode).toBe(200);
+    expect(res.body.price).toBe(104);
+  });
+});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="DELETE">
+```
+
+```js
+describe("DELETE /api/products/:id", () => {
+  it("should delete a product", async () => {
+    const res = await request(app).delete("/api/products/6331abc9e9ececcc2d449e44");
+    expect(res.statusCode).toBe(200);
+  });
+});
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
