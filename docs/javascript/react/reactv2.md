@@ -197,9 +197,10 @@ export default function MyComponent() {
     setAdvice((a) => data.slip.advice);
   };
 
-  useEffect(function () {
+  useEffect(() => {
     getAdvice();
-  }, []); // dependency array
+  }, []); // dependency array. [] will only run on mount
+          //                   [variableThatTriggersChange]
 
   return (
     <>
