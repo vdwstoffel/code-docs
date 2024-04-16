@@ -43,7 +43,6 @@ export default defineConfig({
 
 ```jsx
 export default function App() {
-
   const clickHandler = () => {
     alert("Hello");
   };
@@ -60,10 +59,43 @@ export default function Example() {
     alert(message);
   };
 
-  return (
-    <button onClick={() => handleClick('Hello, world!')}>
-      Click me
-    </button>
-  );
+  return <button onClick={() => handleClick("Hello, world!")}>Click me</button>;
 }
+```
+
+## Change Page Title
+
+```jsx
+document.title = "New Page";
+```
+
+## aborting an API request
+
+```jsx
+import React, { useState, useEffect } from "react";
+
+function FetchComponent({ query }) {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchData = async () => {
+      const response = await fetch(`https://api.example.com/data?query=${query}`, { signal: controller.signal });
+      const data = await response.json();
+      setData(data);
+    };
+
+    fetchData();
+
+    // Cleanup function
+    return () => {
+      controller.abort(); // This aborts the fetch request
+    };
+  }, [query]);
+
+  return <div>{data ? JSON.stringify(data) : "Loading..."}</div>;
+}
+
+export default FetchComponent;
 ```

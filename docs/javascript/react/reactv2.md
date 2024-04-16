@@ -211,6 +211,35 @@ export default function MyComponent() {
 }
 ```
 
+#### Cleanup Function
+
+The cleanup function in the `useEffect` hook is a function that you can return from your effect function. It's used to clean up any resources that your effect has used. Here's a simplified example:
+
+```jsx
+import React, { useState, useEffect } from 'react';
+
+function Timer() {
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setSeconds((seconds) => seconds + 1);
+    }, 1000);
+
+    // Here's the cleanup function
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []); // Empty dependency array means this effect runs once on mount and cleanup on unmount
+
+  return <div>Elapsed time: {seconds} seconds</div>;
+}
+
+export default Timer;
+```
+
+In this example, the `useEffect` hook starts a timer when the `Timer` component mounts. The interval ID returned by `setInterval` is saved so it can be used to clear the interval when the component unmounts. This is done in the cleanup function, which is the function that's returned from the effect function. This ensures that the timer is stopped and doesn't continue to run after the `Timer` component has been removed from the DOM.
+
 ## Lifting State Up
 
 "Lifting state up" in React refers to the process of moving state from child components up to a common ancestor component. This allows multiple components to share and manipulate the same state, which is often necessary when those components need to stay in sync.
