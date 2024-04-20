@@ -250,155 +250,68 @@ new Intl.DateTimeFormat("en-GB").format(now); // '20/04/2024'
 
 ## Arrays
 
-### View/Add/Remove
+### Checking If an Object Is an Array
 
 ```js
-const names = ["alpha", "bravo", "charlie"];
-```
-
-```mdx-code-block
-<Tabs>
-<TabItem value="Length">
-```
-
-```js
-names.length; // 3
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="Index">
-```
-
-```js
-names[2]; // charlie
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="Push">
-```
-
-```js
-names.push("delta"); // [ 'alpha', 'bravo', 'charlie', 'delta' ]
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="Splice">
-```
-
-```js
-const index = names.indexOf("bravo");
-names.splice(index, 1);
-console.log(names); // [ 'alpha', 'charlie' ]
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="Includes">
-```
-
-```js
-names.includes("charlie"); // true
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="join">
-```
-
-```js
-names.join(" "); // alpha charlie charlie
-names.join("-"); // alpha-bravo-charlie
-```
-
-```mdx-code-block
-</TabItem>
-</Tabs>
-```
-
-### Iteration
-
-```mdx-code-block
-<Tabs>
-<TabItem value="Loop">
-```
-
-```js
-for (let i = 0; i < names.length; i++) {
-  console.log(names[i]);
+const languages = ["C", "Python", "JavaScript"];
+if (Array.isArray(languages)) {
+  // languages is an array
 }
 ```
 
-```mdx-code-block
-</TabItem>
-<TabItem value="forEach">
+### Iterating Over an Array
+
+```js
+const languages = ["C", "Python", "JavaScript"];
+
+for (const lan of languages) {
+  console.log(lan);
+}
 ```
 
 ```js
-names.forEach((name) => {
-  console.log(name);
-});
-```
+const languages = ["C", "Python", "JavaScript"];
 
-```mdx-code-block
-</TabItem>
-<TabItem value="Map">
+languages.forEach((lan) => console.log(lan));
 ```
 
 ```js
-const uppercaseNames = names.map((name) => {
-  return name.toUpperCase();
-});
+const languages = ["C", "Python", "JavaScript"];
 
-console.log(uppercaseNames); // [ 'ALPHA', 'BRAVO', 'CHARLIE' ]
+for (let i = 0; i < languages.length; ++i) {
+  console.log(languages[i]);
+}
 ```
 
-```mdx-code-block
-</TabItem>
-<TabItem value="Filter">
+### Checking If Two Arrays Are Equal
+
+```js
+const array1 = ["A", "B"];
+const array2 = ["A", "B"];
+
+for (let i = 0; i < arrayA.length; ++i) {
+  if (array1[i] !== array2[i]) return false;
+}
+```
+
+### Array Destructuring
+
+```js
+const languages = ["C", "Python", "JavaScript", "Ruby", "Java"];
+const [C, Python, JavaScript, Ruby, Java] = languages;
+console.log(Ruby); // Ruby
 ```
 
 ```js
-const result = names.filter((name) => {
-  return name.length < 6;
-});
-
-console.log(result); // [ 'alpha', 'bravo' ]
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="Reduce">
+const languages = ["C", "Python", "JavaScript", "Ruby", "Java"];
+const [C, , Ruby, Java] = languages;
+console.log(Ruby); // Ruby
 ```
 
 ```js
-const numbers = [1, 2, 3, 4, 5];
-
-// Use the reduce method to find the sum of all elements in the array
-const sum = numbers.reduce((accumulator, currentValue) => {
-  return accumulator + currentValue;
-}, 0);
-
-console.log(sum); // Output: 15
-```
-
-```mdx-code-block
-</TabItem>
-</Tabs>
-```
-
-### Destructuring an array
-
-```js
-const names = ["John", "Jane", "Alice"];
-
-const [firstName, secondName, thirdName] = names;
-
-console.log(firstName); // Output: "John"
-console.log(secondName); // Output: "Jane"
-console.log(thirdName); // Output: "Alice"
+const languages = ["C", "Python", "JavaScript", "Ruby", "Java"];
+const [first, Python, ...rest] = languages;
+console.log(rest); // ["JavaScript", "Ruby", "Java"]
 ```
 
 ## Async/Await
