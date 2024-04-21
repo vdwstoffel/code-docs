@@ -8,7 +8,7 @@ import CodeBlock from "@theme/CodeBlock";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-## Getting Started
+## Create new React App
 
 ```mdx-code-block
 <Tabs>
@@ -39,7 +39,9 @@ npm start
 
 ## Components
 
-```jsx
+### Creating a new component
+
+```jsx title="MyComponent.jsx"
 import React from "react";
 
 export default function MyComponent() {
