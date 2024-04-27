@@ -482,6 +482,43 @@ const sum = numbers.reduce((total, number) => total + number, 0);
 console.log(sum); // 15
 ```
 
+## Functions
+
+### Arrow Function
+
+```js
+const add = (a, b) => a + b;
+```
+
+```js
+const add = (a, b) => {
+  return a + b;
+};
+```
+
+### Providing a Default Parameter Value
+
+```js
+const greet = (name = "World") => {
+  console.log(`Hello, ${name}!`);
+};
+```
+
+### Function That Accepts Unlimited Arguments
+
+```js
+const sum = (...args) => {
+  return args.reduce((total, number) => total + number, 0);
+};
+```
+
+### Named Function Parameters
+
+```js
+const greet = ({ name, greeting }) => {
+  console.log(`${greeting}, ${name}!`);
+};
+
 ## Async/Await
 
 ```js
