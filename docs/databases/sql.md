@@ -5,6 +5,197 @@ sidebar_position: 1
 
 # SQL
 
+## SELECT
+
+### Select All Rows
+
+```sql
+SELECT *
+FROM "Employees";
+```
+
+### Select All Where
+
+```sql
+SELECT * FROM "Employees"
+WHERE "EmployeeID" = 5;
+```
+
+### Select All Multiple Conditions
+
+```sql
+SELECT * FROM "Employees"
+WHERE "EmployeeID" = 5
+AND "LastName" = 'Davolio'
+OR "State" = 'WA';
+```
+
+### Select a Subset of Columns
+
+```sql
+SELECT "EmployeeID", "LastName", "FirstName"
+FROM "Employees";
+```
+
+### Alias names of columns
+
+```sql
+SELECT "EmployeeID" AS "ID", "LastName" AS "Last Name"
+FROM "Employees";
+```
+
+### Referencing an Aliased Column
+
+```sql
+SELECT "EmployeeID" AS "ID", "LastName" AS "Last Name"
+FROM "Employees"
+WHERE "ID" = 5;
+```
+
+### Concatenating Column Values
+
+```sql
+SELECT "LastName" || ', ' || "FirstName"
+FROM "Employees";
+```
+
+> Output: `Davolio, Nancy`
+
+### Conditional Logic
+
+```sql
+SELECT "EmployeeID", "LastName", "FirstName", "City",
+CASE
+    WHEN "City" = 'Seattle' THEN 'Northwest'
+    WHEN "City" = 'Tacoma' THEN 'Northeast'
+    ELSE 'Other'
+END AS "Region"
+FROM "Employees";
+```
+
+### LIMIT the Rows Returned
+
+```sql
+SELECT *
+FROM "Employees"
+LIMIT 5;
+```
+
+### Returning n Random Records
+
+```sql
+SELECT *
+FROM "Employees"
+ORDER BY RANDOM()
+```
+
+### Finding Null Values
+
+```sql
+SELECT *
+FROM "Employees"
+WHERE "ReportsTo" IS NULL;
+```
+
+### Transforming Nulls into Real Values
+
+```sql
+SELECT *
+FROM "Employees"
+WHERE COALESCE("ReportsTo", 0) = 0;
+```
+
+### LIKE - Searching for Patterns
+
+In SQL, the LIKE keyword is used to search for a specified pattern in a column.
+
+`% - The percent sign represents zero, one, or multiple characters`
+
+`\_ - The underscore represents a single character`
+
+Gets all employees whose last name starts with the letter D.
+
+```sql
+SELECT *
+FROM "Employees"
+WHERE "LastName" LIKE 'D%';
+```
+
+### ORDER BY
+
+```sql
+SELECT *
+FROM "Employees"
+ORDER BY "LastName" ASC;
+```
+
+```sql
+SELECT *
+FROM "Employees"
+ORDER BY "LastName" DESC;
+```
+
+### ORDER BY Multiple Columns
+
+```sql
+SELECT *
+FROM "Employees"
+ORDER BY "LastName" ASC, "City" DESC;
+```
+
+### Count
+
+```sql
+SELECT COUNT(*)
+FROM "Employees";
+```
+
+> Output: `9`
+
+## INSERT
+
+### Inserting a New Record
+
+```sql
+INSERT INTO "Employees" ("LastName", "FirstName", "City")
+VALUES ('Doe', 'John', 'Seattle');
+```
+
+## UPDATE
+
+### Updating a Record
+
+```sql
+UPDATE "Employees"
+SET "City" = 'Tacoma'
+WHERE "EmployeeID" = 5;
+```
+## DELETE
+
+### Deleting a Record
+
+```sql
+DELETE FROM "Employees"
+WHERE "EmployeeID" = 5;
+```
+
+### Deleting All Records
+
+```sql
+DELETE FROM "Employees";
+```
+
+## Multiple Tables
+
+### INNER JOIN
+
+```sql
+SELECT *
+FROM Employees
+INNER JOIN Customers
+ON Employees.EmployeeID = Orders.EmployeeID;
+```
+
 ## Create Database
 
 ```sql
@@ -59,42 +250,7 @@ ALTER TABLE new_users
 DROP COLUMN IF EXISTS age;
 ```
 
-## SELECT
 
-The SELECT statement is used to select data from a database.
-
-```sql
-SELECT * FROM users;
-
-SELECT * FROM users
-WHERE username = 'Stoffel';
-
-SELECT username AS us
-FROM users;
-
-SELECT * FROM users
-ORDER BY username ASC/DESC;
-```
-
-## INSERT INTO
-
-The INSERT INTO statement is used to insert new records in a table.
-
-```sql
-INSERT INTO users (username, age)
-VALUES ('Stoffel', 30);
-```
-
-## UPDATE
-
-The UPDATE statement is used to modify existing records in a table.
-
-```sql
-UPDATE users
-SET username = 'stoffel_updated'
-WHERE username = 'Stoffel'
-RETURNING *; -- See output
-```
 
 ## DELETE
 
@@ -113,13 +269,6 @@ WHERE username = 'Christoff'
 
 ```sql
 SELECT COUNT(*) FROM users;
-```
-
-## LIMIT
-
-```sql
-SELECT * FROM users
-LIMIT 5;
 ```
 
 ## JOIN
@@ -160,28 +309,6 @@ The IN operator allows you to specify multiple values in a WHERE clause.
 SELECT * FROM users
 WHERE username
 IN ('Stoffel', 'Mavis');
-```
-
-## LIKE
-
-The LIKE operator is used in a WHERE clause to search for a specified pattern in a column.
-
-```sql
--- Exact Pattern Match
-SELECT * FROM users
-WHERE username LIKE 'Stof';
-
--- Use % for more than one pattern match
-SELECT * FROM users
-WHERE username LIKE '%Stof%';
-
--- Use _ for more than one pattern match
-SELECT * FROM users
-WHERE username LIKE 'Stof_';
-
--- Case Insensitive
-SELECT * FROM users
-WHERE username ILIKE '%stof%';
 ```
 
 ## Aggregate
