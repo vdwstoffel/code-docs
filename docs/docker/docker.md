@@ -297,7 +297,7 @@ Dockerfile
 .venv
 ```
 
-## Docker-Compose
+## Docker Compose
 
 ### Example File
 
@@ -367,9 +367,9 @@ Starting from the same folder as the docker-compose.yaml.
 Volumes and networks will automatically be created
 
 ```bash
-docker-compose up           # supply services name if you do not want to run all
-docker-compose up -d        # run in detached mode
-docker-compose up --build   # rebuild the images
+docker compose up           # supply services name if you do not want to run all
+docker compose up -d        # run in detached mode
+docker compose up --build   # rebuild the images
 ```
 
 ### Stopping Containers
@@ -377,10 +377,10 @@ docker-compose up --build   # rebuild the images
 Deletes all containers + network it created
 
 ```bash
-docker-compose down
+docker compose down
 
 # to remove volumes (do not persist data)
-docker-compose down -v
+docker compose down -v
 ```
 
 ### Node Example (with nodemon)
@@ -456,7 +456,7 @@ docker compose up -d --build server
 ### Express Backend + PostgreSQL
 
 ```bash
-docker-compose up -d --build server
+docker compose up -d --build server
 ```
 
 ```mdx-code-block
@@ -826,8 +826,8 @@ Then in the terminal run the chosen service
 
 ```bash
 # docker-compose run --rm service_name arguments
-docker-compose run --rm npm-test init    # runs npm init
-docker-compose run --rm npm-test install # runs npm install
+docker compose run --rm npm-test init    # runs npm init
+docker compose run --rm npm-test install # runs npm install
 ```
 
 If you have other app containers in the docker-compose.yaml and don`t want to run the utility containers. Add depends_on to the service
@@ -844,7 +844,7 @@ services:
 Then in the command line run
 
 ```bash
-docker-compose up -d frontend
+docker compose up -d frontend
 ```
 
 This will launch all the dependent services
