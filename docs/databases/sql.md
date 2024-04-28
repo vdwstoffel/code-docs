@@ -11,52 +11,52 @@ sidebar_position: 1
 
 ```sql
 SELECT *
-FROM "Employees";
+FROM employees;
 ```
 
 ### Select All Where
 
 ```sql
-SELECT * FROM "Employees"
-WHERE "EmployeeID" = 5;
+SELECT * FROM employees
+WHERE employeeId = 5;
 ```
 
 ### Select All Multiple Conditions
 
 ```sql
-SELECT * FROM "Employees"
-WHERE "EmployeeID" = 5
-AND "LastName" = 'Davolio'
-OR "State" = 'WA';
+SELECT * FROM employees
+WHERE employeeId = 5
+AND lastName = 'Davolio'
+OR city = 'WA';
 ```
 
 ### Select a Subset of Columns
 
 ```sql
-SELECT "EmployeeID", "LastName", "FirstName"
-FROM "Employees";
+SELECT employeeId, lastName, firstName
+FROM employees;
 ```
 
 ### Alias names of columns
 
 ```sql
-SELECT "EmployeeID" AS "ID", "LastName" AS "Last Name"
-FROM "Employees";
+SELECT employeeId AS "ID", LastName AS "Last Name"
+FROM employees;
 ```
 
 ### Referencing an Aliased Column
 
 ```sql
-SELECT "EmployeeID" AS "ID", "LastName" AS "Last Name"
-FROM "Employees"
+SELECT employeeId AS "ID"
+FROM employees
 WHERE "ID" = 5;
 ```
 
 ### Concatenating Column Values
 
 ```sql
-SELECT "LastName" || ', ' || "FirstName"
-FROM "Employees";
+SELECT lastName || ', ' || firstName
+FROM employees;
 ```
 
 > Output: `Davolio, Nancy`
@@ -64,20 +64,20 @@ FROM "Employees";
 ### Conditional Logic
 
 ```sql
-SELECT "EmployeeID", "LastName", "FirstName", "City",
+SELECT employeeId, lstName, firstName, city,
 CASE
-    WHEN "City" = 'Seattle' THEN 'Northwest'
-    WHEN "City" = 'Tacoma' THEN 'Northeast'
+    WHEN city = 'Seattle' THEN 'Northwest'
+    WHEN city = 'Tacoma' THEN 'Northeast'
     ELSE 'Other'
 END AS "Region"
-FROM "Employees";
+FROM employees;
 ```
 
 ### LIMIT the Rows Returned
 
 ```sql
 SELECT *
-FROM "Employees"
+FROM employees
 LIMIT 5;
 ```
 
@@ -85,7 +85,7 @@ LIMIT 5;
 
 ```sql
 SELECT *
-FROM "Employees"
+FROM employees
 ORDER BY RANDOM()
 ```
 
@@ -93,16 +93,16 @@ ORDER BY RANDOM()
 
 ```sql
 SELECT *
-FROM "Employees"
-WHERE "ReportsTo" IS NULL;
+FROM employees
+WHERE reportsTo IS NULL;
 ```
 
 ### Transforming Nulls into Real Values
 
 ```sql
 SELECT *
-FROM "Employees"
-WHERE COALESCE("ReportsTo", 0) = 0;
+FROM employees
+WHERE COALESCE(reportsTo, 0) = 0;
 ```
 
 ### LIKE - Searching for Patterns
@@ -117,37 +117,37 @@ Gets all employees whose last name starts with the letter D.
 
 ```sql
 SELECT *
-FROM "Employees"
-WHERE "LastName" LIKE 'D%';
+FROM employees
+WHERE lastName LIKE 'D%';
 ```
 
 ### ORDER BY
 
 ```sql
 SELECT *
-FROM "Employees"
-ORDER BY "LastName" ASC;
+FROM employees
+ORDER BY lastName ASC;
 ```
 
 ```sql
 SELECT *
-FROM "Employees"
-ORDER BY "LastName" DESC;
+FROM employees
+ORDER BY lastName DESC;
 ```
 
 ### ORDER BY Multiple Columns
 
 ```sql
 SELECT *
-FROM "Employees"
-ORDER BY "LastName" ASC, "City" DESC;
+FROM employees
+ORDER BY lastName ASC, city DESC;
 ```
 
-### Count
+### COUNT
 
 ```sql
 SELECT COUNT(*)
-FROM "Employees";
+FROM employees;
 ```
 
 > Output: `9`
@@ -157,7 +157,7 @@ FROM "Employees";
 ### Inserting a New Record
 
 ```sql
-INSERT INTO "Employees" ("LastName", "FirstName", "City")
+INSERT INTO employees (lastName, firstName, city)
 VALUES ('Doe', 'John', 'Seattle');
 ```
 
@@ -166,23 +166,23 @@ VALUES ('Doe', 'John', 'Seattle');
 ### Updating a Record
 
 ```sql
-UPDATE "Employees"
-SET "City" = 'Tacoma'
-WHERE "EmployeeID" = 5;
+UPDATE employees
+SET city = 'Tacoma'
+WHERE employeeId = 5;
 ```
 ## DELETE
 
 ### Deleting a Record
 
 ```sql
-DELETE FROM "Employees"
-WHERE "EmployeeID" = 5;
+DELETE FROM employees
+WHERE employeeId = 5;
 ```
 
 ### Deleting All Records
 
 ```sql
-DELETE FROM "Employees";
+DELETE FROM employees;
 ```
 
 ## Multiple Tables
@@ -264,11 +264,7 @@ DELETE FROM users;
 DELETE FROM users
 WHERE username = 'Christoff'
 ```
-
-## COUNT
-
-```sql
-SELECT COUNT(*) FROM users;
+T COUNT(*) FROM users;
 ```
 
 ## JOIN
