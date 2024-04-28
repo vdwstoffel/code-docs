@@ -152,6 +152,40 @@ FROM employees;
 
 > Output: `9`
 
+### Return DISTINCT Values
+
+```sql
+SELECT DISTINCT city
+FROM employees;
+```
+
+### GROUP BY
+
+```sql
+SELECT COUNT(*), salary
+FROM employees
+GROUP BY salary;
+```
+
+### GROUP BY - HAVING
+
+```sql
+SELECT COUNT(*), salary
+FROM employees
+GROUP BY salary
+HAVING salary > 50000;
+```
+
+### IN - multiple values in WHERE
+
+The IN operator allows you to specify multiple values in a WHERE clause.
+
+```sql
+SELECT *
+FROM employees
+WHERE city IN ('Seattle', 'Tacoma');
+```
+
 ## INSERT
 
 ### Inserting a New Record
@@ -170,6 +204,7 @@ UPDATE employees
 SET city = 'Tacoma'
 WHERE employeeId = 5;
 ```
+
 ## DELETE
 
 ### Deleting a Record
@@ -196,25 +231,25 @@ INNER JOIN Customers
 ON Employees.EmployeeID = Orders.EmployeeID;
 ```
 
-## Create Database
+## Tables
 
-```sql
-CREATE DATABASE code_snippets;
-```
-
-## Create Table
-
-To auto increase the primary key
-
-1. MySQL: `AUTO_INCREMENT`
-2. PostgreSQL: `SERIAL`
-3. SQLite3: `AUTOINCREMENT`
+### Create Table
 
 ```sql
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
-    username VARCHAR(250) UNIQUE,
-    age INT
+    username VARCHAR(250),
+    age INTEGER
+);
+```
+
+### Create Table with Constraints
+
+```sql
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(250) NOT NULL,
+    age INTEGER NOT NULL
 );
 ```
 
@@ -223,100 +258,43 @@ CREATE TABLE users (
 ```sql
 CREATE TABLE platform (
     platform_id SERIAL PRIMARY KEY,
+    user_id INTEGER,
     platform_name VARCHAR(250),
-    user_id INTEGER REFERENCES users(user_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 ```
 
-## Drop Table
-
 ```sql
-DROP TABLE users;
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(250),
+    age INTEGER
+);
 ```
 
-## Alter Table
+### Drop Table
 
 ```sql
--- Rename Table
+DROP TABLE IF EXISTS users;
+```
+
+### Rename Table
+
+```sql
 ALTER TABLE users
-RENAME TO new_users;
-
--- Rename COLUMN
-ALTER TABLE new_users
-RENAME COLUMN username TO new_username;
-
--- Drop COLUMN
-ALTER TABLE new_users
-DROP COLUMN IF EXISTS age;
+RENAME TO customers;
 ```
 
-
-
-## DELETE
-
-The DELETE statement is used to delete existing records from a table.
+### Add Column
 
 ```sql
--- Delete all
-DELETE FROM users;
-
--- Delete on condition
-DELETE FROM users
-WHERE username = 'Christoff'
-```
-T COUNT(*) FROM users;
+ALTER TABLE users
+ADD COLUMN email VARCHAR(250);
 ```
 
-## JOIN
+### Drop Column
 
 ```sql
-SELECT * FROM users
-INNER JOIN platform
-ON users.user_id = platform.user_id;
-```
-
-## GROUP BY
-
-The GROUP BY statement is used to group rows that have the same values into summary rows.
-
-```sql
-SELECT age, COUNT(*) FROM users
-GROUP BY age;
-
--- The HAVING clause is used to filter records that are returned by GROUP BY
-SELECT age, COUNT (*) FROM users
-GROUP BY age
-HAVING age < 30;
-```
-
-## DISTINCT
-
-The DISTINCT keyword is used to return only distinct (unique) values.
-
-```sql
-SELECT DISTINCT age FROM users;
-```
-
-## IN
-
-The IN operator allows you to specify multiple values in a WHERE clause.
-
-```sql
-SELECT * FROM users
-WHERE username
-IN ('Stoffel', 'Mavis');
-```
-
-## Aggregate
-
-```sql
-SELECT MIN(age) FROM users;
-
-SELECT MAX(age) FROM users;
-
-SELECT SUM(age) FROM users;
-
-SELECT AVG(age) FROM users;
-
-SELECT ROUND(AVG(age)) FROM users;
+ALTER TABLE users
+DROP COLUMN email;
 ```
