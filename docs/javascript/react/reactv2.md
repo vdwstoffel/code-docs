@@ -8,7 +8,7 @@ import CodeBlock from "@theme/CodeBlock";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-## Create new React App
+## Create a new React App
 
 ```mdx-code-block
 <Tabs>
@@ -67,7 +67,7 @@ export default function App() {
 }
 ```
 
-### Passing Props
+### Passing Props to child components
 
 ```mdx-code-block
 <Tabs>
@@ -148,101 +148,7 @@ function App() {
 }
 ```
 
-### PropTypes (Prop Validation)
-
-```jsx
-import PropTypes from "prop-types";
-
-StarRating.propTypes = {
-    maxRating: PropTypes.number.isRequired,
-    color: PropTypes.string
-}
-
-export default function StarRating({ maxRating, color }) {
-  // ....
-}
-```
-
-## Hooks
-
-### useState
-
-`useState` is a Hook in React that lets you add state to your functional components.
-
-```jsx
-import { useState } from "react";
-
-export default function Counter() {
-  const [count, setCount] = useState(0);
-
-  function handleClick() {
-    setCount((c) => c + 1); // it’s common to name the pending state argument for the first letter of the state variable name
-  }
-
-  return <button onClick={handleClick}>You pressed me {count} times</button>;
-}
-```
-
-### useEffect
-
-`useEffect` is a Hook in React that allows you to perform side effects in function components. Side effects could be data fetching, subscriptions, or manually changing the DOM, among other things.
-
-```jsx
-import { useEffect, useState } from "react";
-
-export default function MyComponent() {
-  const [advice, setAdvice] = useState("");
-
-  const getAdvice = async () => {
-    const res = await fetch("https://api.adviceslip.com/advice");
-    const data = await res.json();
-    setAdvice((a) => data.slip.advice);
-  };
-
-  useEffect(() => {
-    getAdvice();
-  }, []); // dependency array. [] will only run on mount
-          //                   [variableThatTriggersChange]
-
-  return (
-    <>
-      <h1>Advice: {advice}</h1>
-      <button onClick={getAdvice}>Get Advice</button>
-    </>
-  );
-}
-```
-
-#### Cleanup Function
-
-The cleanup function in the `useEffect` hook is a function that you can return from your effect function. It's used to clean up any resources that your effect has used. Here's a simplified example:
-
-```jsx
-import React, { useState, useEffect } from 'react';
-
-function Timer() {
-  const [seconds, setSeconds] = useState(0);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setSeconds((seconds) => seconds + 1);
-    }, 1000);
-
-    // Here's the cleanup function
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []); // Empty dependency array means this effect runs once on mount and cleanup on unmount
-
-  return <div>Elapsed time: {seconds} seconds</div>;
-}
-
-export default Timer;
-```
-
-In this example, the `useEffect` hook starts a timer when the `Timer` component mounts. The interval ID returned by `setInterval` is saved so it can be used to clear the interval when the component unmounts. This is done in the cleanup function, which is the function that's returned from the effect function. This ensures that the timer is stopped and doesn't continue to run after the `Timer` component has been removed from the DOM.
-
-## Lifting State Up
+### Lifting State Up
 
 "Lifting state up" in React refers to the process of moving state from child components up to a common ancestor component. This allows multiple components to share and manipulate the same state, which is often necessary when those components need to stay in sync.
 
@@ -269,7 +175,184 @@ function ChildB({ setCount }) {
 }
 ```
 
+### Validate props with PropTypes
+
+```jsx
+import PropTypes from "prop-types";
+
+StarRating.propTypes = {
+  maxRating: PropTypes.number.isRequired,
+  color: PropTypes.string,
+};
+
+export default function StarRating({ maxRating, color }) {
+  // ....
+}
+```
+
+### Iterating over an array of data
+
+```jsx
+import React from "react";
+
+const pizzaData = [
+  { name: "Margherita", ingredients: "Tomato, mozzarella, basil" },
+  { name: "Pepperoni", ingredients: "Tomato, mozzarella, pepperoni" },
+  { name: "Hawaiian", ingredients: "Tomato, mozzarella, ham, pineapple" },
+];
+
+export default function Menu() {
+  return (
+    <ul>
+      {pizzaData.map((pizza, index) => (
+        <li key={index}>
+          <h2>{pizza.name}</h2>
+          <p>{pizza.ingredients}</p>
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+### Conditional Rendering
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Ternary Operator">
+```
+
+```jsx
+export default function Pizza({ name, ingredients }) {
+  return (
+    <>
+      <h1>{name}</h1>
+      <h2>{ingredients}</h2>
+      {ingredients.includes("pepperoni") ? <p>Contains pepperoni</p> : <p>No pepperoni</p>}
+    </>
+  );
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Short-circuit evaluation">
+```
+
+```jsx
+export default function Pizza({ name, ingredients }) {
+  return (
+    <>
+      <h1>{name}</h1>
+      <h2>{ingredients}</h2>
+      {ingredients.includes("pepperoni") && <p>Contains pepperoni</p>}
+    </>
+  );
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### Fragments
+
+React Fragments let you group a list of children without adding extra nodes to the DOM.
+
+```jsx
+export default function Example() {
+  return (
+    <>
+      <ChildA />
+      <ChildB />
+    </>
+  );
+}
+```
+
+## Hooks
+
+### useState - Add state to functional components
+
+`useState` is a Hook in React that lets you add state to your functional components.
+
+```jsx
+import { useState } from "react";
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+
+  function handleClick() {
+    setCount((c) => c + 1); // it’s common to name the pending state argument for the first letter of the state variable name
+  }
+
+  return <button onClick={handleClick}>You pressed me {count} times</button>;
+}
+```
+
+### useEffect - Side effects in functional components
+
+`useEffect` is a Hook in React that allows you to perform side effects in function components. Side effects could be data fetching, subscriptions, or manually changing the DOM, among other things.
+
+```jsx
+import { useEffect, useState } from "react";
+
+export default function MyComponent() {
+  const [advice, setAdvice] = useState("");
+
+  const getAdvice = async () => {
+    const res = await fetch("https://api.adviceslip.com/advice");
+    const data = await res.json();
+    setAdvice((a) => data.slip.advice);
+  };
+
+  useEffect(() => {
+    getAdvice();
+  }, []); // dependency array. [] will only run on mount
+  //                   [variableThatTriggersChange]
+
+  return (
+    <>
+      <h1>Advice: {advice}</h1>
+      <button onClick={getAdvice}>Get Advice</button>
+    </>
+  );
+}
+```
+
+### Add a Cleanup Function to useEffect
+
+The cleanup function in the `useEffect` hook is a function that you can return from your effect function. It's used to clean up any resources that your effect has used. Here's a simplified example:
+
+```jsx
+import React, { useState, useEffect } from "react";
+
+function Timer() {
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setSeconds((seconds) => seconds + 1);
+    }, 1000);
+
+    // Here's the cleanup function
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []); // Empty dependency array means this effect runs once on mount and cleanup on unmount
+
+  return <div>Elapsed time: {seconds} seconds</div>;
+}
+
+export default Timer;
+```
+
+In this example, the `useEffect` hook starts a timer when the `Timer` component mounts. The interval ID returned by `setInterval` is saved so it can be used to clear the interval when the component unmounts. This is done in the cleanup function, which is the function that's returned from the effect function. This ensures that the timer is stopped and doesn't continue to run after the `Timer` component has been removed from the DOM.
+
 ## Forms
+
+### Handling Form Submissions
 
 ```jsx
 export default function Form() {
@@ -319,38 +402,14 @@ export default function ControlledForm() {
 }
 ```
 
-## Fragments
 
-React Fragments let you group a list of children without adding extra nodes to the DOM.
-
-```jsx
-import { Fragment } from "react";
-
-export default function Example() {
-  return (
-    <Fragment>
-      <ChildA />
-      <ChildB />
-    </Fragment>
-  );
-}
-```
 
 ## Styling Apps
 
-```mdx-code-block
-<Tabs>
-<TabItem value="Scoped CSS">
-```
-
-CODE SNIPPET
-
-```mdx-code-block
-</TabItem>
-<TabItem value="Global CSS">
-```
+### Adding a global stylesheet
 
 ```jsx
+//highlight-next-line
 import "./index.css";
 
 export default function App() {
@@ -362,10 +421,7 @@ export default function App() {
 }
 ```
 
-```mdx-code-block
-</TabItem>
-<TabItem value="Inline CSS">
-```
+### Inline Styles
 
 ```jsx
 export default function Header() {
@@ -373,44 +429,15 @@ export default function Header() {
 }
 ```
 
-```mdx-code-block
-</TabItem>
-</Tabs>
-```
-
-## JS
-
-### Iteration
+### Conditional classes
 
 ```jsx
-// pizzaData...
-
-export default function Menu() {
+export default function Pizza({ name, ingredients }) {
   return (
-    <>
-      {pizzaData.map((el, idx) => {
-        return <Pizza key={idx} name={el.name} ingredients={el.ingredients} />;
-      })}
-    </>
+    <li className={`pizza ${ingredients.includes("pepperoni") ? "pepperoni" : ""}`}>
+      <h1>{name}</h1>
+      <h2>{ingredients}</h2>
+    </li>
   );
-}
-```
-
-### Conditionals
-
-```jsx
-export default function Footer() {
-  const isOpen = true;
-
-  return <footer>{isOpen ? "We are open" : "Closed"}</footer>;
-}
-```
-
-#### Conditionally adding a class
-
-```jsx
-export default function Pizza(props) {
-  const { soldOut } = props.data;
-  return <li className={`pizza ${soldOut ? "sold-out" : null}`}>// other code</li>;
 }
 ```
