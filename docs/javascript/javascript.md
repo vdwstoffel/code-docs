@@ -738,7 +738,7 @@ function addNumbers(a, b) {
 }
 ```
 
-### dotenv - Load env variables from a file
+### Load env variables from a file (dotenv)
 
 ```bash
 npm i dotenv
@@ -768,7 +768,7 @@ S3_BUCKET="YOURS3BUCKET"
 </Tabs>
 ```
 
-### Axios - Promise based HTTP client
+### How to make an HTTP request (axios)
 
 ```bash
 npm i axios
@@ -854,7 +854,7 @@ const deleteData = async () => {
 </Tabs>
 ```
 
-### bcrypt - Hash passwords
+### How to hash a password (bcrypt)
 
 ```bash
 npm i bcrypt
@@ -890,7 +890,7 @@ const test = async () => {
 test();
 ```
 
-### UUID - Generate a unique identifier
+### How to generate a UUID
 
 ```bash
 npm i uud
@@ -902,7 +902,7 @@ const { v4: uuidv4 } = require("uuid"); // npm install uuid
 console.log(uuidv4()); // b8dff6a8-e942-417f-ade7-b62479d47c85
 ```
 
-### ESLint - Linting tool
+### How to lint your code (ESLint)
 
 ```bash
 npm i eslint prettier eslint-config-prettier eslint-plugin-prettier eslint-config-airbnb eslint-plugin-node eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react --save-dev
