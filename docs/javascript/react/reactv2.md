@@ -402,8 +402,6 @@ export default function ControlledForm() {
 }
 ```
 
-
-
 ## Styling Apps
 
 ### Adding a global stylesheet
@@ -440,4 +438,287 @@ export default function Pizza({ name, ingredients }) {
     </li>
   );
 }
+```
+
+## React/Redux
+
+```bash
+npm install @reduxjs/toolkit react-redux
+```
+
+### How to setup a store
+
+```mdx-code-block
+<Tabs>
+<TabItem value="store.js">
+```
+
+```js title="app/store.js"
+import { configureStore } from "@reduxjs/toolkit";
+import counterReducer from "../features/counter/counterSlice";
+
+export default configureStore({
+  reducer: {
+    counter: counterReducer,
+  },
+});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="index.js">
+```
+
+```js title="index.js"
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+//highlight-next-line
+import store from "./app/store";
+//highlight-next-line
+import { Provider } from "react-redux";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
+  //highlight-next-line
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="counterSlice.js">
+```
+
+```js title="counter/counterSlice.js"
+import { createSlice } from "@reduxjs/toolkit";
+
+export const counterSlice = createSlice({
+  name: "counter",
+  initialState: {
+    value: 0,
+  },
+  reducers: {
+    increment: (state) => {
+      state.value += 1;
+    },
+    decrement: (state) => {
+      state.value -= 1;
+    },
+    incrementByAmount: (state, action) => {
+      state.value += action.payload;
+    },
+  },
+});
+
+// Action creators are generated for each case reducer function
+export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+
+export default counterSlice.reducer;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Counter.jsx">
+```
+
+```js title='components/Counter.js'
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { decrement, increment } from "./counterSlice";
+
+export default function Counter() {
+  const count = useSelector((state) => state.counter.value);
+  const dispatch = useDispatch();
+
+  return (
+    <div>
+      <button onClick={() => dispatch(increment())}>Increment</button>
+      <span>{count}</span>
+      <button onClick={() => dispatch(decrement())}>Decrement</button>
+    </div>
+  );
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### Authentication
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Store">
+```
+
+```js title="store/store.js"
+import { configureStore } from "@reduxjs/toolkit";
+
+import authReducer from "./authSlice";
+
+export default configureStore({
+  reducer: {
+    auth: authReducer.reducer,
+  },
+});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="authSlice">
+```
+
+```js title=store/authSlice.js
+import { createSlice } from "@reduxjs/toolkit";
+
+export const authSlice = createSlice({
+  name: "auth",
+  initialState: {
+    isLoggedIn: false,
+    userDetails: {},
+  },
+  reducers: {
+    authenticateUser: (state, action) => {
+      const { userDetails } = action.payload;
+      state.isLoggedIn = true;
+      state.userDetails = userDetails;
+    },
+    logoutUser: (state) => {
+      state.isLoggedIn = false;
+      state.userDetails = {};
+    },
+  },
+});
+
+export const { authenticateUser, logoutUser } = authSlice.actions;
+
+export default authSlice;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="authApi.js">
+```
+
+Api call to backend to get the user details and update the store with the details
+
+```js title=authApi.js
+import authSlice from "./store/authSlice";
+
+export const authenticateUser = () => {
+  return async (dispatch) => {
+    const res = await getUserDetails();
+    dispatch(authSlice.actions.authenticateUser({ userDetails: res.data }));
+  };
+};
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="App.jsx">
+```
+
+Check the dispatch store everytime the app loads
+
+```js title=App.jsx
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+//highlight-next-line
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+
+import RootLayout from "./components/RootLayout";
+import Home from "./pages/Home";
+import Auth from "./pages/Auth";
+//highlight-next-line
+import { authenticateUser } from "./utils/auth";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: "/login", element: <Auth /> },
+    ],
+  },
+]);
+
+export default function App() {
+  //highlight-next-line
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    //highlight-next-line
+    dispatch(authenticateUser());
+  }, [dispatch]);
+
+  return <RouterProvider router={router} />;
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Main.jsx">
+```
+
+```js title=Main.jsx
+import React from "react";
+import ReactDOM from "react-dom/client";
+//highlight-next-line
+import { Provider } from "react-redux";
+
+import App from "./App.jsx";
+import store from "./store/store.js";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    //highlight-next-line
+    <Provider store={store}>
+      <App />
+      //highlight-next-line
+    </Provider>
+  </React.StrictMode>
+);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Home.jsx">
+```
+
+Check the dispatch store every time Home loads
+
+```js title=Home.jsx
+import { useEffect } from "react";
+//highlight-next-line
+import { useSelector, useDispatch } from "react-redux";
+//highlight-next-line
+import { authenticateUser } from "../utils/auth";
+
+export default function Home() {
+  //highlight-next-line
+  const dispatch = useDispatch();
+  //highlight-next-line
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  //highlight-next-line
+  const userDetails = useSelector((state) => state.auth.userDetails);
+
+  useEffect(() => {
+    //highlight-next-line
+    dispatch(authenticateUser());
+  }, [dispatch]);
+
+  return <>{isLoggedIn && <... />}</>;
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
