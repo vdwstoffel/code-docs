@@ -681,103 +681,97 @@ const person = {
 const clone = JSON.parse(JSON.stringify(person));
 ```
 
-## OOP
+## Classes
 
-```mdx-code-block
-<Tabs>
-<TabItem value="animal.js">
-```
+### Create a class
 
-```javascript
-class Animal {
-  constructor(name, species) {
+```js
+class Person {
+  constructor(name, age) {
     this.name = name;
-    this.species = species;
+    this.age = age;
   }
 
-  makeSound() {
-    console.log(`${this.name} makes a sound.`);
+  greet() {
+    console.log(`Hello, ${this.name}, who is ${this.age}!`);
   }
 }
 
-module.exports = Animal;
+const john = new Person("John", 25);
+john.greet(); // Hello, John, who is 25!
 ```
 
-```mdx-code-block
-</TabItem>
-<TabItem value="main.js">
-```
+### Method Chaining
 
-```javascript
-const Animal = require("./animal");
+```js
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
 
-const cat = new Animal("Whiskers", "Cat");
-cat.makeSound(); // Output: Whiskers makes a sound.
-```
+  greet() {
+    console.log(`Hello, ${this.name}, who is ${this.age}!`);
+    return this;
+  }
 
-```mdx-code-block
-</TabItem>
-</Tabs>
+  setAge(age) {
+    this.age = age;
+    return this;
+  }
+}
+
+const john = new Person("John", 25);
+john.setAge(30).greet(); // Hello, John, who is 30!
 ```
 
 ### Inheritance
 
-```mdx-code-block
-<Tabs>
-<TabItem value="Base Class">
-```
-
-Base class (parent class)
-
 ```js
-class Animal {
-  constructor(name) {
+class Person {
+  constructor(name, age) {
     this.name = name;
+    this.age = age;
   }
 
-  speak() {
-    console.log(`${this.name} makes a sound.`);
+  greet() {
+    console.log(`Hello, ${this.name}, who is ${this.age}!`);
+  }
+}
+
+class Employee extends Person {
+  constructor(name, age, job) {
+    super(name, age);
+    this.job = job;
+  }
+
+  title() {
+    console.log(`${this.name},  works as a ${this.job}!`);
   }
 }
 
-module.exports = Animal;
+const john = new Employee("John", 25, "Developer");
+john.greet(); // Hello, John, who is 25!
+john.title(); // John works as a Developer!
 ```
 
-```mdx-code-block
-</TabItem>
-<TabItem value="Child class">
-```
+### Static Methods
 
-Derived class (child class) inheriting from Animal
+Static methods are called on the class itself, not on an instance of the class.
 
 ```js
-const Animal = require("./animal");
-
-class Dog extends Animal {
-  constructor(name, breed) {
-    super(); // Call the constructor of the parent class
-    this.breed = breed;
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
   }
 
-  speak() {
-    console.log(`${this.name} the ${this.breed} barks.`);
+  static create(name, age) {
+    return new Person(name, age);
   }
 }
-```
 
-```mdx-code-block
-</TabItem>
-</Tabs>
-```
-
-```js
-// Create instances of the classes
-const genericAnimal = new Animal("Generic Animal");
-const myDog = new Dog("Buddy", "Golden Retriever");
-
-// Call methods on the instances
-genericAnimal.speak(); // Output: Generic Animal makes a sound.
-myDog.speak(); // Output: Buddy the Golden Retriever barks.
+const john = Person.create("John", 25);
 ```
 
 ## Regex
