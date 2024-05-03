@@ -514,48 +514,27 @@ const sum = (...args) => {
 
 ### Named Function Parameters
 
-````js
+```js
 const greet = ({ name, greeting }) => {
   console.log(`${greeting}, ${name}!`);
 };
+```
 
-## Async/Await
+### Creating a generator function
 
-```js
-const axios = require("axios");
-
-const url = "https://swapi.dev/api/";
-
-const getPeople = async () => {
-  const data = await axios.get(`${url}people/1`);
-  console.log(data.data.name);
-};
-
-getPeople();
-````
-
-### Multiple Promises
-
-To run multiple promises simultaneously
+A generator function is a special type of function that can be paused and resumed.
 
 ```js
-const axios = require("axios");
+function* generator() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
 
-const getDogPic = async () => {
-  const husky_promise = axios.get(`https://dog.ceo/api/breed/husky/images/random`);
-  const doberman_promise = axios.get(`https://dog.ceo/api/breed/doberman/images/random`);
-  const hound_promise = axios.get(`https://dog.ceo/api/breed/hound/images/random`);
-
-  const all = await Promise.all([husky_promise, doberman_promise, hound_promise]);
-
-  const images = all.map((image) => {
-    return image.body.message;
-  });
-
-  console.log(images);
-};
-
-getDogPic();
+const gen = generator();
+console.log(gen.next().value); // 1
+console.log(gen.next().value); // 2
+console.log(gen.next().value); // 3
 ```
 
 ## Objects
@@ -774,6 +753,52 @@ class Person {
 const john = Person.create("John", 25);
 ```
 
+## Asynchronous Programming
+
+### Return a promise
+
+```js
+const promise = fetch("https://jsonplaceholder.typicode.com/posts/1");
+
+promise
+  .then((response) => response.json())
+  .then((data) => console.log(data))
+  .catch((error) => console.log(error))
+  .finally(() => console.log("Done"));
+```
+
+### Async/Await
+
+```js
+const fetchData = async () => {
+  const response = await fetch("https://jsonplaceholder.typicode.com/posts/1");
+  const data = await response.json();
+  console.log(data);
+};
+
+fetchData();
+```
+
+### Multiple Promises
+
+```js
+const axios = require("axios");
+
+const getDogPic = async () => {
+  const husky_promise = axios.get(`https://dog.ceo/api/breed/husky/images/random`);
+  const doberman_promise = axios.get(`https://dog.ceo/api/breed/doberman/images/random`);
+  const hound_promise = axios.get(`https://dog.ceo/api/breed/hound/images/random`);
+
+  const all = await Promise.all([husky_promise, doberman_promise, hound_promise]);
+
+  const images = all.map((image) => {
+    return image.body.message;
+  });
+
+  console.log(images);
+};
+```
+
 ## Regex
 
 ```js
@@ -825,6 +850,201 @@ const regex = /\S+@\S+\.\S+/;
 if (regex.test(emailValid)) {
   console.log("This email is valid");
 }
+```
+
+## Errors
+
+### Try/Catch
+
+```js
+try {
+  fetch("invalid-url");
+} catch (error) {
+  console.log(error.name);
+  console.log(error.message);
+  console.log(error.stack);
+}
+```
+
+### Run another function after try/catch
+
+```js
+try {
+  fetch("invalid-url");
+} catch (error) {
+  console.log(error.name);
+  console.log(error.message);
+} finally {
+  console.log("Done");
+}
+```
+
+### Catching Errors in Async Functions
+
+```js
+const fetchData = async () => {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts/1");
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    console.log("Done");
+  }
+};
+
+fetchData();
+```
+
+### Catching different types of errors
+
+```js
+try {
+  // ...
+} catch (error) {
+  if (error instanceof TypeError) {
+    console.log("This is a TypeError");
+  } else if (error instanceof RangeError) {
+    console.log("This is an RangeError");
+  } else {
+    throw error;
+  }
+}
+```
+
+### Throwing an error
+
+```js
+const divide = (a, b) => {
+  if (b === 0) {
+    //highlight-next-line
+    throw new Error("Cannot divide by zero");
+  }
+
+  return a / b;
+};
+```
+
+### Throwing a custom error
+
+```js
+class CustomError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "CustomError";
+  }
+}
+
+const divide = (a, b) => {
+  if (b === 0) {
+    throw new CustomError("Cannot divide by zero");
+  }
+
+  return a / b;
+};
+
+// Output: CustomError: Cannot divide by zero
+```
+
+## Testing
+
+### Writing Unit Tests with Jest
+
+```bash
+npm install --save-dev jest
+```
+
+Add the following section to your package.json:
+
+```json
+{
+  "scripts": {
+    "test": "jest"
+  }
+}
+```
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Function">
+```
+
+```js title='index.js'
+"use strict";
+
+module.exports.add = (a, b) => {
+  return a + b;
+};
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Test">
+```
+
+```js title='index.test.js'
+const { add } = require("./index");
+
+describe("Addition Unit Test", () => {
+  test("add two numbers", () => {
+    expect(add(1, 2)).toBe(3);
+  });
+  test("add two more numbers", () => {
+    expect(add(3, 2)).toBe(5);
+  });
+});
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+Finally, and Jest will print the message:
+
+```bash
+npm test
+```
+
+### Jest Matchers
+
+| Function           | Description                                                                  |
+| ------------------ | ---------------------------------------------------------------------------- |
+| arrayContaining()  | Searches an array for a given value.                                         |
+| not()              | Allows you to reverse any condition.                                         |
+| stringContaining() | Searches a string for a substring.                                           |
+| stringMatching()   | Attempts to match a string to a regular expression.                          |
+| toBe()             | Tests for standard JavaScript equality, just as if you used the == operator. |
+| toBeCloseTo()      | Tests that two numbers are equal or very close.                              |
+| toBeGreaterThan()  | Checks if a numeric value is greater than the value you specify.             |
+| toBeInstanceOf()   | Checks if a returned object is an instance of a specified class.             |
+| toBeNull()         | Checks if a value is null.                                                   |
+| toBeTruthy()       | Tests if a number is truthy.                                                 |
+| toEqual()          | Performs a deep comparison that checks if one object has the same content.   |
+| toHaveProperty()   | Checks if a returned object has a specific property.                         |
+| toStrictEqual()    | Similar to toEqual() but requires the objects to match exactly.              |
+| toThrow            | Tests if the function throws an exception.                                   |
+
+### Tracking Test Coverage
+
+```bash
+npm install --save-dev jest jest-cli jest-coverage-badges
+```
+
+Add the following section to your package.json:
+
+```json
+{
+  "scripts": {
+    "test": "jest",
+    "test-coverage": "jest --collect-coverage"
+  }
+}
+```
+
+```bash
+npm run test-coverage
 ```
 
 ## Other
