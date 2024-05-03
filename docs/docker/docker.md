@@ -41,6 +41,12 @@ docker push <image_name>
 docker pull <image_name>
 ```
 
+### Remove all unused images
+
+```bash
+docker image prune
+```
+
 ## Containers
 
 ```md
@@ -98,6 +104,12 @@ docker logs <container_id>
 docker exec -it <container_id> sh
 ```
 
+### Remove all stopped containers
+
+```bash
+docker container prune
+```
+
 ## Volumes
 
 ### List all volumes
@@ -140,6 +152,12 @@ A bind mount in Docker is a method of attaching a specific directory or file fro
 
 ```bash
 docker run -v /path/on/host:/path/in/container my-docker-image
+```
+
+### Remove all volumes
+
+```bash
+docker volume prune
 ```
 
 ## Networks
@@ -206,6 +224,12 @@ Ex .When connecting a container to a local db
 
 ```bash
 docker run -d -p 3000:3000 --network="host" my-image:my-tag
+```
+
+### Remove all networks
+
+```bash
+docker network prune
 ```
 
 ## Dockerfile
