@@ -8,7 +8,7 @@ import TabItem from "@theme/TabItem";
 
 # Robot Framework
 
-## Getting Started
+## Setting up a basic test
 
 ```bash
 pip install robotframework
@@ -89,7 +89,7 @@ class Libraries:
     @keyword(name="Add")
     def add(self, num1, num2, expected_answer):
         assert num1 + num2 == expected_answer
-    
+
     @keyword(name="Cat two strings")
     def concatenate_two_strings(self, str1, str2, expected_answer):
         assert  str1 + str2 == expected_answer
@@ -97,3 +97,27 @@ class Libraries:
 
 </TabItem>
 </Tabs>
+
+## Create a python list
+
+```robotframework
+*** Settings ***
+Library    Collections
+
+*** Test Cases ***
+Print List
+    @{list}    one    two    three
+    Log    ${list}
+```
+
+## Create a python dictionary
+
+```robotframework
+*** Settings ***
+Library    Collections
+
+*** Test Cases ***
+Print Dictionary
+    &{dict}    one=1    two=2    three=3
+    Log    ${dict}
+```
