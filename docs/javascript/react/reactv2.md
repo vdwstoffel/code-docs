@@ -791,7 +791,15 @@ export default FetchComponent;
 ### Change Page Title
 
 ```jsx
-document.title = "New Page";
+import { useEffect } from "react";
+
+function App() {
+  useEffect(() => {
+    document.title = "New Title";
+  }, []);
+
+  return <div>App</div>;
+}
 ```
 
 ## Events
