@@ -15,75 +15,25 @@ import TabItem from "@theme/TabItem";
 npm i express
 ```
 
+### Hello World App
+
 ```javascript
 const express = require("express");
 const app = express();
 
-// respond with "hello world" when a GET request is made to the homepage
 app.get("/", (req, res) => {
   res.send("hello world");
 });
 
-// Start the server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
 });
 ```
 
-## HTTP Response Headers
+## Routing
 
-```bash
-npm i helmet
-```
-
-Helmet helps secure Express apps by setting HTTP response headers.
-
-```js
-import express from "express";
-import helmet from "helmet";
-
-const app = express();
-
-// Use Helmet!
-app.use(helmet());
-
-app.get("/", (req, res) => {
-  res.send("Hello world!");
-});
-
-app.listen(8000);
-```
-
-## Error route
-
-Add this as the last route. When no routes match this route will run
-
-```javascript
-app.all("*", (req, res) => {
-  res.status(404).json({ status: "failure", message: `Cant find ${req.originalUrl}` });
-});
-```
-
-## Receiving Form Data
-
-```js
-const express = require('express');
-const app = express();
-
-app.use(express.urlencoded({ extended: true }));
-
-app.post('/submit-form', (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
-  // Now you can use the form data
-  res.send(`Received data: ${username}, ${password}`);
-});
-
-app.listen(3000);
-```
-
-## Route methods (Dynamic Routes)
+### Route methods
 
 ```mdx-code-block
 <Tabs>
@@ -154,7 +104,30 @@ app.delete("/api/tours/:id", (req, res) => {
 </Tabs>
 ```
 
-## Route Parameters
+### Add default Error route
+
+Add this as the last route. When no routes match this route will run
+
+```javascript
+const express = require("express");
+const app = express();
+
+app.get("/", (req, res) => {
+  res.status(200).json({ status: "success", message: "Hello World" });
+});
+
+//highlight-start
+app.all("*", (req, res) => {
+  res.status(404).json({ status: "failure", message: `Cant find ${req.originalUrl}` });
+});
+//highlight-end
+
+app.listen(3000, () => {
+  console.log("App is listening on port 3000");
+});
+```
+
+### Route Parameters (Dynamic Routing)
 
 `mysite.com/api/tours/5`
 
@@ -204,7 +177,34 @@ app.listen(3000, () => {
 // http://localhost:3000/comment/4          => Cannot GET /comment/4 Since the route was never mounted
 ```
 
-## Query Params
+### Response Methods
+
+| Method           | Description                                 |
+| ---------------- | ------------------------------------------- |
+| `res.send()`     | Send a response of various types.           |
+| `res.status()`   | Add the status code in brackets and send it |
+| `res.json()`     | Send a JSON response.                       |
+| `res.redirect()` | Redirect a request.                         |
+| `res.render()`   | Render a view template.                     |
+| `res.download()` | Prompt a file to be downloaded.             |
+
+### Chain methods on a route
+
+```javascript
+app
+  .route("/book")
+  .get((req, res) => {
+    res.send("Get a random book");
+  })
+  .post((req, res) => {
+    res.send("Add a book");
+  })
+  .put((req, res) => {
+    res.send("Update the book");
+  });
+```
+
+### Add parameters to a query
 
 `/api/tours?duration=5&difficulty=easy`
 
@@ -226,32 +226,50 @@ excludeFields.forEach((el) => delete queryObj[el]); // delete from the object
 console.log(queryObj);
 ```
 
-## Response Methods
+## Secure HTTP Response Headers
 
-| Method           | Description                                 |
-| ---------------- | ------------------------------------------- |
-| `res.status()`   | Add the status code in brackets and send it |
-| `res.json()`     | Send a JSON response.                       |
-| `res.redirect()` | Redirect a request.                         |
-| `res.render()`   | Render a view template.                     |
-
-## app.route()
-
-```javascript
-app
-  .route("/book")
-  .get((req, res) => {
-    res.send("Get a random book");
-  })
-  .post((req, res) => {
-    res.send("Add a book");
-  })
-  .put((req, res) => {
-    res.send("Update the book");
-  });
+```bash
+npm i helmet
 ```
 
-## MVC
+Helmet helps secure Express apps by setting HTTP response headers.
+
+```js
+import express from "express";
+import helmet from "helmet";
+const app = express();
+
+// highlight-next-line
+app.use(helmet());
+
+app.get("/", (req, res) => {
+  res.send("Hello world!");
+});
+
+app.listen(8000);
+```
+
+## Receiving Form Data
+
+```js
+const express = require("express");
+const app = express();
+
+app.use(express.urlencoded({ extended: true }));
+
+app.post("/submit-form", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  // Now you can use the form data
+  res.send(`Received data: ${username}, ${password}`);
+});
+
+app.listen(3000);
+```
+
+
+
+## Implement MVC Pattern
 
 MVC (Model-View-Controller) is a software architectural pattern that separates an application into three interconnected components: the data (Model), user interface (View), and application logic (Controller), facilitating better code organization and maintenance.
 
