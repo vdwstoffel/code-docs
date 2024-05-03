@@ -15,57 +15,25 @@ import TabItem from "@theme/TabItem";
 npm i express
 ```
 
+### Hello World App
+
 ```javascript
 const express = require("express");
 const app = express();
 
-// respond with "hello world" when a GET request is made to the homepage
 app.get("/", (req, res) => {
   res.send("hello world");
 });
 
-// Start the server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
 });
 ```
 
-## HTTP Response Headers
+## Routing
 
-```bash
-npm i helmet
-```
-
-Helmet helps secure Express apps by setting HTTP response headers.
-
-```js
-import express from "express";
-import helmet from "helmet";
-
-const app = express();
-
-// Use Helmet!
-app.use(helmet());
-
-app.get("/", (req, res) => {
-  res.send("Hello world!");
-});
-
-app.listen(8000);
-```
-
-## Error route
-
-Add this as the last route. When no routes match this route will run
-
-```javascript
-app.all("*", (req, res) => {
-  res.status(404).json({ status: "failure", message: `Cant find ${req.originalUrl}` });
-});
-```
-
-## Route methods (Dynamic Routes)
+### Route methods
 
 ```mdx-code-block
 <Tabs>
@@ -136,7 +104,30 @@ app.delete("/api/tours/:id", (req, res) => {
 </Tabs>
 ```
 
-## Route Parameters
+### Add default Error route
+
+Add this as the last route. When no routes match this route will run
+
+```javascript
+const express = require("express");
+const app = express();
+
+app.get("/", (req, res) => {
+  res.status(200).json({ status: "success", message: "Hello World" });
+});
+
+//highlight-start
+app.all("*", (req, res) => {
+  res.status(404).json({ status: "failure", message: `Cant find ${req.originalUrl}` });
+});
+//highlight-end
+
+app.listen(3000, () => {
+  console.log("App is listening on port 3000");
+});
+```
+
+### Route Parameters (Dynamic Routing)
 
 `mysite.com/api/tours/5`
 
@@ -186,7 +177,34 @@ app.listen(3000, () => {
 // http://localhost:3000/comment/4          => Cannot GET /comment/4 Since the route was never mounted
 ```
 
-## Query Params
+### Response Methods
+
+| Method           | Description                                 |
+| ---------------- | ------------------------------------------- |
+| `res.send()`     | Send a response of various types.           |
+| `res.status()`   | Add the status code in brackets and send it |
+| `res.json()`     | Send a JSON response.                       |
+| `res.redirect()` | Redirect a request.                         |
+| `res.render()`   | Render a view template.                     |
+| `res.download()` | Prompt a file to be downloaded.             |
+
+### Chain methods on a route
+
+```javascript
+app
+  .route("/book")
+  .get((req, res) => {
+    res.send("Get a random book");
+  })
+  .post((req, res) => {
+    res.send("Add a book");
+  })
+  .put((req, res) => {
+    res.send("Update the book");
+  });
+```
+
+### Add parameters to a query
 
 `/api/tours?duration=5&difficulty=easy`
 
@@ -208,32 +226,50 @@ excludeFields.forEach((el) => delete queryObj[el]); // delete from the object
 console.log(queryObj);
 ```
 
-## Response Methods
+## Secure HTTP Response Headers
 
-| Method           | Description                                 |
-| ---------------- | ------------------------------------------- |
-| `res.status()`   | Add the status code in brackets and send it |
-| `res.json()`     | Send a JSON response.                       |
-| `res.redirect()` | Redirect a request.                         |
-| `res.render()`   | Render a view template.                     |
-
-## app.route()
-
-```javascript
-app
-  .route("/book")
-  .get((req, res) => {
-    res.send("Get a random book");
-  })
-  .post((req, res) => {
-    res.send("Add a book");
-  })
-  .put((req, res) => {
-    res.send("Update the book");
-  });
+```bash
+npm i helmet
 ```
 
-## MVC
+Helmet helps secure Express apps by setting HTTP response headers.
+
+```js
+import express from "express";
+import helmet from "helmet";
+const app = express();
+
+// highlight-next-line
+app.use(helmet());
+
+app.get("/", (req, res) => {
+  res.send("Hello world!");
+});
+
+app.listen(8000);
+```
+
+## Receiving Form Data
+
+```js
+const express = require("express");
+const app = express();
+
+app.use(express.urlencoded({ extended: true }));
+
+app.post("/submit-form", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  // Now you can use the form data
+  res.send(`Received data: ${username}, ${password}`);
+});
+
+app.listen(3000);
+```
+
+
+
+## Implement MVC Pattern
 
 MVC (Model-View-Controller) is a software architectural pattern that separates an application into three interconnected components: the data (Model), user interface (View), and application logic (Controller), facilitating better code organization and maintenance.
 
@@ -509,11 +545,21 @@ app.listen(3000);
 | httpOnly | Boolean | Flags the cookie to be accessible only by the web server.                                 |
 
 ```js
-res.cookie("jwt", token, { expires: new Date(Date.now() + 900000), secure: true, httpOnly: true });
-res.status(statusCode).json({ status: "success", data: data });
+const express = require("express");
+const app = express();
+
+app.get("/", (req, res) => {
+  // Set a cookie named 'myCookie' with a value of 'Hello World'
+  res.cookie("myCookie", "Hello World", { expires: new Date(Date.now() + 900000), secure: true, httpOnly: true });
+  res.status(200).json({ message: "Cookie has been set" });
+});
+
+app.listen(3000);
 ```
 
 ### Cookie-Parser
+
+cookie-parser is a middleware in Express.js that parses Cookie header and populates req.cookies with an object keyed by the cookie names.
 
 ```bash
 npm i cookie-parser
@@ -521,49 +567,16 @@ npm i cookie-parser
 
 ```js
 const express = require("express");
-const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 
 const app = express();
-
-// Using cookie-parser middleware to parse cookies in incoming requests
 app.use(cookieParser());
 
-// Setting view engine as EJS and specifying views directory
-app.set("view engine", "ejs");
-app.set("views", __dirname + "/views");
-
-// Route handling for the root URL "/"
 app.get("/", (req, res) => {
-  // Generating a JWT token with name as payload and setting it in a cookie
-  const token = jwt.sign({ name: "Stoffel" }, "superSecret", { expiresIn: "1w" });
-  res.cookie("jwt", token, { expires: new Date(Date.now() + 900000), httpOnly: true });
-  res.render("index");
+  console.log("Cookies: ", req.cookies);
 });
 
-// Route handling for "/cookie" to display all cookies sent by the client
-app.get("/cookie", (req, res) => {
-  // Retrieving all cookies from the request object
-  const token = req.cookies.jwt;
-  const decodedToken = jwt.verify(token, "superSecret");
-
-  // Sending the cookies back as a JSON response
-  res.json({ cookie: decodedToken });
-});
-
-// Starting the server on port 3000
 app.listen(3000);
-s;
-```
-
-```json
-{
-  "cookie": {
-    "name": "Stoffel",
-    "iat": 1701376467,
-    "exp": 1701981267
-  }
-}
 ```
 
 [see more](https://expressjs.com/en/5x/api.html#res.cookie)

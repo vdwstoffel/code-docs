@@ -36,3 +36,21 @@ systemctl stop mongod.service
 ```bash
 systemctl restart mongod.service
 ```
+
+## Networking
+
+### Connect to a Wifi network
+
+First, list the available WiFi networks:
+
+```bash
+nmcli device wifi list
+```
+
+Connect to the WiFi network using the following command:
+
+```bash
+nmcli device wifi connect SSID_NAME password PASSWORD
+```
+
+Replace SSID_NAME with the name of the WiFi network you want to connect to and PASSWORD with the password for that network.

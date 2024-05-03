@@ -24,16 +24,40 @@ npm init
 
 ### Install
 
-To install from `package.json`
+To install all from `package.json`
 
 ```bash
 npm install
+```
+
+### Install a package
+
+```bash
+npm i <package-name>
+```
+
+### Install package as dev-dependency
+
+```bash
+npm i <package-name> --save-dev
 ```
 
 ### Remove package
 
 ```bash
 npm remove <package-name>
+```
+
+### Updating a package
+
+```bash
+npm update <package-name>
+```
+
+To update all packges
+
+```bash
+npm update
 ```
 
 ## I/O
@@ -230,4 +254,11 @@ const sendMail = async (options) => {
 };
 
 sendMail();
+```
+
+## ESLint
+
+```bash
+npm install eslint --save-dev
+npx eslint --init
 ```

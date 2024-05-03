@@ -9,6 +9,18 @@ import TabItem from "@theme/TabItem";
 
 # Python
 
+## Creating virtual environments
+
+```bash
+python -m venv .venv
+```
+
+To deactivate 
+
+```bash
+deactivate
+```
+
 ## Decorators
 
 Decorators in Python are functions that modify the behavior of other functions or methods without changing their actual code. They allow you to add functionality to existing functions dynamically.

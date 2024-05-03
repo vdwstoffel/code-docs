@@ -5,25 +5,251 @@ sidebar_position: 1
 
 # SQL
 
-## Create Database
+## SELECT
+
+### Select All Rows
 
 ```sql
-CREATE DATABASE code_snippets;
+SELECT *
+FROM employees;
 ```
 
-## Create Table
+### Select All Where
 
-To auto increase the primary key
+```sql
+SELECT * FROM employees
+WHERE employeeId = 5;
+```
 
-1. MySQL: `AUTO_INCREMENT`
-2. PostgreSQL: `SERIAL`
-3. SQLite3: `AUTOINCREMENT`
+### Select All Multiple Conditions
+
+```sql
+SELECT * FROM employees
+WHERE employeeId = 5
+AND lastName = 'Davolio'
+OR city = 'WA';
+```
+
+### Select a Subset of Columns
+
+```sql
+SELECT employeeId, lastName, firstName
+FROM employees;
+```
+
+### Alias names of columns
+
+```sql
+SELECT employeeId AS "ID", LastName AS "Last Name"
+FROM employees;
+```
+
+### Referencing an Aliased Column
+
+```sql
+SELECT employeeId AS "ID"
+FROM employees
+WHERE "ID" = 5;
+```
+
+### Concatenating Column Values
+
+```sql
+SELECT lastName || ', ' || firstName
+FROM employees;
+```
+
+> Output: `Davolio, Nancy`
+
+### Conditional Logic
+
+```sql
+SELECT employeeId, lstName, firstName, city,
+CASE
+    WHEN city = 'Seattle' THEN 'Northwest'
+    WHEN city = 'Tacoma' THEN 'Northeast'
+    ELSE 'Other'
+END AS "Region"
+FROM employees;
+```
+
+### LIMIT the Rows Returned
+
+```sql
+SELECT *
+FROM employees
+LIMIT 5;
+```
+
+### Returning n Random Records
+
+```sql
+SELECT *
+FROM employees
+ORDER BY RANDOM()
+```
+
+### Finding Null Values
+
+```sql
+SELECT *
+FROM employees
+WHERE reportsTo IS NULL;
+```
+
+### Transforming Nulls into Real Values
+
+```sql
+SELECT *
+FROM employees
+WHERE COALESCE(reportsTo, 0) = 0;
+```
+
+### LIKE - Searching for Patterns
+
+In SQL, the LIKE keyword is used to search for a specified pattern in a column.
+
+`% - The percent sign represents zero, one, or multiple characters`
+
+`\_ - The underscore represents a single character`
+
+Gets all employees whose last name starts with the letter D.
+
+```sql
+SELECT *
+FROM employees
+WHERE lastName LIKE 'D%';
+```
+
+### ORDER BY
+
+```sql
+SELECT *
+FROM employees
+ORDER BY lastName ASC;
+```
+
+```sql
+SELECT *
+FROM employees
+ORDER BY lastName DESC;
+```
+
+### ORDER BY Multiple Columns
+
+```sql
+SELECT *
+FROM employees
+ORDER BY lastName ASC, city DESC;
+```
+
+### COUNT
+
+```sql
+SELECT COUNT(*)
+FROM employees;
+```
+
+> Output: `9`
+
+### Return DISTINCT Values
+
+```sql
+SELECT DISTINCT city
+FROM employees;
+```
+
+### GROUP BY
+
+```sql
+SELECT COUNT(*), salary
+FROM employees
+GROUP BY salary;
+```
+
+### GROUP BY - HAVING
+
+```sql
+SELECT COUNT(*), salary
+FROM employees
+GROUP BY salary
+HAVING salary > 50000;
+```
+
+### IN - multiple values in WHERE
+
+The IN operator allows you to specify multiple values in a WHERE clause.
+
+```sql
+SELECT *
+FROM employees
+WHERE city IN ('Seattle', 'Tacoma');
+```
+
+## INSERT
+
+### Inserting a New Record
+
+```sql
+INSERT INTO employees (lastName, firstName, city)
+VALUES ('Doe', 'John', 'Seattle');
+```
+
+## UPDATE
+
+### Updating a Record
+
+```sql
+UPDATE employees
+SET city = 'Tacoma'
+WHERE employeeId = 5;
+```
+
+## DELETE
+
+### Deleting a Record
+
+```sql
+DELETE FROM employees
+WHERE employeeId = 5;
+```
+
+### Deleting All Records
+
+```sql
+DELETE FROM employees;
+```
+
+## Multiple Tables
+
+### INNER JOIN
+
+```sql
+SELECT *
+FROM Employees
+INNER JOIN Customers
+ON Employees.EmployeeID = Orders.EmployeeID;
+```
+
+## Tables
+
+### Create Table
 
 ```sql
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
-    username VARCHAR(250) UNIQUE,
-    age INT
+    username VARCHAR(250),
+    age INTEGER
+);
+```
+
+### Create Table with Constraints
+
+```sql
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(250) NOT NULL,
+    age INTEGER NOT NULL
 );
 ```
 
@@ -32,168 +258,43 @@ CREATE TABLE users (
 ```sql
 CREATE TABLE platform (
     platform_id SERIAL PRIMARY KEY,
+    user_id INTEGER,
     platform_name VARCHAR(250),
-    user_id INTEGER REFERENCES users(user_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 ```
 
-## Drop Table
-
 ```sql
-DROP TABLE users;
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(250),
+    age INTEGER
+);
 ```
 
-## Alter Table
+### Drop Table
 
 ```sql
--- Rename Table
+DROP TABLE IF EXISTS users;
+```
+
+### Rename Table
+
+```sql
 ALTER TABLE users
-RENAME TO new_users;
-
--- Rename COLUMN
-ALTER TABLE new_users
-RENAME COLUMN username TO new_username;
-
--- Drop COLUMN
-ALTER TABLE new_users
-DROP COLUMN IF EXISTS age;
+RENAME TO customers;
 ```
 
-## SELECT
-
-The SELECT statement is used to select data from a database.
+### Add Column
 
 ```sql
-SELECT * FROM users;
-
-SELECT * FROM users
-WHERE username = 'Stoffel';
-
-SELECT username AS us
-FROM users;
-
-SELECT * FROM users
-ORDER BY username ASC/DESC;
+ALTER TABLE users
+ADD COLUMN email VARCHAR(250);
 ```
 
-## INSERT INTO
-
-The INSERT INTO statement is used to insert new records in a table.
+### Drop Column
 
 ```sql
-INSERT INTO users (username, age)
-VALUES ('Stoffel', 30);
-```
-
-## UPDATE
-
-The UPDATE statement is used to modify existing records in a table.
-
-```sql
-UPDATE users
-SET username = 'stoffel_updated'
-WHERE username = 'Stoffel'
-RETURNING *; -- See output
-```
-
-## DELETE
-
-The DELETE statement is used to delete existing records from a table.
-
-```sql
--- Delete all
-DELETE FROM users;
-
--- Delete on condition
-DELETE FROM users
-WHERE username = 'Christoff'
-```
-
-## COUNT
-
-```sql
-SELECT COUNT(*) FROM users;
-```
-
-## LIMIT
-
-```sql
-SELECT * FROM users
-LIMIT 5;
-```
-
-## JOIN
-
-```sql
-SELECT * FROM users
-INNER JOIN platform
-ON users.user_id = platform.user_id;
-```
-
-## GROUP BY
-
-The GROUP BY statement is used to group rows that have the same values into summary rows.
-
-```sql
-SELECT age, COUNT(*) FROM users
-GROUP BY age;
-
--- The HAVING clause is used to filter records that are returned by GROUP BY
-SELECT age, COUNT (*) FROM users
-GROUP BY age
-HAVING age < 30;
-```
-
-## DISTINCT
-
-The DISTINCT keyword is used to return only distinct (unique) values.
-
-```sql
-SELECT DISTINCT age FROM users;
-```
-
-## IN
-
-The IN operator allows you to specify multiple values in a WHERE clause.
-
-```sql
-SELECT * FROM users
-WHERE username
-IN ('Stoffel', 'Mavis');
-```
-
-## LIKE
-
-The LIKE operator is used in a WHERE clause to search for a specified pattern in a column.
-
-```sql
--- Exact Pattern Match
-SELECT * FROM users
-WHERE username LIKE 'Stof';
-
--- Use % for more than one pattern match
-SELECT * FROM users
-WHERE username LIKE '%Stof%';
-
--- Use _ for more than one pattern match
-SELECT * FROM users
-WHERE username LIKE 'Stof_';
-
--- Case Insensitive
-SELECT * FROM users
-WHERE username ILIKE '%stof%';
-```
-
-## Aggregate
-
-```sql
-SELECT MIN(age) FROM users;
-
-SELECT MAX(age) FROM users;
-
-SELECT SUM(age) FROM users;
-
-SELECT AVG(age) FROM users;
-
-SELECT ROUND(AVG(age)) FROM users;
+ALTER TABLE users
+DROP COLUMN email;
 ```
