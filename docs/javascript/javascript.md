@@ -514,29 +514,272 @@ const sum = (...args) => {
 
 ### Named Function Parameters
 
-````js
+```js
 const greet = ({ name, greeting }) => {
   console.log(`${greeting}, ${name}!`);
 };
+```
 
-## Async/Await
+### Creating a generator function
+
+A generator function is a special type of function that can be paused and resumed.
 
 ```js
-const axios = require("axios");
+function* generator() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
 
-const url = "https://swapi.dev/api/";
+const gen = generator();
+console.log(gen.next().value); // 1
+console.log(gen.next().value); // 2
+console.log(gen.next().value); // 3
+```
 
-const getPeople = async () => {
-  const data = await axios.get(`${url}people/1`);
-  console.log(data.data.name);
+## Objects
+
+### Create a new object
+
+```js
+const person = {
+  name: "John",
+  age: 25,
+  city: "New York",
+};
+```
+
+### Add new property to an object
+
+```js
+const person = {
+  name: "John",
+  age: 25,
+  city: "New York",
 };
 
-getPeople();
-````
+person.job = "Developer";
+console.log(person); // { name: "John", age: 25, city: "New York", job: "Developer" }
+```
+
+### Remove a property from an object
+
+```js
+const person = {
+  name: "John",
+  age: 25,
+  city: "New York",
+  job: "Developer",
+};
+
+delete person.job;
+console.log(person); // { name: "John", age: 25, city: "New York" }
+```
+
+### Check if a property exists
+
+```js
+const person = {
+  name: "John",
+  age: 25,
+  city: "New York",
+  job: "Developer",
+};
+
+if ("job" in person) {
+  console.log("Job exists");
+}
+```
+
+### Iterate over an object
+
+```js
+const person = {
+  name: "John",
+  age: 25,
+  city: "New York",
+  job: "Developer",
+};
+
+const properties = Object.keys(person);
+
+for (const property of properties) {
+  console.log(`${property}: ${person[property]}`);
+}
+```
+
+### Check if an object is empty
+
+```js
+const person = {};
+
+if (Object.keys(person).length === 0) {
+  console.log("The object is empty");
+}
+```
+
+### Merge two objects
+
+```js
+const person = {
+  name: "John",
+  age: 25,
+};
+
+const job = {
+  job: "Developer",
+};
+
+const employee = { ...person, ...job };
+console.log(employee); // { name: "John", age: 25, job: "Developer" }
+```
+
+### Clone an object
+
+```js
+const person = {
+  name: "John",
+  age: 25,
+};
+
+const clone = { ...person };
+```
+
+### Making a deep copy of an object
+
+```js
+const person = {
+  name: "John",
+  age: 25,
+  address: {
+    city: "New York",
+    state: "NY",
+  },
+};
+
+const clone = JSON.parse(JSON.stringify(person));
+```
+
+## Classes
+
+### Create a class
+
+```js
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  greet() {
+    console.log(`Hello, ${this.name}, who is ${this.age}!`);
+  }
+}
+
+const john = new Person("John", 25);
+john.greet(); // Hello, John, who is 25!
+```
+
+### Method Chaining
+
+```js
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  greet() {
+    console.log(`Hello, ${this.name}, who is ${this.age}!`);
+    return this;
+  }
+
+  setAge(age) {
+    this.age = age;
+    return this;
+  }
+}
+
+const john = new Person("John", 25);
+john.setAge(30).greet(); // Hello, John, who is 30!
+```
+
+### Inheritance
+
+```js
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  greet() {
+    console.log(`Hello, ${this.name}, who is ${this.age}!`);
+  }
+}
+
+class Employee extends Person {
+  constructor(name, age, job) {
+    super(name, age);
+    this.job = job;
+  }
+
+  title() {
+    console.log(`${this.name},  works as a ${this.job}!`);
+  }
+}
+
+const john = new Employee("John", 25, "Developer");
+john.greet(); // Hello, John, who is 25!
+john.title(); // John works as a Developer!
+```
+
+### Static Methods
+
+Static methods are called on the class itself, not on an instance of the class.
+
+```js
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  static create(name, age) {
+    return new Person(name, age);
+  }
+}
+
+const john = Person.create("John", 25);
+```
+
+## Asynchronous Programming
+
+### Return a promise
+
+```js
+const promise = fetch("https://jsonplaceholder.typicode.com/posts/1");
+
+promise
+  .then((response) => response.json())
+  .then((data) => console.log(data))
+  .catch((error) => console.log(error))
+  .finally(() => console.log("Done"));
+```
+
+### Async/Await
+
+```js
+const fetchData = async () => {
+  const response = await fetch("https://jsonplaceholder.typicode.com/posts/1");
+  const data = await response.json();
+  console.log(data);
+};
+
+fetchData();
+```
 
 ### Multiple Promises
-
-To run multiple promises simultaneously
 
 ```js
 const axios = require("axios");
@@ -554,107 +797,6 @@ const getDogPic = async () => {
 
   console.log(images);
 };
-
-getDogPic();
-```
-
-## OOP
-
-```mdx-code-block
-<Tabs>
-<TabItem value="animal.js">
-```
-
-```javascript
-class Animal {
-  constructor(name, species) {
-    this.name = name;
-    this.species = species;
-  }
-
-  makeSound() {
-    console.log(`${this.name} makes a sound.`);
-  }
-}
-
-module.exports = Animal;
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="main.js">
-```
-
-```javascript
-const Animal = require("./animal");
-
-const cat = new Animal("Whiskers", "Cat");
-cat.makeSound(); // Output: Whiskers makes a sound.
-```
-
-```mdx-code-block
-</TabItem>
-</Tabs>
-```
-
-### Inheritance
-
-```mdx-code-block
-<Tabs>
-<TabItem value="Base Class">
-```
-
-Base class (parent class)
-
-```js
-class Animal {
-  constructor(name) {
-    this.name = name;
-  }
-
-  speak() {
-    console.log(`${this.name} makes a sound.`);
-  }
-}
-
-module.exports = Animal;
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="Child class">
-```
-
-Derived class (child class) inheriting from Animal
-
-```js
-const Animal = require("./animal");
-
-class Dog extends Animal {
-  constructor(name, breed) {
-    super(); // Call the constructor of the parent class
-    this.breed = breed;
-  }
-
-  speak() {
-    console.log(`${this.name} the ${this.breed} barks.`);
-  }
-}
-```
-
-```mdx-code-block
-</TabItem>
-</Tabs>
-```
-
-```js
-// Create instances of the classes
-const genericAnimal = new Animal("Generic Animal");
-const myDog = new Dog("Buddy", "Golden Retriever");
-
-// Call methods on the instances
-genericAnimal.speak(); // Output: Generic Animal makes a sound.
-myDog.speak(); // Output: Buddy the Golden Retriever barks.
 ```
 
 ## Regex
@@ -708,6 +850,201 @@ const regex = /\S+@\S+\.\S+/;
 if (regex.test(emailValid)) {
   console.log("This email is valid");
 }
+```
+
+## Errors
+
+### Try/Catch
+
+```js
+try {
+  fetch("invalid-url");
+} catch (error) {
+  console.log(error.name);
+  console.log(error.message);
+  console.log(error.stack);
+}
+```
+
+### Run another function after try/catch
+
+```js
+try {
+  fetch("invalid-url");
+} catch (error) {
+  console.log(error.name);
+  console.log(error.message);
+} finally {
+  console.log("Done");
+}
+```
+
+### Catching Errors in Async Functions
+
+```js
+const fetchData = async () => {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts/1");
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    console.log("Done");
+  }
+};
+
+fetchData();
+```
+
+### Catching different types of errors
+
+```js
+try {
+  // ...
+} catch (error) {
+  if (error instanceof TypeError) {
+    console.log("This is a TypeError");
+  } else if (error instanceof RangeError) {
+    console.log("This is an RangeError");
+  } else {
+    throw error;
+  }
+}
+```
+
+### Throwing an error
+
+```js
+const divide = (a, b) => {
+  if (b === 0) {
+    //highlight-next-line
+    throw new Error("Cannot divide by zero");
+  }
+
+  return a / b;
+};
+```
+
+### Throwing a custom error
+
+```js
+class CustomError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "CustomError";
+  }
+}
+
+const divide = (a, b) => {
+  if (b === 0) {
+    throw new CustomError("Cannot divide by zero");
+  }
+
+  return a / b;
+};
+
+// Output: CustomError: Cannot divide by zero
+```
+
+## Testing
+
+### Writing Unit Tests with Jest
+
+```bash
+npm install --save-dev jest
+```
+
+Add the following section to your package.json:
+
+```json
+{
+  "scripts": {
+    "test": "jest"
+  }
+}
+```
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Function">
+```
+
+```js title='index.js'
+"use strict";
+
+module.exports.add = (a, b) => {
+  return a + b;
+};
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Test">
+```
+
+```js title='index.test.js'
+const { add } = require("./index");
+
+describe("Addition Unit Test", () => {
+  test("add two numbers", () => {
+    expect(add(1, 2)).toBe(3);
+  });
+  test("add two more numbers", () => {
+    expect(add(3, 2)).toBe(5);
+  });
+});
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+Finally, and Jest will print the message:
+
+```bash
+npm test
+```
+
+### Jest Matchers
+
+| Function           | Description                                                                  |
+| ------------------ | ---------------------------------------------------------------------------- |
+| arrayContaining()  | Searches an array for a given value.                                         |
+| not()              | Allows you to reverse any condition.                                         |
+| stringContaining() | Searches a string for a substring.                                           |
+| stringMatching()   | Attempts to match a string to a regular expression.                          |
+| toBe()             | Tests for standard JavaScript equality, just as if you used the == operator. |
+| toBeCloseTo()      | Tests that two numbers are equal or very close.                              |
+| toBeGreaterThan()  | Checks if a numeric value is greater than the value you specify.             |
+| toBeInstanceOf()   | Checks if a returned object is an instance of a specified class.             |
+| toBeNull()         | Checks if a value is null.                                                   |
+| toBeTruthy()       | Tests if a number is truthy.                                                 |
+| toEqual()          | Performs a deep comparison that checks if one object has the same content.   |
+| toHaveProperty()   | Checks if a returned object has a specific property.                         |
+| toStrictEqual()    | Similar to toEqual() but requires the objects to match exactly.              |
+| toThrow            | Tests if the function throws an exception.                                   |
+
+### Tracking Test Coverage
+
+```bash
+npm install --save-dev jest jest-cli jest-coverage-badges
+```
+
+Add the following section to your package.json:
+
+```json
+{
+  "scripts": {
+    "test": "jest",
+    "test-coverage": "jest --collect-coverage"
+  }
+}
+```
+
+```bash
+npm run test-coverage
 ```
 
 ## Other
