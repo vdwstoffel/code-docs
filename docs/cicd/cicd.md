@@ -116,49 +116,317 @@ volumes:
 docker run -d --name jenkins -p 8080:8080 -p 50000:50000 --restart=on-failure -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts-jdk17
 ```
 
-### Jenkinsfile 
+### Creating a Jenkinsfile
+
 ```groovy title="Jenkinsfile"
 pipeline {
-     agent {
-        node {
-            label 'my-pc'
-        }
-    }
+    agent any
 
     stages {
         stage('Build') {
-            environment {
-                MY_ENV_VAR = 'This is the build environment'
-            }
             steps {
-                dir('/path/to/dir') {
-                    echo "Building in ${env.WORKSPACE}"
-                    echo "${env.MY_ENV_VAR}"
-                    // Your build steps go here
-                }
+                echo 'Building..'
+                sh 'build_script.sh'
             }
         }
         stage('Test') {
-            environment {
-                MY_ENV_VAR = 'This is the test environment'
-            }
             steps {
-                dir('/path/to/dir') {
-                    echo "Testing in ${env.WORKSPACE}"
-                    echo "${env.MY_ENV_VAR}"
-                    // Your test steps go here
-                }
+                echo 'Testing..'
+                sh 'test_script.sh'
             }
         }
         stage('Deploy') {
-            environment {
-                MY_ENV_VAR = 'This is the deploy environment'
+            steps {
+                echo 'Deploying....'
+                sh 'deploy_script.sh'
+            }
+        }
+    }
+}
+```
+
+### Post pipeline actions
+
+```groovy title="Jenkinsfile"
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building..'
+                sh 'build_script.sh'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+                sh 'test_script.sh'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+                sh 'deploy_script.sh'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'This will always run'
+        }
+        success {
+            echo 'This will run only if the build is successful'
+        }
+        failure {
+            echo 'This will run only if the build fails'
+        }
+        unstable {
+            echo 'This will run only if the build is unstable'
+        }
+        changed {
+            echo 'This will run only if the build is marked as changed'
+        }
+    }
+}
+```
+
+### Using environment variables
+
+```groovy
+pipeline {
+    agent any
+
+    stages {
+        stage('Test') {
+            steps {
+                echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
+            }
+        }
+    }
+}
+```
+
+| Variable Name        | Description                                                 |
+| -------------------- | ----------------------------------------------------------- |
+| BUILD_ID             | The current build ID                                        |
+| BUILD_NUMBER         | The current build number                                    |
+| BUILD_URL            | The URL of the current build                                |
+| JOB_NAME             | The name of the current job                                 |
+| JOB_URL              | The URL of the current job                                  |
+| NODE_NAME            | The name of the current node                                |
+| NODE_LABELS          | The labels of the current node                              |
+| EXECUTOR_NUMBER      | The number of the current executor                          |
+| WORKSPACE            | The absolute path of the current workspace                  |
+| GIT_COMMIT           | The commit hash of the current build (for Git projects)     |
+| GIT_BRANCH           | The branch name of the current build (for Git projects)     |
+| SVN_REVISION         | The revision number of the current build (for SVN projects) |
+| MAVEN_HOME           | The path to the Maven installation                          |
+| JAVA_HOME            | The path to the Java installation                           |
+| PATH                 | The system PATH variable                                    |
+| HOME                 | The user's home directory                                   |
+| USER                 | The username of the user running the build                  |
+| HUDSON_URL           | The URL of the Jenkins server                               |
+| HUDSON_HOME          | The path to the Jenkins home directory                      |
+| HUDSON_SLAVE_HOME    | The path to the Jenkins slave home directory                |
+| HUDSON_NODE_COOKIE   | The cookie for the current node                             |
+| HUDSON_COOKIE        | The cookie for the current build                            |
+| HUDSON_SERVER_COOKIE | The cookie for the Jenkins server                           |
+
+### Setting environment variables
+
+```groovy
+
+pipeline {
+    agent any
+
+    environment {
+        MY_VAR = 'Hello World'
+    }
+
+    stages {
+        stage('Test') {
+            steps {
+                echo "Running ${MY_VAR}"
+            }
+        }
+    }
+}
+```
+
+### Using credentials
+
+Credentials are added in Jenkins web server
+
+```groovy
+pipeline {
+    agent {
+        // Define agent details here
+    }
+    environment {
+        AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
+        AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
+    }
+    stages {
+        stage('Example stage 1') {
+            steps {
+                //
+            }
+        }
+    }
+}
+```
+
+### Using parameters
+
+```groovy
+pipeline {
+    agent any
+    parameters {
+        string(name: 'Greeting', defaultValue: 'Hello', description: 'How should I greet the world?')
+    }
+    stages {
+        stage('Example') {
+            steps {
+                echo "${params.Greeting} World!"
+            }
+        }
+    }
+}
+```
+
+```groovy
+pipeline {
+    agent any
+    parameters {
+        string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+
+        text(name: 'BIOGRAPHY', defaultValue: '', description: 'Enter some information about the person')
+
+        booleanParam(name: 'TOGGLE', defaultValue: true, description: 'Toggle this value')
+
+        choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], description: 'Pick something')
+
+        password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
+    }
+    stages {
+        stage('Example') {
+            steps {
+                echo "Hello ${params.PERSON}"
+
+                echo "Biography: ${params.BIOGRAPHY}"
+
+                echo "Toggle: ${params.TOGGLE}"
+
+                echo "Choice: ${params.CHOICE}"
+
+                echo "Password: ${params.PASSWORD}"
+            }
+        }
+    }
+}
+```
+
+### Running Steps in parallel
+
+```groovy
+pipeline {
+    agent any
+
+    stages {
+        stage('Testing') {
+            parallel {
+                stage('Branch A') {
+                    steps {
+                        echo 'Branch A'
+                    }
+                }
+                stage('Branch B') {
+                    steps {
+                        echo 'Branch B'
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+### Choosing agent to run on
+
+```groovy
+pipeline {
+    agent {
+        label 'my_label'
+    }
+
+    stages {
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+    }
+}
+```
+
+### Setting a start trigger
+
+```groovy
+pipeline {
+    agent any
+
+    triggers {
+        cron('H/15 * * * *')
+    }
+
+    stages {
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+    }
+}
+```
+
+### Run stage on given conditions
+
+```groovy
+pipeline {
+    agent any
+
+    stages {
+        stage('Test') {
+            when {
+                expression {
+                    return env.BUILD_ID == '1'
+                }
             }
             steps {
-                dir('/path/to/dir') {
-                    echo "Deploying in ${env.WORKSPACE}"
-                    echo "${env.MY_ENV_VAR}"
-                    // Your deploy steps go here
+                echo 'Testing..'
+            }
+        }
+    }
+}
+```
+
+### Flow Control
+
+```groovy
+pipeline {
+    agent any
+
+    stages {
+        stage('Test') {
+            steps {
+                script {
+                    if (env.BUILD_ID == '1') {
+                        echo 'Testing..'
+                    } else {
+                        echo 'Not testing..'
+                    }
                 }
             }
         }
@@ -324,6 +592,7 @@ pipeline {
 </TabItem>
 <TabItem value="run_test.sh">
 ```
+
 ```bash
 #!/usr/bin/bash
 
@@ -333,7 +602,6 @@ exit 0  # By default Robot returns an error if anyt test fails.
         # So return 0 to avoid Jenkins marking the build as failed.
         # Robot Plugin will mark the test according to your defined thresholds.
 ```
-
 
 ```mdx-code-block
 </TabItem>
