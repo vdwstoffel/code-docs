@@ -660,6 +660,20 @@ const person = {
 const clone = JSON.parse(JSON.stringify(person));
 ```
 
+### Optional Chaining
+
+Allows you to read the value of a property located deep within a chain of connected objects without having to check that each reference in the chain is valid.
+
+```js
+const person = {
+  name: "John",
+  age: 25,
+};
+
+console.log(person.job.title); // Uncaught TypeError: Cannot read property 'title' of undefined
+console.log(person.job?.title); // undefined
+```
+
 ## Classes
 
 ### Create a class
