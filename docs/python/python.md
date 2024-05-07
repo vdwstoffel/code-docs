@@ -9,7 +9,7 @@ import TabItem from "@theme/TabItem";
 
 # Python
 
-## Creating virtual environments
+## Setting up a virtual environments
 
 ```bash
 python -m venv .venv
@@ -19,6 +19,24 @@ To deactivate
 
 ```bash
 deactivate
+```
+
+## Lists
+
+### Find the index of an item
+
+```python
+fruits = ['apple', 'banana', 'cherry']
+index = fruits.index('banana')
+print(index)  # Output: 1
+```
+
+### List comprehension
+
+```python
+numbers = [1, 2, 3, 4, 5]
+squared = [x**2 for x in numbers]
+print(squared)  # Output: [1, 4, 9, 16, 25]
 ```
 
 ## Decorators
