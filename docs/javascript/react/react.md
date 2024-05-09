@@ -281,9 +281,9 @@ export default function Example() {
 
 ### useState
 
-#### Add state to functional components
-
 `useState` is a Hook in React that lets you add state to your functional components.
+
+#### Add state to functional components
 
 ```jsx
 import { useState } from "react";
@@ -322,9 +322,9 @@ const [count, setCount] = useState(() => {
 
 ### useEffect
 
-#### Side effects in functional components
-
 `useEffect` is a Hook in React that allows you to perform side effects in function components. Side effects could be data fetching, subscriptions, or manually changing the DOM, among other things.
+
+#### Side effects in functional components
 
 ```jsx
 import { useEffect, useState } from "react";
