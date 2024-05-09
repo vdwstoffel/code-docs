@@ -414,7 +414,100 @@ app.get("/", middlewareOne, middlewareTwo, (req, res) => {
 
 ## Error Handeling
 
-[See Examples](express/examples#custom-error-class)
+### Custom Error Class
+
+<Tabs>
+<TabItem value="Server">
+
+```js
+const express = require("express");
+const app = express();
+
+// Import the custom errors utility
+const AppError = require("./utils/appError");
+const catchAsync = require("./utils/catchAsync");
+
+// Normal Error, Use return to go directly to global error function
+app.get("/", (req, res, next) => {
+  //... some error
+  return next(new AppError(`Some error`, 404));
+});
+
+// Async Error: wrap in catchAsync to offload errors
+app.get(
+  "/sw",
+  catchAsync(async (req, res, next) => {
+    const result = await fetch("https://swapi.dev/api/pele/1/");
+    const se = await result.json();
+    res.status(200).json({ status: "success", data: se });
+  })
+);
+
+// Handle all other routes not defined above
+app.all("*", (req, res, next) => {
+  // Pass an error to the next middleware with a custom error message and status code
+  next(new AppError(`Can't find ${req.originalUrl}`, 404));
+});
+
+// Global error handling middleware
+app.use((err, req, res, next) => {
+  // Set the status code to the error's statusCode or default to 500 (Internal Server Error)
+  err.statusCode = err.statusCode || 500;
+  // Set the status message to the error's status or default to "Unknown error"
+  err.status = err.status || "Unknown error";
+  // Send an error response with the status code and error message as JSON
+  res.status(err.statusCode).json({ status: err.status, message: err.message });
+});
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
+```
+
+</TabItem>
+<TabItem value="utils/appError.js">
+
+Errors will be passed to the global error handler in server
+
+```js
+// Define a custom error class extending the built-in Error class
+class AppError extends Error {
+  constructor(message, statusCode) {
+    // Call the Error class constructor and set the message property
+    super(message);
+
+    // Custom properties specific to the AppError class
+    this.statusCode = statusCode; // HTTP status code associated with the error
+    this.status = `${statusCode}`.startsWith("4") ? "fail" : "error"; // Determine status based on statusCode
+    this.isOperational = true; // Indicates if the error is operational
+
+    // Captures the stack trace, excluding the constructor call from the stack trace
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
+// Export the AppError class to be used in other modules
+module.exports = AppError;
+```
+
+</TabItem>
+<TabItem value="utils/catchAsync.js">
+
+```js
+// A function called catchAsync that takes another function (fn) as an argument
+module.exports = (fn) => {
+  // Returns a new function that accepts req, res, and next as parameters
+  return (req, res, next) => {
+    // Executes the provided function (fn) with req, res, and next,
+    // and catches any errors thrown by it using .catch(next)
+    fn(req, res, next).catch(next);
+  };
+};
+```
+
+</TabItem>
+</Tabs>
 
 ### Universal error handler for Unhandled Rejections
 
@@ -429,7 +522,7 @@ process.on("uncaughtException", (err) => {
 
 ## Authentication
 
-### JWT
+### Sending a JSON web token
 
 ```bash
 npm i jsonwebtoken
@@ -581,7 +674,130 @@ app.listen(3000);
 
 [see more](https://expressjs.com/en/5x/api.html#res.cookie)
 
-### [How to protect routes](/javascript/express/examples#protecting-api-routes)
+### How to Protect an API route
+
+```js
+const express = require("express");
+const jwt = require("jsonwebtoken");
+
+const app = express();
+
+// Middleware to parse JSON request bodies
+app.use(express.json());
+
+// Middleware to check the validity of the token
+const checkToken = (req, res, next) => {
+  let token = req.headers.authorization;
+  token = token.split(" ")[1]; // Extract the token from the Authorization header
+  try {
+    jwt.verify(token, "superSecret"); // Verify the token using the secret key
+    next(); // Move to the next middleware if the token is valid
+  } catch (err) {
+    throw err; // Throw an error to the global error handler if the token is invalid
+  }
+};
+
+app.get("/", (req, res) => {
+  const token = jwt.sign({ id: "901001" }, "superSecret", { expiresIn: "1w" });
+  // Generate a new token with a payload and sign it with the secret key
+  res.status(200).json({ status: "success", token: token }); // Respond with the generated token
+});
+
+// Protected route that requires a valid token (GET request to '/secret')
+app.get("/secret", checkToken, (req, res) => {
+  // This route is protected and requires a valid token, enforced by the checkToken middleware
+  res.status(200).json({ status: "success", message: "You reached the protected area" });
+});
+
+// Global error handling middleware
+app.use((err, req, res, next) => {
+  // Handle errors thrown by the checkToken middleware or other parts of the application
+  res.status(400).json({ status: "denied", message: "No Valid Token" }); // Respond with an error message
+});
+
+app.listen(3000);
+```
+
+## Working with Files
+
+### Upload Files (Backend)
+
+```bash
+npm i multer
+```
+
+```js title="upload.js"
+const multer = require("multer");
+
+// Set up storage for uploaded files
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); // folder to save files
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname); // filename
+  },
+});
+
+// Create the multer instance
+const upload = multer({ storage: storage });
+
+module.exports = upload;
+```
+
+```js title="main.js"const express = require("express");
+const app = express();
+
+// Require the upload middleware
+const upload = require("./upload");
+
+// Set up a route for file uploads
+app.post("/upload", upload.single("file"), (req, res) => {
+  // Handle the uploaded file
+  res.json({ message: "File uploaded successfully!" });
+});
+
+// Start the server
+const port = process.env.PORT || 3000;
+app.listen(port);
+```
+
+### Upload and resize Image
+
+```bash
+npm i sharp
+npm i multer
+```
+
+```js
+const multer = require("multer");
+const sharp = require("sharp");
+
+const multerStorage = multer.memoryStorage(); // save in memory to pass to image processing
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(new AppError("Not an image", 400), false); // custom error function
+  }
+};
+
+const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
+module.exports.uploadUserPhoto = upload.single("photo");
+
+module.exports.resizeUserPhoto = (req, res, next) => {
+  if (!req.file) return next(); // go to the next middleware if there is no file
+
+  sharp(req.file.buffer) // get image stored in memory
+    .resize(500, 500)
+    .toFormat("jpeg")
+    .jpeg({ quality: 90 })
+    .toFile(`path/to/destination`);
+
+  next();
+};
+```
 
 ## Rate Limiting
 
@@ -681,4 +897,294 @@ app.use(hpp());
 
 // Add a second HPP middleware to apply the whitelist only to this route.
 app.use("/search", hpp({ whitelist: ["filter"] }));
+```
+
+## Testing
+
+### Demo App
+
+#### App
+
+```
+├── app.js
+├── birdsController.js
+├── birdsModel.js
+├── birdsRoute.js
+├── package.json
+├── package-lock.json
+├── server.js
+└── tests
+    └── birds.test.js
+```
+
+```mdx-code-block
+<Tabs>
+<TabItem value="server.js">
+```
+
+```js
+const app = require("./app");
+
+app.listen(3000);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="app.js">
+```
+
+```js
+const express = require("express");
+const app = express();
+
+const birdRouter = require("./birdsRoute");
+
+app.use("/birds", birdRouter);
+
+module.exports = app;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="birdsRouter.js">
+```
+
+```js
+const express = require("express");
+const router = express.Router();
+
+const birdController = require("./birdsController");
+
+router.route("/").get(birdController.getAllBirds).post(birdController.createBird);
+
+module.exports = router;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="birdsController.js">
+```
+
+```js
+module.exports.getAllBirds = async (req, res) => {
+  res.status(200).json({ status: "success", data: { type: "bird" } });
+};
+
+// http://127.0.0.1:3000/birds?title=birds&text=all_birds
+module.exports.createBird = async (req, res) => {
+  const { title, text } = req.query;
+
+  if (!title || !text) {
+    return res.status(400).json({ status: "error", message: "Invalid Input" });
+  }
+  res.status(200).json({ status: "success", data: req.query });
+};
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="test/birds.test.js">
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+#### Tests
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Mocha + Chai">
+```
+
+```bash
+npm i -D mocha
+npm i -D chai@4.3.6 # version ^5 only supports modules
+npm i -D chai-http
+npm i -D nyc        # code coverage
+```
+
+```js
+const chai = require("chai");
+const chaiHttp = require("chai-http");
+const app = require("../app");
+
+const should = chai.should();
+chai.use(chaiHttp);
+
+describe("Birds Route /Get", () => {
+  it("Should return correct response", async () => {
+    const res = await chai.request(app).get("/birds");
+    res.should.have.status(200);
+    res.body.should.be.a("object");
+    res.body.should.have.property("status").eql("success");
+    res.body.should.have.property("data");
+  });
+});
+
+describe("Birds Controller /Post", () => {
+  it("Should return success if all fields are filed in", async () => {
+    const res = await chai.request(app).post("/birds?title=birds&text=all_birds");
+    res.should.have.status(200);
+    res.body.should.have.property("status").eql("success");
+  });
+
+  it("Should fail in not all fields are filled", async () => {
+    const res = await chai.request(app).post("/birds?title=bird");
+    res.should.have.status(400);
+    res.body.should.have.property("message").eql("Invalid Input");
+  });
+});
+```
+
+```json title="package.json"
+ "scripts": {
+    "test": "mocha ./tests/*.test.js",
+    "coverage": "nyc --reporter=text --reporter=lcov npm test"
+  },
+```
+
+```bash
+npm test
+npm run coverage
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Jest + Supertest">
+```
+
+```bash
+npm i -D jest
+npm i -D supertest
+```
+
+```js
+const request = require("supertest");
+const app = require("../app");
+
+describe("Get /birds", () => {
+  beforeAll(() => {
+    console.log("Setup");
+  });
+
+  afterAll(() => {
+    console.log("Teardown");
+  });
+
+  it("Should get data", async () => {
+    const res = await request(app).get("/birds");
+    expect(res.statusCode).toBe(200);
+    expect(res.body.status).toBe("success");
+    expect(res.body.data.type).toBe("bird");
+  });
+});
+
+describe("Post /birds", () => {
+  it("Should fail if params are wrong", async () => {
+    const res = await request(app).post("/birds?title=birds");
+    expect(res.statusCode).toBe(400);
+    expect(res.body.status).toBe("error");
+    expect(res.body.message).toBe("Invalid Input");
+  });
+
+  it("Should pass if params are correct", async () => {
+    const res = await request(app).post("/birds?title=birds&text=all_birds");
+    expect(res.statusCode).toBe(200);
+    expect(res.body.data.title).toBe("birds");
+    expect(res.body.data.text).toBe("all_birds");
+  });
+});
+```
+
+```json
+ "scripts": {
+    "test": "jest --testTimeout=5000",
+    "coverage": "npx jest --coverage"
+  },
+```
+
+```bash
+npm test
+npm run coverage
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### Test Skeleton Examples
+
+```mdx-code-block
+<Tabs>
+<TabItem value="GET">
+```
+
+```js
+describe("GET /api/products/:id", () => {
+  it("should return a product", async () => {
+    const res = await request(app).get("/api/products/6331abc9e9ececcc2d449e44");
+    expect(res.statusCode).toBe(200);
+    expect(res.body.name).toBe("Product 1");
+  });
+});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="POST">
+```
+
+```js
+describe("POST /api/products", () => {
+  it("should create a product", async () => {
+    const res = await request(app).post("/api/products").send({
+      name: "Product 2",
+      price: 1009,
+      description: "Description 2",
+    });
+    expect(res.statusCode).toBe(201);
+    expect(res.body.name).toBe("Product 2");
+  });
+});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PUT">
+```
+
+```js
+describe("PUT /api/products/:id", () => {
+  it("should update a product", async () => {
+    const res = await request(app).patch("/api/products/6331abc9e9ececcc2d449e44").send({
+      name: "Product 4",
+      price: 104,
+      description: "Description 4",
+    });
+    expect(res.statusCode).toBe(200);
+    expect(res.body.price).toBe(104);
+  });
+});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="DELETE">
+```
+
+```js
+describe("DELETE /api/products/:id", () => {
+  it("should delete a product", async () => {
+    const res = await request(app).delete("/api/products/6331abc9e9ececcc2d449e44");
+    expect(res.statusCode).toBe(200);
+  });
+});
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
