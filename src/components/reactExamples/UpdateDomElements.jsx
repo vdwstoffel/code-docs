@@ -7,10 +7,15 @@ export default function UpdateDomElements() {
     inputRef.current.value = "Hello";
   };
 
+  const reset = () => {
+    inputRef.current.value = ""
+  }
+
   return (
     <>
       <input ref={inputRef} type="text" />
       <button onClick={handleClick}>Update Input</button>
+      <button onClick={reset}>Reset</button>
     </>
   );
 }

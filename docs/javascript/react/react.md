@@ -11,6 +11,8 @@ import TabItem from "@theme/TabItem";
 
 import SelectDomElement from '@site/src/components/reactExamples/SelectDomElement'
 import UpdateDomElements from '@site/src/components/reactExamples/UpdateDomElements'
+import CounterHookExample from '@site/src/components/reactExamples/CounterHookExample'
+import ToggleHookExample from '@site/src/components/reactExamples/ToggleHookExample'
 
 ## Create a new React App
 
@@ -471,6 +473,8 @@ export default function Counter() {
 }
 ```
 
+<CounterHookExample/>
+
 #### Toggle Input
 
 ```jsx title="/hooks/useToggler.jsx"
@@ -504,6 +508,8 @@ export default function App() {
   );
 }
 ```
+
+<ToggleHookExample/>
 
 ## Forms
 
