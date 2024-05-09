@@ -718,6 +718,106 @@ app.use((err, req, res, next) => {
 app.listen(3000);
 ```
 
+### Implement a password Reset
+
+Given 2 routes
+
+```js
+router.route("/resetPasswordRequest").post(userController.resetPasswordRequest);
+router.route("/resetPassword/:resetToken").post(userController.resetPassword);
+```
+
+In your authController is your resetPasswordRequest function
+
+```js title=auth.js
+module.exports.resetPasswordRequest = async (req, res, next) => {
+  const { email } = req.body;
+
+  const user = await UserModel.getUserByEmail(email); // db function to get user by email
+
+  const resetToken = uuidv4(); // npm i uuid
+  await UserModel.passwordResetRequest(email, resetToken);
+
+  const options = {
+    email: user.email,
+    firstName: user.firstName,
+    resetToken: resetToken, // send the unhashed token per email
+  };
+
+  SendPasswordResetEmail(options); // custom email function to send the email
+
+  res.status(200).json({
+    status: "success",
+    message: "Password reset email sent",
+  });
+};
+```
+
+```js title=db.js
+const crypto = require("crypto");
+
+module.exports.passwordResetRequest = async (email, token) => {
+  // Using encryptPassword (bcrypt) will make it impossible to find since it gets salted
+  // instead use createHash function from crypto library
+  const encryptedToken = crypto.createHash("sha256").update(token).digest("hex");
+  const expiry15min = new Date(Date.now() + 15 * 60 * 1000);
+
+  const res = await User.update(
+    { passwordResetToken: encryptedToken, passwordResetExpires: expiry15min },
+    { where: { email: email } }
+  );
+
+  return res;
+};
+```
+
+```js
+module.exports.resetPassword = async (req, res, next) => {
+  const { password, confirmPassword } = req.body;
+  const resetToken = req.params.resetToken;
+
+  if (password !== confirmPassword) {
+    return next(new AppError("Passwords do not match", 400));
+  }
+
+  const user = await UserModel.getUserByResetToken(resetToken);
+
+  if (!user) {
+    return next(new AppError("Invalid token", 400));
+  }
+
+  // If no password request was made
+  if (user.passwordResetExpires === null) {
+    return next(new AppError("Invalid request", 400));
+  }
+
+  const currentTime = new Date(Date.now());
+  if (currentTime > user.passwordResetExpires) {
+    return next(new AppError("Token expired", 400));
+  }
+
+  await UserModel.resetPassword(user.email, password);
+  const token = await createJWTToken(user.userId);
+
+  res.status(200).json({
+    status: "success",
+    message: "Password reset successful",
+    token: token,
+  });
+};
+```
+
+```js
+module.exports.resetPassword = async (email, password) => {
+  const hashedPW = await encryptPassword(password);
+  await User.update(
+    { password: hashedPW, passwordResetToken: null, passwordResetExpires: null, lastPasswordReset: new Date() },
+    { where: { email: email }, returning: true }
+  );
+};
+```
+
+
 ## Working with Files
 
 ### Upload Files (Backend)
