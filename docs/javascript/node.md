@@ -155,7 +155,7 @@ Then in the terminal run
 npm run start
 ```
 
-## Importing/Exporting
+## Modules Export
 
 ### Common JS
 
@@ -214,6 +214,52 @@ const multiple = require("./multiple_func");
 
 multiple.funcOne();
 multiple.funcTwo();
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### ES6
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Single Function">
+```
+
+```js title="single_func.js"
+export const hello = () => {
+  console.log("Hello");
+};
+```
+
+```js title="app.js"
+import { hello } from "./single_func";
+
+hello();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Multiple Functions">
+```
+
+```js title="multiple_func.js"
+export const funcOne = () => {
+  console.log("Func One");
+};
+
+export const funcTwo = () => {
+  console.log("Func Two");
+};
+```
+
+```js title="app.js"
+import { funcOne, funcTwo } from "./multiple_func";
+
+funcOne();
+funcTwo();
 ```
 
 ```mdx-code-block
