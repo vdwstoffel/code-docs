@@ -19,15 +19,48 @@ Outputs a JavaScript file with the same name as the TypeScript file.
 tsc filename.ts
 ```
 
+### Enable watch mode
+
+Automatically recompiles the TypeScript file when it changes.
+
+```bash
+tsc filename.ts --watch
+```
+
+### Exclude a file from compilation
+
+```bash
+tsc --init
+```
+
+This creates a `tsconfig.json` file. Add the file to the `exclude` array.
+
+```json
+{
+  "exclude": ["filename.ts", "node_modules"]
+}
+```
+
 ## Type definitions
 
 TypeScript uses type definitions to describe the shape of an object.
+
+### Simple Types
 
 ```typescript
 const name: string = "stoffel";
 const age: number = 31;
 const isDeveloper: boolean = true;
 const hobbies: string[] = ["sports", "cooking"]; // array of strings
+```
+
+### Creating a readonly array
+
+```typescript
+const hobbies: readonly string[] = ["sports", "cooking"];
+
+hobbies.push("reading");
+// Error: Property 'push' does not exist on type 'readonly string[]'
 ```
 
 ### Adding a tuple to TypeScript
@@ -78,7 +111,7 @@ userInput = 5;
 userInput = "stoffel";
 ```
 
-### Literal types
+### Literal types - specifying exact values
 
 ```typescript
 let userInput: "yes" | "no";
