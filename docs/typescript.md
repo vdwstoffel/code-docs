@@ -19,6 +19,18 @@ Outputs a JavaScript file with the same name as the TypeScript file.
 tsc filename.ts
 ```
 
+### Initialize a TypeScript project
+
+```bash
+tsc --init
+```
+
+This creates a `tsconfig.json` file. You can now compile all TypeScript files in the project by running `tsc`.
+
+```bash
+tsc
+```
+
 ### Enable watch mode
 
 Automatically recompiles the TypeScript file when it changes.
