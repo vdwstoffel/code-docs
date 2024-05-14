@@ -1284,3 +1284,13 @@ Sample
   }
 }
 ```
+
+### Accept any number of arguments
+
+```javascript
+const sum = (...args) => {
+  return args.reduce((total, number) => total + number, 0);
+};
+
+console.log(sum(1, 2, 3, 4, 5)); // 15
+```
