@@ -60,7 +60,7 @@ TypeScript uses type definitions to describe the shape of an object.
 ### Simple Types
 
 ```typescript
-const name: string = "stoffel";
+const name: string = "John";
 const age: number = 31;
 const isDeveloper: boolean = true;
 const hobbies: string[] = ["sports", "cooking"]; // array of strings
@@ -78,7 +78,7 @@ hobbies.push("reading");
 ### Adding a tuple to TypeScript
 
 ```typescript
-const myTuple: [string, number] = ["stoffel", 31];
+const myTuple: [string, number] = ["John", 31];
 ```
 
 ### Defining a tuple in a object
@@ -90,7 +90,7 @@ const person: {
   hobbies: string[];
   role: [number, string]; // set a tuple type
 } = {
-  name: "Stoffel",
+  name: "John",
   age: 31,
   hobbies: ["Sports", "cooking"],
   role: [2, "author"],
@@ -109,18 +109,18 @@ enum Role {
 }
 
 const person = {
-  name: "Stoffel",
+  name: "John",
   role: Role.ADMIN,
 };
 ```
 
 ### Giving an argument multiple types with unions
 
-```typescript   
+```typescript
 let userInput: string | number;
 
 userInput = 5;
-userInput = "stoffel";
+userInput = "John";
 ```
 
 ### Literal types - specifying exact values
@@ -142,5 +142,68 @@ type Combinable = string | number;
 let userInput: Combinable;
 
 userInput = 5;
-userInput = "stoffel";
+userInput = "John";
+```
+
+## Classes
+
+### Creating a class
+
+```typescript
+class Person {
+  name: string;
+  age: number;
+
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+
+  greet(this: Person) {
+    console.log(`Hello, my name is ${this.name}`);
+  }
+}
+
+const John = new Person("John", 31);
+John.greet(); // Hello, my name is John
+```
+
+### Protecting properties with access modifiers
+
+```typescript
+class Person {
+  private name: string;
+  private age: number;
+
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+
+  greet(this: Person) {
+    console.log(`Hello, my name is ${this.name}`);
+  }
+}
+
+const John = new Person("John", 31);
+John.age = 18; // Error: Property 'age' is private and only accessible within class 'Person'
+```
+
+### Make an object readonly
+
+```typescript
+class Person {
+  readonly name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+
+  greet(this: Person) {
+    console.log(`Hello, my name is ${this.name}`);
+  }
+}
+
+const John = new Person("John");
+John.name = "Jack"; // Error: Cannot assign to 'name' because it is a read-only property
 ```
