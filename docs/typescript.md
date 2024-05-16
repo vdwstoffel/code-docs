@@ -207,3 +207,77 @@ class Person {
 const John = new Person("John");
 John.name = "Jack"; // Error: Cannot assign to 'name' because it is a read-only property
 ```
+
+## Interfaces
+
+Interfaces are used to define the structure of an object.
+
+### Creating an interface
+
+```typescript
+interface Person {
+  name: string;
+  age: number;
+  greet(phrase: string): void;
+}
+
+const john: Person = {
+  name: "John",
+  age: 28,
+  greet(phrase: string) {
+    console.log(`${phrase} ${this.name}`);
+  },
+};
+
+console.log(john.name); // John
+console.log(john.age); // 28
+john.greet("Aita"); // Aita John
+```
+
+### Adding optional properties
+
+```typescript
+interface Person {
+  name: string;
+  age: number;
+  greet(phrase: string): void;
+  //highlight-next-line
+  role?: string; // optional property
+}
+```
+
+### Creating classes with interfaces
+
+```typescript
+interface Person {
+  name: string;
+  age: number;
+  greet(phrase: string): void;
+}
+
+class Person implements Person {
+  constructor(public name: string, public age: number) {}
+
+  greet(phrase: string) {
+    console.log(`${phrase} ${this.name}`);
+  }
+
+  getDetails() {
+    return `Name: ${this.name}, Age: ${this.age}`;
+  }
+}
+```
+
+### Function Interfaces
+
+```typescript
+interface AddFn {
+  (a: number, b: number): void;
+}
+
+const add: AddFn = (a: number, b: number) => {
+  console.log(a + b);
+};
+
+add(1, 3);
+```
