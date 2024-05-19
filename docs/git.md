@@ -57,6 +57,18 @@ git reset --hard # remove/reset tracked files
 git clean -df # remove untracked files
 ```
 
+## Undoing a commit
+
+```bash
+git reset --soft HEAD~1
+```
+
+## Unstage all changes
+
+```bash
+git reset
+```
+
 ## Submodules
 
 ```bash
