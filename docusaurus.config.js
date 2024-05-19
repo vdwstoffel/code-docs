@@ -129,7 +129,7 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
         //https://prismjs.com/#supported-languages
-        additionalLanguages: ["bash", "docker", "yaml", "json", "robotframework", "pug", "groovy"],
+        additionalLanguages: ["bash", "docker", "yaml", "json", "robotframework", "pug", "groovy", "typescript"],
       },
       docs: {
         sidebar: {
