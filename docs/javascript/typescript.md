@@ -145,6 +145,20 @@ userInput = 5;
 userInput = "John";
 ```
 
+### Creating a custom object type
+
+```typescript
+type Person = {
+  name: string;
+  age: number;
+};
+
+const john: Person = {
+  name: "John",
+  age: 31,
+};
+```
+
 ## Classes
 
 ### Creating a class
