@@ -159,6 +159,111 @@ const john: Person = {
 };
 ```
 
+### Creating an array of custom object types
+
+```typescript
+type Person = {
+  name: string;
+  age: number;
+};
+
+const people: Person[] = [
+  { name: "John", age: 31 },
+  { name: "Jane", age: 28 },
+];
+```
+
+### Intersection types
+
+Intersection types allow you to combine multiple types.
+
+```typescript
+type Admin = {
+  name: string;
+  privileges: string[];
+};
+
+type Employee = {
+  name: string;
+  startDate: Date;
+};
+
+type ElevatedEmployee = Admin & Employee;
+
+const employee: ElevatedEmployee = {
+  name: "John",
+  privileges: ["create-server"],
+  startDate: new Date(),
+};
+```
+
+## Objects
+
+### Creating an interface
+
+```typescript
+interface Person {
+  name: string;
+  age: number;
+  greet(phrase: string): void;
+}
+
+const john: Person = {
+  name: "John",
+  age: 28,
+  greet(phrase: string) {
+    console.log(`${phrase} ${this.name}`);
+  },
+};
+
+console.log(john.name); // John
+console.log(john.age); // 28
+john.greet("Aita"); // Aita John
+```
+
+### Adding optional properties
+
+```typescript
+interface Person {
+  name: string;
+  age: number;
+  greet(phrase: string): void;
+  //highlight-next-line
+  role?: string; // optional property
+}
+```
+
+## Functions
+
+### Function Interfaces
+
+```typescript
+interface AddFn {
+  (a: number, b: number): void;
+}
+
+const add: AddFn = (a: number, b: number) => {
+  console.log(a + b);
+};
+
+add(1, 3);
+```
+
+### Function Overloads
+
+Function overloads allow you to define multiple function signatures.
+
+```typescript
+function add(a: number, b: number): number;
+function add(a: string, b: string): string;
+function add(a: any, b: any): any {
+  return a + b;
+}
+
+const result = add(1, 2); //  function add(a: number, b: number): number (+1 overload)
+const result2 = add("Hello", "World"); // function add(a: string, b: string): string (+1 overload)
+```
+
 ## Classes
 
 ### Creating a class
@@ -222,44 +327,6 @@ const John = new Person("John");
 John.name = "Jack"; // Error: Cannot assign to 'name' because it is a read-only property
 ```
 
-## Interfaces
-
-Interfaces are used to define the structure of an object.
-
-### Creating an interface
-
-```typescript
-interface Person {
-  name: string;
-  age: number;
-  greet(phrase: string): void;
-}
-
-const john: Person = {
-  name: "John",
-  age: 28,
-  greet(phrase: string) {
-    console.log(`${phrase} ${this.name}`);
-  },
-};
-
-console.log(john.name); // John
-console.log(john.age); // 28
-john.greet("Aita"); // Aita John
-```
-
-### Adding optional properties
-
-```typescript
-interface Person {
-  name: string;
-  age: number;
-  greet(phrase: string): void;
-  //highlight-next-line
-  role?: string; // optional property
-}
-```
-
 ### Creating classes with interfaces
 
 ```typescript
@@ -282,16 +349,55 @@ class Person implements Person {
 }
 ```
 
-### Function Interfaces
+## Type Guards
+
+Type guards are used to check the type of a variable.
+
+### Discriminated Unions
+
+Discriminated unions are used to create a type guard. The `type` property is used to determine the type of the object.
 
 ```typescript
-interface AddFn {
-  (a: number, b: number): void;
+interface Bird {
+  type: "bird";
+  flyingSpeed: number;
 }
 
-const add: AddFn = (a: number, b: number) => {
-  console.log(a + b);
-};
+interface Horse {
+  type: "horse";
+  runningSpeed: number;
+}
 
-add(1, 3);
+type Animal = Bird | Horse;
+
+function moveAnimal(animal: Animal) {
+  let speed;
+  switch (animal.type) {
+    case "bird":
+      speed = animal.flyingSpeed;
+      break;
+    case "horse":
+      speed = animal.runningSpeed;
+      break;
+  }
+  console.log(`Moving at speed: ${speed}`);
+}
+```
+
+## Type Casting
+
+Type casting is used to tell TypeScript that a variable is of a specific type.
+
+### Type Casting with as (JSX)
+
+`!` tells TypeScript that the element is not null.
+
+```typescript
+const inputElement = document.getElementById("input")! as HTMLInputElement;
+```
+
+### Type Casting with <\>
+
+```typescript
+const inputElement = <HTMLInputElement>document.getElementById("input");
 ```
