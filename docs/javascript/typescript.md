@@ -3,7 +3,13 @@ sidebar_label: "TypeScript"
 sidebar_position: 201
 ---
 
-# Typescript
+import TSLogo from "@site/static/img/ts.png"
+import DisplayLogo from "@site/src/components/DisplayLogo"
+
+
+# TypeScript
+
+<DisplayLogo logo={TSLogo}/>
 
 ## Installing typescript
 
