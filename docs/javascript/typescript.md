@@ -6,7 +6,6 @@ sidebar_position: 201
 import TSLogo from "@site/static/img/ts.png"
 import DisplayLogo from "@site/src/components/DisplayLogo"
 
-
 # TypeScript
 
 <DisplayLogo logo={TSLogo}/>
@@ -151,20 +150,6 @@ userInput = 5;
 userInput = "John";
 ```
 
-### Creating a custom object type
-
-```typescript
-type Person = {
-  name: string;
-  age: number;
-};
-
-const john: Person = {
-  name: "John",
-  age: 31,
-};
-```
-
 ### Creating an array of custom object types
 
 ```typescript
@@ -179,9 +164,9 @@ const people: Person[] = [
 ];
 ```
 
-### Intersection types
+### Combine multiple types
 
-Intersection types allow you to combine multiple types.
+`Intersection types` allow you to combine multiple types.
 
 ```typescript
 type Admin = {
@@ -227,6 +212,20 @@ console.log(john.age); // 28
 john.greet("Aita"); // Aita John
 ```
 
+### Creating a custom object type
+
+```typescript
+type Person = {
+  name: string;
+  age: number;
+};
+
+const john: Person = {
+  name: "John",
+  age: 31,
+};
+```
+
 ### Adding optional properties
 
 ```typescript
@@ -255,9 +254,9 @@ const add: AddFn = (a: number, b: number) => {
 add(1, 3);
 ```
 
-### Function Overloads
+### Define multiple function signatures
 
-Function overloads allow you to define multiple function signatures.
+`Function overloads` allow you to define multiple function signatures.
 
 ```typescript
 function add(a: number, b: number): number;
@@ -355,6 +354,32 @@ class Person implements Person {
 }
 ```
 
+### Creating classes with Generics
+
+```typescript
+class MyStorage<T> {
+  private data: T[] = [];
+
+  addItem(item: T) {
+    this.data.push(item);
+  }
+
+  removeItem(item: T) {
+    this.data.splice(this.data.indexOf(item), 1);
+  }
+
+  getItems() {
+    return [...this.data];
+  }
+}
+
+const text = new MyStorage<string>();
+text.addItem("Hello");
+
+const numberStorage = new MyStorage<number>();
+numberStorage.addItem(1);
+```
+
 ## Type Guards
 
 Type guards are used to check the type of a variable.
@@ -406,4 +431,50 @@ const inputElement = document.getElementById("input")! as HTMLInputElement;
 
 ```typescript
 const inputElement = <HTMLInputElement>document.getElementById("input");
+```
+
+## Generics
+
+Generics allow you to create reusable code.
+
+### Simple Generic Function
+
+```typescript
+// T is a placeholder for the type
+function identity<T>(name: T): T {
+  return name;
+}
+
+const output = identity<string>("Dave");
+console.log(output); // Dave
+```
+
+### Adding Type Constraints
+
+```typescript
+const constraint = <T extends number, U extends number>(a: T, b: U): number => {
+  return a + b;
+};
+
+const result = constraint(1, 2); // 3
+```
+
+### Keyof
+
+`keyof` is used to get the keys of an object.
+
+```typescript
+interface Person {
+  name: string;
+  age: number;
+}
+
+function printPersonProperty<T extends object, U extends keyof T>(person: T, property: U): void {
+  console.log(`Printing person property ${property}: "${person[property]}"`);
+}
+let person = {
+  name: "Max",
+  age: 27,
+};
+printPersonProperty(person, "name"); // Printing person property name: "Max"
 ```
