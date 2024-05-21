@@ -478,3 +478,42 @@ let person = {
 };
 printPersonProperty(person, "name"); // Printing person property name: "Max"
 ```
+
+
+## Decorators
+
+Decorators are used to add metadata to a class.
+
+### Enabling Decorators in tsconfig.json
+
+```json
+{
+  "compilerOptions": {
+    "experimentalDecorators": true
+  }
+}
+```
+
+### Creating a decorator
+
+```typescript
+function Print(print: string) {
+  return function (constructor: Function) {
+    console.log("Logging...");
+    console.log(print) // Logging Class Cat
+    console.log(constructor); // [class Cat]
+  };
+}
+
+@Print("Logging Class Cat")
+class Cat {
+  name = "Garfield";
+
+  constructor() {
+    console.log("This is a cat");
+  }
+}
+
+const garfield = new Cat()
+console.log(garfield)
+```
