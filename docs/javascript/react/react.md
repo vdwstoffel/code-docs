@@ -387,6 +387,11 @@ In this example, the `useEffect` hook starts a timer when the `Timer` component 
 
 #### How to select DOM elements
 
+```mdx-code-block
+<Tabs>
+<TabItem value="JavaScript">
+```
+
 ```jsx
 import { useRef } from "react";
 
@@ -404,6 +409,35 @@ export default function MyComponent() {
     </>
   );
 }
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="TypeScript">
+```
+
+```tsx
+import { useRef, MouseEvent } from "react";
+
+export default function MyComponent(): React.JSX.Element {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    inputRef.current?.focus();
+  };
+
+  return (
+    <>
+      <input ref={inputRef} type="text" />
+      <button onClick={handleClick}>Focus Input</button>
+    </>
+  );
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 <SelectDomElement/>
