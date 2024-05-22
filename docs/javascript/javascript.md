@@ -250,6 +250,13 @@ new Intl.DateTimeFormat("en-GB").format(now); // '20/04/2024'
 
 ## Arrays
 
+### Add an item to an array
+
+```js
+const languages = ["C", "Python", "JavaScript"];
+languages.push("Ruby");
+```
+
 ### Checking If an Object Is an Array
 
 ```js
