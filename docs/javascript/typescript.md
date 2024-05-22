@@ -479,7 +479,6 @@ let person = {
 printPersonProperty(person, "name"); // Printing person property name: "Max"
 ```
 
-
 ## Decorators
 
 Decorators are used to add metadata to a class.
@@ -500,7 +499,7 @@ Decorators are used to add metadata to a class.
 function Print(print: string) {
   return function (constructor: Function) {
     console.log("Logging...");
-    console.log(print) // Logging Class Cat
+    console.log(print); // Logging Class Cat
     console.log(constructor); // [class Cat]
   };
 }
@@ -514,6 +513,89 @@ class Cat {
   }
 }
 
-const garfield = new Cat()
-console.log(garfield)
+const garfield = new Cat();
+console.log(garfield);
+```
+
+## React with TypeScript
+
+### Creating a functional component
+
+```tsx title="App.tsx"
+import TodoList from "./components/TodoList";
+
+type TodoType = {
+  id: number;
+  task: string;
+};
+
+export default function App() {
+  const todo: TodoType[] = [
+    { id: 1, task: "Cleaning" },
+    { id: 2, task: "Cooking" },
+  ];
+  return (
+    <>
+      <h1>Hello TS</h1>
+      <TodoList todo={todo} name={"App"} />
+    </>
+  );
+}
+```
+
+```tsx title="TodoList.tsx"
+type TodoListProps = {
+  todo: { id: number; task: string }[];
+  name: string;
+};
+
+type Todo = {
+  id: number;
+  task: string;
+};
+
+export default function TodoList({ todo, name }: TodoListProps) {
+  return (
+    <>
+      <h1>{name}</h1>
+      <ul>
+        {todo.map((el: Todo) => (
+          <li key={el.id}>{el.task}</li>
+        ))}
+      </ul>
+    </>
+  );
+}
+```
+
+### Creating a types file
+
+```ts title="Todo.types.ts"
+export type Todo = {
+  id: number;
+  task: string;
+};
+```
+
+```tsx title="App.tsx"
+import TodoList from "./components/TodoList";
+
+import { Todo } from "./Todo.types";
+
+export default function App() {
+  const todo: Todo[] = [
+    { id: 1, task: "Cleaning" },
+    { id: 2, task: "Cooking" },
+  ];
+  return (
+    <>
+      <TodoList todo={todo} />
+    </>
+  );
+}
+```
+### Modules that does not support TypeScript
+
+```bash
+npm install @types/react-router-dom
 ```
