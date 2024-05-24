@@ -250,6 +250,13 @@ new Intl.DateTimeFormat("en-GB").format(now); // '20/04/2024'
 
 ## Arrays
 
+### Add an item to an array
+
+```js
+const languages = ["C", "Python", "JavaScript"];
+languages.push("Ruby");
+```
+
 ### Checking If an Object Is an Array
 
 ```js
@@ -658,6 +665,20 @@ const person = {
 };
 
 const clone = JSON.parse(JSON.stringify(person));
+```
+
+### Optional Chaining
+
+Allows you to read the value of a property located deep within a chain of connected objects without having to check that each reference in the chain is valid.
+
+```js
+const person = {
+  name: "John",
+  age: 25,
+};
+
+console.log(person.job.title); // Uncaught TypeError: Cannot read property 'title' of undefined
+console.log(person.job?.title); // undefined
 ```
 
 ## Classes
@@ -1269,4 +1290,14 @@ Sample
     "no-unused-vars": ["error", { "argsIgnorePattern": "req|res|next|val" }]
   }
 }
+```
+
+### Accept any number of arguments
+
+```javascript
+const sum = (...args) => {
+  return args.reduce((total, number) => total + number, 0);
+};
+
+console.log(sum(1, 2, 3, 4, 5)); // 15
 ```
