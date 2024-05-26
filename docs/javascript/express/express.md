@@ -17,6 +17,11 @@ npm i express
 
 ### Hello World App
 
+```mdx-code-block
+<Tabs>
+<TabItem value="JavaScript">
+```
+
 ```javascript
 const express = require("express");
 const app = express();
@@ -29,6 +34,27 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
 });
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="TypeScript">
+```
+
+```typescript
+import express, { Request, Response } from "express";
+const app = express();
+
+app.get("/", (req: Request, res: Response) => {
+  res.status(200).json(message: "Hello World");
+});
+
+app.listen(3000);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ## Routing
@@ -266,8 +292,6 @@ app.post("/submit-form", (req, res) => {
 
 app.listen(3000);
 ```
-
-
 
 ## Implement MVC Pattern
 
@@ -817,7 +841,6 @@ module.exports.resetPassword = async (email, password) => {
 };
 ```
 
-
 ## Working with Files
 
 ### Upload Files (Backend)
@@ -945,6 +968,26 @@ app.listen(3000);
 ```
 
 ## Usefull Middleware
+
+### How to watch for changes
+
+```bash
+npm install nodemon --save-dev
+```
+
+```json
+"scripts": {
+  "start": "node app.js",
+  "dev": "nodemon app.js"
+},
+"devDependencies": {
+  "nodemon": "^1.18.11"
+}
+```
+
+```bash
+npm run dev
+```
 
 ### Morgan
 
