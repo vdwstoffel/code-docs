@@ -41,6 +41,8 @@ app.listen(port, () => {
 <TabItem value="TypeScript">
 ```
 
+[TypeScript](../typescript.md#express-with-typescript)
+
 ```typescript
 import express, { Request, Response } from "express";
 const app = express();
@@ -297,6 +299,11 @@ app.listen(3000);
 
 MVC (Model-View-Controller) is a software architectural pattern that separates an application into three interconnected components: the data (Model), user interface (View), and application logic (Controller), facilitating better code organization and maintenance.
 
+```mdx-code-block
+<Tabs>
+<TabItem value="JavaScript">
+```
+
 ```js
 .
 ├── controllers
@@ -340,6 +347,62 @@ const birdsRouter = require("./routes/birdsRoutes");
 app.use("/birds", birdsRouter);
 
 app.listen(3000);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="TypeScript">
+```
+
+```js
+.
+├── controllers
+│   ├── birdsController.ts
+├── models
+│   ├── birdsModel.ts
+├── routes
+│   ├── birdsRoute.ts
+├── app.ts
+```
+
+```js title="controller/birdsController.ts"
+import { RequestHandler } from "express";
+
+import Birds from "../models/birdsModel";
+
+export const getAllBirds: RequestHandler = async (req, res) => {
+  // db logic
+};
+
+export const addBird: RequestHandler = async (req, res) => {
+  // db logic
+};
+```
+
+```js title="routes/birdsRoute.ts"
+import { Router } from "express";
+
+import { getAllBirds, addBird } from "../controller/birdsController";
+
+router.route("/").get(getAllBirds).post(addBird);
+
+export default router;
+```
+
+```js title="app.ts"
+import express from "express";
+const app = express();
+
+import birdsRouter from "./routes/birdsRoutes";
+// ...
+app.use("/birds", birdsRouter);
+
+app.listen(3000);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 Now go to mysite.com/birds/
