@@ -545,6 +545,59 @@ export default function App() {
 
 <ToggleHookExample/>
 
+#### Form Input Hooks
+
+```mdx-code-block
+<Tabs>
+<TabItem value="JavaScript">
+```
+
+```jsx
+import { useState, ChangeEvent } from "react";
+
+export default function useFormInput(initialValue) {
+  const handleChange = (e) => {
+    setValue(e.target.value);
+  };
+
+  const reset = () => {
+    setValue("");
+  };
+
+  return [value, handleChange, reset];
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="TypeScript">
+```
+
+```tsx
+import { useState, ChangeEvent } from "react";
+
+export default function useFormInput(
+  initialValue: string
+): [string, (e: ChangeEvent<HTMLInputElement>) => void, () => void] {
+  const [value, setValue] = useState<string>(initialValue);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+  };
+
+  const reset = (): void => {
+    setValue("");
+  };
+
+  return [value, handleChange, reset];
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
 ## Forms
 
 ### Handling Form Submissions

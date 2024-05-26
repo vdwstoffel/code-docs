@@ -10,7 +10,7 @@ sidebar_position: 203
 [Docs](https://primereact.org/)
 
 ```bash
-npm install primereact
+npm install primereact primeicons primeflex
 ```
 
 ```jsx title="main.jsx"
@@ -36,9 +36,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 ### Header
 
 ```jsx
+import { useNavigate } from "react-router-dom";
 import { Menubar } from "primereact/menubar";
 
 export default function Header() {
+  const navigate = useNavigate();
   // Recreate the original css
   const menuItem = (item, options) => {
     return (
@@ -55,7 +57,9 @@ export default function Header() {
     {
       label: "Home",
       icon: "pi pi-fw pi-home",
-      url: "/",
+      command: () => {
+        navigate("/");
+      },
       template: (item, options) => menuItem(item, options),
     },
     {
@@ -65,13 +69,17 @@ export default function Header() {
         {
           label: "Sub 1",
           icon: "pi pi-fw pi-book",
-          url: "/orders",
+          command: () => {
+            navigate("/orders");
+          },
           template: (item, options) => menuItem(item, options),
         },
         {
           label: "Sub 2",
           icon: "pi pi-fw pi-globe",
-          url: "/orders/ordersCountry",
+          command: () => {
+            navigate("/orders/ordersCountry");
+          },
           template: (item, options) => menuItem(item, options),
         },
       ],
