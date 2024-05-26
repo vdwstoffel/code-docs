@@ -599,3 +599,40 @@ export default function App() {
 ```bash
 npm install @types/react-router-dom
 ```
+
+## Express With TypeScript
+
+```bash
+npm i express 
+npm i --save-dev @types/express
+```
+
+```json title="tsconfig.json"
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "moduleResolution": "node10",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true
+  }
+}
+```
+
+### Basic express app
+
+```ts title="app.ts"
+import express from "express";
+
+const app = express();
+
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
+
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
+});
+```
