@@ -41,7 +41,7 @@ app.listen(port, () => {
 <TabItem value="TypeScript">
 ```
 
-[TypeScript](../typescript.md#express-with-typescript)
+[Getting Started with TypeScript](../typescript.md#express-with-typescript)
 
 ```typescript
 import express, { Request, Response } from "express";
