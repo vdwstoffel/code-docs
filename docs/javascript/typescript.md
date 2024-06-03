@@ -636,3 +636,56 @@ app.listen(3000, () => {
   console.log("Server running on port 3000");
 });
 ```
+
+### useState example with interface
+
+```tsx title="App.tsx"
+import React, { useState } from "react";
+
+interface User {
+  name: string;
+  age: number;
+}
+
+export default function App() {
+  const [user, setUser] = useState<User | null>(null);
+
+  const handleLogin = () => {
+    setUser({ name: "John", age: 31 });
+  };
+
+  return (
+    <div>
+      <h1>Hello TS</h1>
+      <button onClick={handleLogin}>Login</button>
+      {user && <p>{user.name}</p>}
+    </div>
+  );
+}
+```
+
+### useState with array
+
+```tsx title="App.tsx"
+import React, { useState } from "react";
+
+export default function App() {
+  const [names, setNames] = useState<string[]>([]);
+
+  const handleAddName = () => {
+    setNames([...names, "John"]);
+  };
+
+  return (
+    <div>
+      <h1>Hello TS</h1>
+      <button onClick={handleAddName}>Add Name</button>
+      <ul>
+        {names.map((name, index) => (
+          <li key={index}>{name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```

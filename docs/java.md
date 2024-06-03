@@ -62,29 +62,7 @@ Random rand = new Random();
 int randomNumber = rand.nextInt(100); // Random number between 0 and 100
 ```
 
-### How to take user input (integer)
 
-```java
-import java.util.Scanner;
-
-Scanner scanner = new Scanner(System.in);
-
-System.out.println("Enter a number: ");
-int number = scanner.nextInt();
-scanner.close();
-```
-
-### How to take user input (double)
-
-```java
-import java.util.Scanner;
-
-Scanner scanner = new Scanner(System.in);
-
-System.out.println("Enter a number: ");
-double number = scanner.nextDouble();
-scanner.close();
-```
 
 ## Strings
 
@@ -99,16 +77,13 @@ int age = 25;
 String formattedString = String.format("My name is %s and I am %d years old", name, age);
 ```
 
-### How to take user input
+### Comparing strings
 
 ```java
-import java.util.Scanner;
+String str1 = "Hello";
+String str2 = "Hello";
 
-Scanner scanner = new Scanner(System.in);
-
-System.out.println("Enter your name: ");
-String name = scanner.nextLine();
-scanner.close();
+str1.equals(str2); // true
 ```
 
 ## Char
@@ -122,4 +97,42 @@ int a = 10;
 int b = 4;
 
 double c = (double) a / b; // 2.5
+```
+
+## How to take user input
+
+### String
+
+```java
+import java.util.Scanner;
+
+Scanner scanner = new Scanner(System.in);
+
+System.out.println("Enter a string: ");
+String str = scanner.nextLine();
+scanner.close();
+```
+
+### integer
+
+```java
+import java.util.Scanner;
+
+Scanner scanner = new Scanner(System.in);
+
+System.out.println("Enter a number: ");
+int number = scanner.nextInt();
+scanner.close();
+```
+
+### Double
+
+```java
+import java.util.Scanner;
+
+Scanner scanner = new Scanner(System.in);
+
+System.out.println("Enter a number: ");
+double number = scanner.nextDouble();
+scanner.close();
 ```

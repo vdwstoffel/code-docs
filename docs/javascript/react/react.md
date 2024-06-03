@@ -802,23 +802,6 @@ export default function Counter() {
 
 ```mdx-code-block
 <Tabs>
-<TabItem value="Store">
-```
-
-```js title="store/store.js"
-import { configureStore } from "@reduxjs/toolkit";
-
-import authReducer from "./authSlice";
-
-export default configureStore({
-  reducer: {
-    auth: authReducer.reducer,
-  },
-});
-```
-
-```mdx-code-block
-</TabItem>
 <TabItem value="authSlice">
 ```
 
@@ -851,6 +834,23 @@ export default authSlice;
 
 ```mdx-code-block
 </TabItem>
+<TabItem value="Store">
+```
+
+```js title="store/store.js"
+import { configureStore } from "@reduxjs/toolkit";
+
+import authReducer from "./authSlice";
+
+export default configureStore({
+  reducer: {
+    auth: authReducer.reducer,
+  },
+});
+```
+
+```mdx-code-block
+</TabItem>
 <TabItem value="authApi.js">
 ```
 
@@ -861,7 +861,7 @@ import authSlice from "./store/authSlice";
 
 export const authenticateUser = () => {
   return async (dispatch) => {
-    const res = await getUserDetails();
+    const res = await getUserDetails(); // call to backend to get user details
     dispatch(authSlice.actions.authenticateUser({ userDetails: res.data }));
   };
 };
@@ -922,6 +922,7 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 
 import App from "./App.jsx";
+//highlight-next-line
 import store from "./store/store.js";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
