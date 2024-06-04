@@ -86,6 +86,22 @@ String str2 = "Hello";
 str1.equals(str2); // true
 ```
 
+### Turn Array into a string
+
+```java
+String[] arr = {"Hello", "World"};
+
+String str = String.join(" ", arr); // "Hello World"
+```
+
+### Turn int into a string
+
+```java
+int a = 10;
+
+String str = Integer.toString(a); // "10"
+```
+
 ## Char
 
 char must contain only a single character enclosed in single quotes.
@@ -135,4 +151,38 @@ Scanner scanner = new Scanner(System.in);
 System.out.println("Enter a number: ");
 double number = scanner.nextDouble();
 scanner.close();
+```
+
+## Arrays
+
+### Getting the length of an array
+
+```java
+int[] arr = {1, 2, 3, 4, 5};
+
+int length = arr.length; // 5
+```
+
+### Randomly shuffling an array
+
+```java
+import java.util.Random;
+
+int[] arr = {1, 2, 3, 4, 5};
+
+Random rand = new Random();
+for (int i = 0; i < arr.length; i++) {
+    int randomIndex = rand.nextInt(arr.length);
+    int temp = arr[i];
+    arr[i] = arr[randomIndex];
+    arr[randomIndex] = temp;
+}
+```
+
+### Turn a string into an array of characters
+
+```java
+String str = "Hello";
+
+char[] charArray = str.toCharArray(); // ['H', 'e', 'l', 'l', 'o']
 ```
