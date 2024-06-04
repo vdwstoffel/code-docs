@@ -62,8 +62,6 @@ Random rand = new Random();
 int randomNumber = rand.nextInt(100); // Random number between 0 and 100
 ```
 
-
-
 ## Strings
 
 Strings must contain only characters enclosed in double quotes.
@@ -106,13 +104,58 @@ String str = Integer.toString(a); // "10"
 
 char must contain only a single character enclosed in single quotes.
 
-## Type casting
+## Arrays
+
+### Getting the length of an array
 
 ```java
-int a = 10;
-int b = 4;
+int[] arr = {1, 2, 3, 4, 5};
 
-double c = (double) a / b; // 2.5
+int length = arr.length; // 5
+```
+
+### Randomly shuffling an array
+
+```java
+import java.util.Random;
+
+int[] arr = {1, 2, 3, 4, 5};
+
+Random rand = new Random();
+for (int i = 0; i < arr.length; i++) {
+    int randomIndex = rand.nextInt(arr.length);
+    int temp = arr[i];
+    arr[i] = arr[randomIndex];
+    arr[randomIndex] = temp;
+}
+```
+
+### Turn a string into an array of characters
+
+```java
+String str = "Hello";
+
+char[] charArray = str.toCharArray(); // ['H', 'e', 'l', 'l', 'o']
+```
+
+## Switch statement
+
+```java
+int day = 3;
+
+switch (day) {
+    case 1:
+        System.out.println("Monday");
+        break;
+    case 2:
+        System.out.println("Tuesday");
+        break;
+    case 3:
+        System.out.println("Wednesday");
+        break;
+    default:
+        System.out.println("Invalid day");
+}
 ```
 
 ## How to take user input
@@ -153,36 +196,11 @@ double number = scanner.nextDouble();
 scanner.close();
 ```
 
-## Arrays
-
-### Getting the length of an array
+## Type casting
 
 ```java
-int[] arr = {1, 2, 3, 4, 5};
+int a = 10;
+int b = 4;
 
-int length = arr.length; // 5
-```
-
-### Randomly shuffling an array
-
-```java
-import java.util.Random;
-
-int[] arr = {1, 2, 3, 4, 5};
-
-Random rand = new Random();
-for (int i = 0; i < arr.length; i++) {
-    int randomIndex = rand.nextInt(arr.length);
-    int temp = arr[i];
-    arr[i] = arr[randomIndex];
-    arr[randomIndex] = temp;
-}
-```
-
-### Turn a string into an array of characters
-
-```java
-String str = "Hello";
-
-char[] charArray = str.toCharArray(); // ['H', 'e', 'l', 'l', 'o']
+double c = (double) a / b; // 2.5
 ```
