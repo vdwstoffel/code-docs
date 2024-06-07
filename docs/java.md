@@ -100,6 +100,22 @@ int a = 10;
 String str = Integer.toString(a); // "10"
 ```
 
+### Index of a character in a string
+
+```java
+String str = "Hello";
+
+int index = str.indexOf('e'); // 1
+```
+
+### Acces a char in a string
+
+```java
+String str = "Hello";
+
+char c = str.charAt(1); // 'e'
+```
+
 ## Char
 
 char must contain only a single character enclosed in single quotes.
@@ -203,4 +219,46 @@ int a = 10;
 int b = 4;
 
 double c = (double) a / b; // 2.5
+```
+
+## Functions
+
+### Function with return value
+
+```java
+public static int add(int a, int b) {
+    return a + b;
+}
+
+int result = add(10, 20); // 30
+```
+
+### Function without return value
+
+```java
+public static void printHello() {
+    System.out.println("Hello");
+}
+
+printHello(); // Hello
+```
+
+### Arguments
+
+```java
+public static void printName(String name) {
+    System.out.println("Hello " + name);
+}
+
+printName("John"); // Hello John
+```
+
+### Default arguments
+
+```java
+public static void printName(String name, String greeting = "Hello") {
+    System.out.println(greeting + " " + name);
+}
+
+printName("John"); // Hello John
 ```
