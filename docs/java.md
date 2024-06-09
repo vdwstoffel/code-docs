@@ -62,6 +62,18 @@ Random rand = new Random();
 int randomNumber = rand.nextInt(100); // Random number between 0 and 100
 ```
 
+```java
+Math.random(); // Random number between 0 and 1
+```
+
+### Convert double to int
+
+```java
+double a = 10.5;
+int b = (int) a; // 10
+```
+
+
 ## Strings
 
 Strings must contain only characters enclosed in double quotes.
@@ -114,6 +126,46 @@ int index = str.indexOf('e'); // 1
 String str = "Hello";
 
 char c = str.charAt(1); // 'e'
+```
+
+### Convert a string to lowercase
+
+```java
+String str = "Hello";
+
+String lowerCaseStr = str.toLowerCase(); // "hello"
+```
+
+### Convert a string to uppercase
+
+```java
+String str = "Hello";
+
+String upperCaseStr = str.toUpperCase(); // "HELLO"
+```
+
+### Get the length of a string
+
+```java
+String str = "Hello";
+
+int length = str.length(); // 5
+```
+
+### Replace a character in a string
+
+```java
+String str = "Hello";
+
+String newStr = str.replace('e', 'a'); // "Hallo"
+```
+
+### Replace all occurrences of a character in a string
+
+```java
+String str = "Hello";
+
+String newStr = str.replaceAll("l", "a"); // "Heaao"
 ```
 
 ## Char
@@ -261,4 +313,18 @@ public static void printName(String name, String greeting = "Hello") {
 }
 
 printName("John"); // Hello John
+```
+
+### Documenting functions
+
+```java
+/**
+ * This is a doc comment
+ * @param a (int)
+ * @param b (int)
+ * @return (int)
+ */
+public static int add(int a, int b) {
+    return a + b;
+}
 ```
