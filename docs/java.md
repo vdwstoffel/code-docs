@@ -120,7 +120,7 @@ String str = "Hello";
 int index = str.indexOf('e'); // 1
 ```
 
-### Acces a char in a string
+### Access a char in a string
 
 ```java
 String str = "Hello";
@@ -174,12 +174,31 @@ char must contain only a single character enclosed in single quotes.
 
 ## Arrays
 
+### Add an item to an array
+
+```java
+String[] kingdoms = {"Mercia", "Wessex", "East Anglia"};
+
+String[] newKingdoms = Arrays.copyOf(kingdoms, kingdoms.length + 1);
+newKingdoms[newKingdoms.length - 1] = "Northumbria";
+```
+
 ### Getting the length of an array
 
 ```java
-int[] arr = {1, 2, 3, 4, 5};
+String[] kingdoms = {"Mercia", "Wessex", "East Anglia"};
 
-int length = arr.length; // 5
+int length = kingdoms.length; // 3
+```
+
+### For Each loop
+
+```java
+String[] kingdoms = {"Mercia", "Wessex", "East Anglia"};
+
+for (String kingdom : kingdoms) {
+    System.out.println(kingdom);
+}
 ```
 
 ### Randomly shuffling an array
@@ -204,6 +223,14 @@ for (int i = 0; i < arr.length; i++) {
 String str = "Hello";
 
 char[] charArray = str.toCharArray(); // ['H', 'e', 'l', 'l', 'o']
+```
+
+### Find the index of an element in an array
+
+```java
+String[] arr = {"Hello", "World"};
+
+int index = Arrays.asList(arr).indexOf("World"); // 1
 ```
 
 ## Switch statement
