@@ -59,25 +59,56 @@ npm run dev
 </Tabs>
 ```
 
-### Hello World App
+MVC (Model-View-Controller) is a software architectural pattern that separates an application into three interconnected components: the data (Model), user interface (View), and application logic (Controller), facilitating better code organization and maintenance.
 
 ```mdx-code-block
 <Tabs>
 <TabItem value="JavaScript">
 ```
 
-```javascript
+```js
+.
+├── controllers
+│   ├── birdsController.js
+├── models
+│   ├── birdsModel.js
+├── routes
+│   ├── birdsRoute.js
+├── app.js
+```
+
+```js title="controller/birdsController.js"
+const Birds = require("../models/birdsModel");
+
+module.exports.getAllBirds = async (req, res) => {
+  // db logic
+};
+
+module.exports.addBird = async (req, res) => {
+  // db logic
+};
+```
+
+```js title="routes/birdsRoute.js"
+const express = require("express");
+const router = express.Router();
+
+const birdsController = require("../controller/birdsController");
+
+router.route("/").get(birdsController.getAllBirds).post(birdsController.addBird);
+
+module.exports = router;
+```
+
+```js title="app.js"
 const express = require("express");
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("hello world");
-});
+const birdsRouter = require("./routes/birdsRoutes");
+// ...
+app.use("/birds", birdsRouter);
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`http://localhost:${port}`);
-});
+app.listen(3000);
 ```
 
 ```mdx-code-block
@@ -85,23 +116,63 @@ app.listen(port, () => {
 <TabItem value="TypeScript">
 ```
 
-[Getting Started with TypeScript](../typescript.md#express-with-typescript)
+```js
+.
+├── controllers
+│   ├── birdsController.ts
+├── models
+│   ├── birdsModel.ts
+├── routes
+│   ├── birdsRoute.ts
+├── app.ts
+```
 
-```typescript
-import express, { Request, Response } from "express";
-const app = express();
+```js title="controller/birdsController.ts"
+import { RequestHandler } from "express";
 
-app.get("/", (req: Request, res: Response) => {
-  res.status(200).json(message: "Hello World");
+import { getAllBirds } from "../models/birdsModel";
+
+export const getBirds: RequestHandler = async (req, res) => {
+  const birds = await getAllBirds();
+  res.status(200).json({ birds });
+};
+```
+
+```js title="routes/birdsRouter.ts"
+import { Router } from "express";
+
+const router = Router();
+
+import { getBirds } from "../controllers/birdsController";
+
+router.route("/birds").get(getBirds);
+
+export default router;
+
+```
+
+```js title="app.ts"
+import express, { Request, Response, Application } from "express";
+
+const app: Application = express();
+const port = process.env.PORT || 8000;
+
+import birdRouter from "./routes/birdsRouter";
+
+app.use("/", birdRouter);
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });
 
-app.listen(3000);
 ```
 
 ```mdx-code-block
 </TabItem>
 </Tabs>
 ```
+
+Now go to mysite.com/birds/
 
 ## Routing
 
@@ -339,122 +410,6 @@ app.post("/submit-form", (req, res) => {
 app.listen(3000);
 ```
 
-## Implement MVC Pattern
-
-MVC (Model-View-Controller) is a software architectural pattern that separates an application into three interconnected components: the data (Model), user interface (View), and application logic (Controller), facilitating better code organization and maintenance.
-
-```mdx-code-block
-<Tabs>
-<TabItem value="JavaScript">
-```
-
-```js
-.
-├── controllers
-│   ├── birdsController.js
-├── models
-│   ├── birdsModel.js
-├── routes
-│   ├── birdsRoute.js
-├── app.js
-```
-
-```js title="controller/birdsController.js"
-const Birds = require("../models/birdsModel");
-
-module.exports.getAllBirds = async (req, res) => {
-  // db logic
-};
-
-module.exports.addBird = async (req, res) => {
-  // db logic
-};
-```
-
-```js title="routes/birdsRoute.js"
-const express = require("express");
-const router = express.Router();
-
-const birdsController = require("../controller/birdsController");
-
-router.route("/").get(birdsController.getAllBirds).post(birdsController.addBird);
-
-module.exports = router;
-```
-
-```js title="app.js"
-const express = require("express");
-const app = express();
-
-const birdsRouter = require("./routes/birdsRoutes");
-// ...
-app.use("/birds", birdsRouter);
-
-app.listen(3000);
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="TypeScript">
-```
-
-```js
-.
-├── controllers
-│   ├── birdsController.ts
-├── models
-│   ├── birdsModel.ts
-├── routes
-│   ├── birdsRoute.ts
-├── app.ts
-```
-
-```js title="controller/birdsController.ts"
-import { RequestHandler } from "express";
-
-import { getAllBirds } from "../models/birdsModel";
-
-export const getBirds: RequestHandler = async (req, res) => {
-  const birds = await getAllBirds();
-  res.status(200).json({ birds });
-};
-```
-
-```js title="routes/birdsRouter.ts"
-import { Router } from "express";
-
-const router = Router();
-
-import { getBirds } from "../controllers/birdsController";
-
-router.route("/birds").get(getBirds);
-
-export default router;
-
-```
-
-```js title="app.ts"
-import express, { Request, Response, Application } from "express";
-
-const app: Application = express();
-const port = process.env.PORT || 8000;
-
-import birdRouter from "./routes/birdsRouter";
-
-app.use("/", birdRouter);
-
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
-
-```
-
-```mdx-code-block
-</TabItem>
-</Tabs>
-```
-
-Now go to mysite.com/birds/
 
 ## Middleware
 
