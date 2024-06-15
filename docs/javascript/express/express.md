@@ -11,8 +11,52 @@ import TabItem from "@theme/TabItem";
 
 ## Getting Started
 
+```mdx-code-block
+<Tabs>
+<TabItem value="JavaScript">
+```
+
 ```bash
 npm i express
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="TypeScript">
+```
+
+```bash
+npm init --yes
+npm install express
+npm install  -D typescript ts-node-dev @types/express
+npx tsc --init
+```
+
+```json title='tsconfig.ts'
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src"
+    // other options remain same
+  }
+}
+```
+
+```json title='package.json'
+"scripts": {
+  "build": "npx tsc",
+  "start": "node dist/index.js",
+  "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+},
+```
+
+```bash
+npm run dev
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ### Hello World App
@@ -368,36 +412,41 @@ app.listen(3000);
 ```js title="controller/birdsController.ts"
 import { RequestHandler } from "express";
 
-import Birds from "../models/birdsModel";
+import { getAllBirds } from "../models/birdsModel";
 
-export const getAllBirds: RequestHandler = async (req, res) => {
-  // db logic
-};
-
-export const addBird: RequestHandler = async (req, res) => {
-  // db logic
+export const getBirds: RequestHandler = async (req, res) => {
+  const birds = await getAllBirds();
+  res.status(200).json({ birds });
 };
 ```
 
-```js title="routes/birdsRoute.ts"
+```js title="routes/birdsRouter.ts"
 import { Router } from "express";
 
-import { getAllBirds, addBird } from "../controller/birdsController";
+const router = Router();
 
-router.route("/").get(getAllBirds).post(addBird);
+import { getBirds } from "../controllers/birdsController";
+
+router.route("/birds").get(getBirds);
 
 export default router;
+
 ```
 
 ```js title="app.ts"
-import express from "express";
-const app = express();
+import express, { Request, Response, Application } from "express";
 
-import birdsRouter from "./routes/birdsRoutes";
-// ...
-app.use("/birds", birdsRouter);
+const app: Application = express();
+const port = process.env.PORT || 8000;
 
-app.listen(3000);
+import birdRouter from "./routes/birdsRouter";
+
+app.use("/", birdRouter);
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
+
 ```
 
 ```mdx-code-block
