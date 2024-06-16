@@ -176,6 +176,8 @@ char must contain only a single character enclosed in single quotes.
 
 ### Add an item to an array
 
+In java, arrays have a fixed size. To add an item to an array, you need to create a new array with a larger size and copy the elements from the old array to the new array.
+
 ```java
 String[] kingdoms = {"Mercia", "Wessex", "East Anglia"};
 
