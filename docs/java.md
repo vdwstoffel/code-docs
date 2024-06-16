@@ -73,7 +73,6 @@ double a = 10.5;
 int b = (int) a; // 10
 ```
 
-
 ## Strings
 
 Strings must contain only characters enclosed in double quotes.
@@ -193,16 +192,6 @@ String[] kingdoms = {"Mercia", "Wessex", "East Anglia"};
 int length = kingdoms.length; // 3
 ```
 
-### For Each loop
-
-```java
-String[] kingdoms = {"Mercia", "Wessex", "East Anglia"};
-
-for (String kingdom : kingdoms) {
-    System.out.println(kingdom);
-}
-```
-
 ### Randomly shuffling an array
 
 ```java
@@ -235,6 +224,22 @@ String[] arr = {"Hello", "World"};
 int index = Arrays.asList(arr).indexOf("World"); // 1
 ```
 
+### 2D Arrays
+
+```java
+int[][] arr = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+
+for (int i = 0; i < arr.length; i++) {
+    for (int j = 0; j < arr[i].length; j++) {
+        System.out.print(arr[i][j] + " ");
+    }
+}
+```
+
 ## Switch statement
 
 ```java
@@ -253,6 +258,16 @@ switch (day) {
     default:
         System.out.println("Invalid day");
 }
+```
+
+### Print Arrays a string
+
+```java
+import java.util.Arrays;
+
+String[] arr = {"Hello", "World"};
+
+System.out.println(Arrays.toString(arr)); // [Hello, World]
 ```
 
 ## How to take user input
@@ -320,6 +335,16 @@ int i = 0;
 while (i < 5) {
     System.out.println(i);
     i++;
+}
+```
+
+### For Each loop
+
+```java
+String[] kingdoms = {"Mercia", "Wessex", "East Anglia"};
+
+for (String kingdom : kingdoms) {
+    System.out.println(kingdom);
 }
 ```
 
