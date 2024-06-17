@@ -95,12 +95,19 @@ String str2 = "Hello";
 str1.equals(str2); // true
 ```
 
-### Turn Array into a string
+### Turn String Array into a string
 
 ```java
 String[] arr = {"Hello", "World"};
 
 String str = String.join(" ", arr); // "Hello World"
+```
+### Turn char array into string
+
+```java
+char[] charArray = {'H', 'e', 'l', 'l', 'o'};
+
+String str = new String(charArray); // "Hello"
 ```
 
 ### Turn int into a string
@@ -166,6 +173,9 @@ String str = "Hello";
 
 String newStr = str.replaceAll("l", "a"); // "Heaao"
 ```
+
+
+
 
 ## Char
 
