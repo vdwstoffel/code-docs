@@ -99,6 +99,15 @@ const fixed = original[0].toUpperCase() + original.slice(1);
 // fixed = 'If you cut an orange, there is a risk it will orbisculate.';
 ```
 
+### Convert Array to String
+
+```js
+const languages = ["C", "Python", "JavaScript"];
+const string = languages.join(", ");
+
+console.log(string); // "C, Python, JavaScript"
+```
+
 ## Numbers
 
 ### Generating Random Numbers
