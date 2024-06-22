@@ -232,6 +232,29 @@ String[] arr = {"Hello", "World"};
 int index = Arrays.asList(arr).indexOf("World"); // 1
 ```
 
+### Making a deep copy of an array
+
+```java
+int[] arr = {1, 2, 3, 4, 5};
+
+int[] copy = Arrays.copyOf(arr, arr.length);
+```
+
+### Making a deep copy of a 2d array
+
+```java
+int[][] arr = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+
+int[][] copy = new int[arr.length][arr[0].length];
+for (int i = 0; i < arr.length; i++) {
+    copy[i] = Arrays.copyOf(arr[i], arr[i].length);
+}
+```
+
 ### 2D Arrays
 
 ```java
@@ -508,6 +531,36 @@ public class Main {
     public static void main(String[] args) {
         Person person1 = new Person("John", 25);
         Person person2 = new Person(person1);
+    }
+}
+```
+
+### Print class isntatance
+
+To print the object in a human-readable format, you need to override the `toString` method.
+
+```java title="Person.java"
+public class Person {
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + this.name + ", Age: " + this.age;
+    }
+}
+```
+
+```java title="Main.java"
+public class Main {
+    public static void main(String[] args) {
+        Person person = new Person("John", 25);
+        System.out.println(person); // Name: John, Age: 25
     }
 }
 ```
