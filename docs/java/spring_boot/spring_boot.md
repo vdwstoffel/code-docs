@@ -44,29 +44,5 @@ server.port=8081
 ./mvnw spring-boot:run
 ```
 
-### Dynamic HTML
 
-- [**Thymeleaf**](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf): A modern server-side Java template engine for web and standalone environments.
-
-
-```java title="HelloController.java"
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-
-@Controller
-public class HelloController {
-
-    @GetMapping("/")
-    public String hello(Model model) {
-        String message = "Hello, World!";
-        model.addAttribute("greeting", message);
-        return "hello"; // html file
-    }
-}
-```
-
-```html title="hello.html"
-<h1 th:text="${greeting}"></h1>
-```
 
