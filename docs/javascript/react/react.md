@@ -247,6 +247,43 @@ export default function Pizza({ name, ingredients }) {
 
 ```jsx
 export default function Pizza({ name, ingredients }) {
+
+function ChildA({ count }) {
+  return <div>Count: {count}</div>;
+}
+
+function ChildB({ setCount }) {
+  return <button onClick={() => setCount((count) => count + 1)}>Increment</button>;
+}
+```
+
+### Validate props with PropTypes
+
+```jsx
+import PropTypes from "prop-types";
+
+StarRating.propTypes = {
+  maxRating: PropTypes.number.isRequired,
+  color: PropTypes.string,
+};
+
+export default function StarRating({ maxRating, color }) {
+  // ....
+}
+```
+
+### Iterating over an array of data
+
+```jsx
+import React from "react";
+
+const pizzaData = [
+  { name: "Margherita", ingredients: "Tomato, mozzarella, basil" },
+  { name: "Pepperoni", ingredients: "Tomato, mozzarella, pepperoni" },
+  { name: "Hawaiian", ingredients: "Tomato, mozzarella, ham, pineapple" },
+];
+
+export default function Menu() {
   return (
     <>
       <h1>{name}</h1>
@@ -411,13 +448,8 @@ export default function MyComponent() {
 }
 ```
 
-```mdx-code-block
-</TabItem>
-<TabItem value="TypeScript">
-```
-
-```tsx
-import { useRef, MouseEvent } from "react";
+```jsx
+import { useRef } from "react";
 
 export default function MyComponent(): React.JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -544,6 +576,59 @@ export default function App() {
 ```
 
 <ToggleHookExample/>
+
+#### Form Input Hooks
+
+```mdx-code-block
+<Tabs>
+<TabItem value="JavaScript">
+```
+
+```jsx
+import { useState, ChangeEvent } from "react";
+
+export default function useFormInput(initialValue) {
+  const handleChange = (e) => {
+    setValue(e.target.value);
+  };
+
+  const reset = () => {
+    setValue("");
+  };
+
+  return [value, handleChange, reset];
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="TypeScript">
+```
+
+```tsx
+import { useState, ChangeEvent } from "react";
+
+export default function useFormInput(
+  initialValue: string
+): [string, (e: ChangeEvent<HTMLInputElement>) => void, () => void] {
+  const [value, setValue] = useState<string>(initialValue);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+  };
+
+  const reset = (): void => {
+    setValue("");
+  };
+
+  return [value, handleChange, reset];
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
 
 ## Forms
 
@@ -749,23 +834,6 @@ export default function Counter() {
 
 ```mdx-code-block
 <Tabs>
-<TabItem value="Store">
-```
-
-```js title="store/store.js"
-import { configureStore } from "@reduxjs/toolkit";
-
-import authReducer from "./authSlice";
-
-export default configureStore({
-  reducer: {
-    auth: authReducer.reducer,
-  },
-});
-```
-
-```mdx-code-block
-</TabItem>
 <TabItem value="authSlice">
 ```
 
@@ -798,6 +866,23 @@ export default authSlice;
 
 ```mdx-code-block
 </TabItem>
+<TabItem value="Store">
+```
+
+```js title="store/store.js"
+import { configureStore } from "@reduxjs/toolkit";
+
+import authReducer from "./authSlice";
+
+export default configureStore({
+  reducer: {
+    auth: authReducer.reducer,
+  },
+});
+```
+
+```mdx-code-block
+</TabItem>
 <TabItem value="authApi.js">
 ```
 
@@ -808,7 +893,7 @@ import authSlice from "./store/authSlice";
 
 export const authenticateUser = () => {
   return async (dispatch) => {
-    const res = await getUserDetails();
+    const res = await getUserDetails(); // call to backend to get user details
     dispatch(authSlice.actions.authenticateUser({ userDetails: res.data }));
   };
 };
@@ -869,6 +954,7 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 
 import App from "./App.jsx";
+//highlight-next-line
 import store from "./store/store.js";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -916,6 +1002,84 @@ export default function Home() {
 ```mdx-code-block
 </TabItem>
 </Tabs>
+```
+
+## React Router
+
+### Adding a router
+
+```bash
+npm i react-router-dom
+```
+
+```jsx title="MainNavigation.jsx"
+import { Link } from "react-router-dom";
+
+export default function MainNavigation() {
+  return (
+    <header>
+      <p>
+        <Link to="/">Home </Link>
+      </p>
+      {/* Not home component just a link*/}
+      <p>
+        <Link to="Products">Products</Link>
+      </p>
+    </header>
+  );
+}
+```
+
+```jsx title="RootLayout.jsx"
+import { Outlet } from "react-router-dom";
+import MainNavigation from "./MainNavigation";
+
+export default function RootLayout() {
+  return (
+    <>
+      <MainNavigation /> {/* Add a navigation header */}
+      <Outlet /> {/* Display all child pages */}
+    </>
+  );
+}
+```
+
+```jsx title="App.jsx"
+import "./global.css";
+
+import { createBrowserRouter, RouterProvider } from "react-router-dom"; // npm i react-router-dom
+
+import RootLayout from "./RootLayout";
+import Home from "./Home";
+import Products from "./Products";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />, // Wrap the root layout and add other pages as children
+    // errorElement: <ErrorPage />, // if page does not exists show a define error page
+    children: [
+      { index: true, element: <Home /> },
+      { path: "/products", element: <Products /> },
+    ],
+  },
+]);
+
+export default function App() {
+  return <RouterProvider router={router} />;
+}
+```
+
+```jsx title="Home.jsx"
+export default function Home() {
+  return <h1>Welcome Home</h1>;
+}
+```
+
+```jsx title="Products.jsx"
+export default function Products() {
+  return <h1>This is the Products page</h1>;
+}
 ```
 
 ## General

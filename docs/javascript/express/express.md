@@ -11,25 +11,168 @@ import TabItem from "@theme/TabItem";
 
 ## Getting Started
 
+```mdx-code-block
+<Tabs>
+<TabItem value="JavaScript">
+```
+
 ```bash
 npm i express
 ```
 
-### Hello World App
+```mdx-code-block
+</TabItem>
+<TabItem value="TypeScript">
+```
 
-```javascript
+```bash
+npm init --yes
+npm install express
+npm install  -D typescript ts-node-dev @types/express
+npx tsc --init
+```
+
+```json title='tsconfig.ts'
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src"
+    // other options remain same
+  }
+}
+```
+
+```json title='package.json'
+"scripts": {
+  "build": "npx tsc",
+  "start": "node dist/index.js",
+  "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+},
+```
+
+```bash
+npm run dev
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+MVC (Model-View-Controller) is a software architectural pattern that separates an application into three interconnected components: the data (Model), user interface (View), and application logic (Controller), facilitating better code organization and maintenance.
+
+```mdx-code-block
+<Tabs>
+<TabItem value="JavaScript">
+```
+
+```js
+.
+├── controllers
+│   ├── birdsController.js
+├── models
+│   ├── birdsModel.js
+├── routes
+│   ├── birdsRoute.js
+├── app.js
+```
+
+```js title="controller/birdsController.js"
+const Birds = require("../models/birdsModel");
+
+module.exports.getAllBirds = async (req, res) => {
+  // db logic
+};
+
+module.exports.addBird = async (req, res) => {
+  // db logic
+};
+```
+
+```js title="routes/birdsRoute.js"
+const express = require("express");
+const router = express.Router();
+
+const birdsController = require("../controller/birdsController");
+
+router.route("/").get(birdsController.getAllBirds).post(birdsController.addBird);
+
+module.exports = router;
+```
+
+```js title="app.js"
 const express = require("express");
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("hello world");
+const birdsRouter = require("./routes/birdsRoutes");
+// ...
+app.use("/birds", birdsRouter);
+
+app.listen(3000);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="TypeScript">
+```
+
+```js
+.
+├── controllers
+│   ├── birdsController.ts
+├── models
+│   ├── birdsModel.ts
+├── routes
+│   ├── birdsRoute.ts
+├── app.ts
+```
+
+```js title="controller/birdsController.ts"
+import { RequestHandler } from "express";
+
+import { getAllBirds } from "../models/birdsModel";
+
+export const getBirds: RequestHandler = async (req, res) => {
+  const birds = await getAllBirds();
+  res.status(200).json({ birds });
+};
+```
+
+```js title="routes/birdsRouter.ts"
+import { Router } from "express";
+
+const router = Router();
+
+import { getBirds } from "../controllers/birdsController";
+
+router.route("/birds").get(getBirds);
+
+export default router;
+
+```
+
+```js title="app.ts"
+import express, { Request, Response, Application } from "express";
+
+const app: Application = express();
+const port = process.env.PORT || 8000;
+
+import birdRouter from "./routes/birdsRouter";
+
+app.use("/", birdRouter);
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`http://localhost:${port}`);
-});
 ```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+Now go to mysite.com/birds/
 
 ## Routing
 
@@ -267,58 +410,6 @@ app.post("/submit-form", (req, res) => {
 app.listen(3000);
 ```
 
-
-
-## Implement MVC Pattern
-
-MVC (Model-View-Controller) is a software architectural pattern that separates an application into three interconnected components: the data (Model), user interface (View), and application logic (Controller), facilitating better code organization and maintenance.
-
-```js
-.
-├── controllers
-│   ├── birdsController.js
-├── models
-│   ├── birdsModel.js
-├── routes
-│   ├── birdsRoute.js
-├── app.js
-```
-
-```js title="controller/birdsController.js"
-const Birds = require("../models/birdsModel");
-
-module.exports.getAllBirds = async (req, res) => {
-  // db logic
-};
-
-module.exports.addBird = async (req, res) => {
-  // db logic
-};
-```
-
-```js title="routes/birdsRoute.js"
-const express = require("express");
-const router = express.Router();
-
-const birdsController = require("../controller/birdsController");
-
-router.route("/").get(birdsController.getAllBirds).post(birdsController.addBird);
-
-module.exports = router;
-```
-
-```js title="app.js"
-const express = require("express");
-const app = express();
-
-const birdsRouter = require("./routes/birdsRoutes");
-// ...
-app.use("/birds", birdsRouter);
-
-app.listen(3000);
-```
-
-Now go to mysite.com/birds/
 
 ## Middleware
 
@@ -817,7 +908,6 @@ module.exports.resetPassword = async (email, password) => {
 };
 ```
 
-
 ## Working with Files
 
 ### Upload Files (Backend)
@@ -946,6 +1036,26 @@ app.listen(3000);
 
 ## Usefull Middleware
 
+### How to watch for changes
+
+```bash
+npm install nodemon --save-dev
+```
+
+```json
+"scripts": {
+  "start": "node app.js",
+  "dev": "nodemon app.js"
+},
+"devDependencies": {
+  "nodemon": "^1.18.11"
+}
+```
+
+```bash
+npm run dev
+```
+
 ### Morgan
 
 HTTP request logger middleware for node.js
@@ -997,6 +1107,296 @@ app.use(hpp());
 
 // Add a second HPP middleware to apply the whitelist only to this route.
 app.use("/search", hpp({ whitelist: ["filter"] }));
+```
+
+## Testing
+
+### Demo App
+
+#### App
+
+```
+├── app.js
+├── birdsController.js
+├── birdsModel.js
+├── birdsRoute.js
+├── package.json
+├── package-lock.json
+├── server.js
+└── tests
+    └── birds.test.js
+```
+
+```mdx-code-block
+<Tabs>
+<TabItem value="server.js">
+```
+
+```js
+const app = require("./app");
+
+app.listen(3000);
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="app.js">
+```
+
+```js
+const express = require("express");
+const app = express();
+
+const birdRouter = require("./birdsRoute");
+
+app.use("/birds", birdRouter);
+
+module.exports = app;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="birdsRouter.js">
+```
+
+```js
+const express = require("express");
+const router = express.Router();
+
+const birdController = require("./birdsController");
+
+router.route("/").get(birdController.getAllBirds).post(birdController.createBird);
+
+module.exports = router;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="birdsController.js">
+```
+
+```js
+module.exports.getAllBirds = async (req, res) => {
+  res.status(200).json({ status: "success", data: { type: "bird" } });
+};
+
+// http://127.0.0.1:3000/birds?title=birds&text=all_birds
+module.exports.createBird = async (req, res) => {
+  const { title, text } = req.query;
+
+  if (!title || !text) {
+    return res.status(400).json({ status: "error", message: "Invalid Input" });
+  }
+  res.status(200).json({ status: "success", data: req.query });
+};
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="test/birds.test.js">
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+#### Tests
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Mocha + Chai">
+```
+
+```bash
+npm i -D mocha
+npm i -D chai@4.3.6 # version ^5 only supports modules
+npm i -D chai-http
+npm i -D nyc        # code coverage
+```
+
+```js
+const chai = require("chai");
+const chaiHttp = require("chai-http");
+const app = require("../app");
+
+const should = chai.should();
+chai.use(chaiHttp);
+
+describe("Birds Route /Get", () => {
+  it("Should return correct response", async () => {
+    const res = await chai.request(app).get("/birds");
+    res.should.have.status(200);
+    res.body.should.be.a("object");
+    res.body.should.have.property("status").eql("success");
+    res.body.should.have.property("data");
+  });
+});
+
+describe("Birds Controller /Post", () => {
+  it("Should return success if all fields are filed in", async () => {
+    const res = await chai.request(app).post("/birds?title=birds&text=all_birds");
+    res.should.have.status(200);
+    res.body.should.have.property("status").eql("success");
+  });
+
+  it("Should fail in not all fields are filled", async () => {
+    const res = await chai.request(app).post("/birds?title=bird");
+    res.should.have.status(400);
+    res.body.should.have.property("message").eql("Invalid Input");
+  });
+});
+```
+
+```json title="package.json"
+ "scripts": {
+    "test": "mocha ./tests/*.test.js",
+    "coverage": "nyc --reporter=text --reporter=lcov npm test"
+  },
+```
+
+```bash
+npm test
+npm run coverage
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Jest + Supertest">
+```
+
+```bash
+npm i -D jest
+npm i -D supertest
+```
+
+```js
+const request = require("supertest");
+const app = require("../app");
+
+describe("Get /birds", () => {
+  beforeAll(() => {
+    console.log("Setup");
+  });
+
+  afterAll(() => {
+    console.log("Teardown");
+  });
+
+  it("Should get data", async () => {
+    const res = await request(app).get("/birds");
+    expect(res.statusCode).toBe(200);
+    expect(res.body.status).toBe("success");
+    expect(res.body.data.type).toBe("bird");
+  });
+});
+
+describe("Post /birds", () => {
+  it("Should fail if params are wrong", async () => {
+    const res = await request(app).post("/birds?title=birds");
+    expect(res.statusCode).toBe(400);
+    expect(res.body.status).toBe("error");
+    expect(res.body.message).toBe("Invalid Input");
+  });
+
+  it("Should pass if params are correct", async () => {
+    const res = await request(app).post("/birds?title=birds&text=all_birds");
+    expect(res.statusCode).toBe(200);
+    expect(res.body.data.title).toBe("birds");
+    expect(res.body.data.text).toBe("all_birds");
+  });
+});
+```
+
+```json
+ "scripts": {
+    "test": "jest --testTimeout=5000",
+    "coverage": "npx jest --coverage"
+  },
+```
+
+```bash
+npm test
+npm run coverage
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### Test Skeleton Examples
+
+```mdx-code-block
+<Tabs>
+<TabItem value="GET">
+```
+
+```js
+describe("GET /api/products/:id", () => {
+  it("should return a product", async () => {
+    const res = await request(app).get("/api/products/6331abc9e9ececcc2d449e44");
+    expect(res.statusCode).toBe(200);
+    expect(res.body.name).toBe("Product 1");
+  });
+});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="POST">
+```
+
+```js
+describe("POST /api/products", () => {
+  it("should create a product", async () => {
+    const res = await request(app).post("/api/products").send({
+      name: "Product 2",
+      price: 1009,
+      description: "Description 2",
+    });
+    expect(res.statusCode).toBe(201);
+    expect(res.body.name).toBe("Product 2");
+  });
+});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PUT">
+```
+
+```js
+describe("PUT /api/products/:id", () => {
+  it("should update a product", async () => {
+    const res = await request(app).patch("/api/products/6331abc9e9ececcc2d449e44").send({
+      name: "Product 4",
+      price: 104,
+      description: "Description 4",
+    });
+    expect(res.statusCode).toBe(200);
+    expect(res.body.price).toBe(104);
+  });
+});
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="DELETE">
+```
+
+```js
+describe("DELETE /api/products/:id", () => {
+  it("should delete a product", async () => {
+    const res = await request(app).delete("/api/products/6331abc9e9ececcc2d449e44");
+    expect(res.statusCode).toBe(200);
+  });
+});
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ## Testing
