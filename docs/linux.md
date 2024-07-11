@@ -3,7 +3,56 @@ sidebar_label: "Linux"
 sidebar_position: 401
 ---
 
+import CodeBlock from "@theme/CodeBlock";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 # Linux
+
+## Making API Requests with Curl
+
+```mdx-code-block
+<Tabs>
+<TabItem value="GET">
+```
+
+```bash
+curl http://localhost:8080/api/v1/users
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="POST">
+```
+
+```bash
+curl -X POST http://localhost:8080/api/v1/users -H "Content-Type: application/json" -d '{"name": "John Doe", "email": "email.com"}'
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="PUT">
+```
+
+```bash
+curl -X PUT http://localhost:8080/api/v1/users/1 -H "Content-Type: application/json" -d '{"name": "Jane Doe", "email": "email.com"}'
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="DELETE">
+```
+
+```bash
+curl -X DELETE http://localhost:8080/api/v1/users/1
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+
 
 ## How to check ports in use
 

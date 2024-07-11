@@ -452,7 +452,7 @@ export default function MyComponent() {
 import { useRef } from "react";
 
 export default function MyComponent(): React.JSX.Element {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef < HTMLInputElement > null;
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     inputRef.current?.focus();
@@ -722,11 +722,11 @@ export default function Pizza({ name, ingredients }) {
 
 ## React/Redux
 
+### How to setup a store
+
 ```bash
 npm install @reduxjs/toolkit react-redux
 ```
-
-### How to setup a store
 
 ```mdx-code-block
 <Tabs>
@@ -831,6 +831,11 @@ export default function Counter() {
 ```
 
 ### Authentication
+
+```mdx-code-block
+<Tabs>
+<TabItem value="JavaScript">
+```
 
 ```mdx-code-block
 <Tabs>
@@ -997,6 +1002,180 @@ export default function Home() {
 
   return <>{isLoggedIn && <... />}</>;
 }
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="TypeScript">
+```
+
+```bash
+.
+├── index.html
+├── src
+│   ├── api
+│   │   └── auth.ts
+│   ├── App.tsx
+│   ├── main.tsx
+│   ├── store
+│   │   ├── authSlice.ts
+│   │   ├── storeHooks.ts
+│   │   └── store.ts
+```
+
+```mdx-code-block
+<Tabs>
+<TabItem value="authslice.ts">
+```
+
+```ts
+import { createSlice } from "@reduxjs/toolkit";
+
+export interface State {
+  user: { name: string; id: number };
+  isLoggedIn: boolean;
+}
+
+const initialState: State = {
+  user: { name: "Not Singed in", id: 0 },
+  isLoggedIn: false,
+};
+
+export const authSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {
+    authenticateUser: (state, action) => {
+      const { user } = action.payload;
+      state.user = user;
+      state.isLoggedIn = true;
+    },
+
+    logout: (state) => {
+      state.user = { name: "Not Singed in", id: 0 };
+      state.isLoggedIn = false;
+    },
+  },
+});
+
+export const { authenticateUser, logout } = authSlice.actions;
+export default authSlice;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="store.ts">
+```
+
+```ts
+import { configureStore } from "@reduxjs/toolkit";
+
+import { authSlice } from "./authSlice";
+
+export const store = configureStore({
+  reducer: {
+    auth: authSlice.reducer,
+  },
+});
+
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>;
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="storeHooks.ts">
+```
+
+```ts
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState, AppDispatch } from "./store";
+
+// Use throughout your app instead of plain `useDispatch` and `useSelector`
+export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
+export const useAppSelector = useSelector.withTypes<RootState>();
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="auth.ts">
+```
+
+```ts
+import authSlice from "../store/authSlice";
+import { AppDispatch } from "../store/store";
+
+export const signInUser = () => {
+  return async (dispatch: AppDispatch) => {
+    const fakeDBData = { name: "John", id: 547 };
+    dispatch(authSlice.actions.authenticateUser({ user: fakeDBData }));
+  };
+};
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="App.tsx">
+```
+
+```ts
+import { useAppDispatch, useAppSelector } from "./store/storeHooks";
+import { logout } from "./store/authSlice";
+import { signInUser } from "./api/auth";
+
+import "./App.css";
+
+function App() {
+  const dispatch = useAppDispatch();
+  const userDetails = useAppSelector((state) => state.auth.user);
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  return (
+    <>
+      <p>Name: {userDetails.name}</p>
+      <p>Id: {userDetails.id}</p>
+      <p>Status: {isLoggedIn}</p>
+      <button onClick={() => dispatch(signInUser())}>Sign In</button>
+      <button onClick={() => dispatch(logout())}>Log Out</button>
+    </>
+  );
+}
+
+export default App;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="main.tsx">
+```
+
+```ts
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+
+import { store } from "./store/store";
+import App from "./App.tsx";
+import "./index.css";
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>
+);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ```mdx-code-block

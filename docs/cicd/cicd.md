@@ -108,6 +108,37 @@ volumes:
   postgresql:
 ```
 
+### SonarScanner CLI
+
+```bash tital="sonar_scanner.sh"
+#!/usr/bin/bash
+
+# docker-compose run --rm sonar_scanner
+
+mkdir $HOME/.sonar
+export SONAR_SCANNER_VERSION="5.0.1.3006" # Find the latest version in the Linux link on this page: https://docs.sonarqube.org/latest/analysis/scan/sonarscanner/
+
+# Download sonar-scanner
+curl -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip 
+unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
+export PATH=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux/bin:$PATH
+
+# Run sonar scanner
+sonar-scanner -X
+```
+
+```properties title="sonar-project.properties"
+sonar.organization=my_organization
+sonar.projectVersion=1.0
+
+sonar.projectName=Project Name
+sonar.projectKey=my_project
+sonar.token=sqp_733d883247ede40ae2d9cd9214dd1b52f46aefcd
+sonar.host.url=http://localhost:9000
+
+sonar.javascript.lcov.reportPaths=./coverage/lcov.info
+```
+
 ## Jenkins
 
 [Github](https://github.com/jenkinsci/docker/blob/master/README.md)

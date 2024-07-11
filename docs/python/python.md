@@ -39,6 +39,16 @@ squared = [x**2 for x in numbers]
 print(squared)  # Output: [1, 4, 9, 16, 25]
 ```
 
+## Dicts
+
+### Add a key-value pair
+
+```python
+person = {'name': 'John', 'age': 30}
+person['city'] = 'New York'
+print(person)  # Output: {'name': 'John', 'age': 30, 'city': 'New York'}
+```
+
 ## Decorators
 
 Decorators in Python are functions that modify the behavior of other functions or methods without changing their actual code. They allow you to add functionality to existing functions dynamically.
