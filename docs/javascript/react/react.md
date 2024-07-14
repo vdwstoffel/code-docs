@@ -1014,7 +1014,7 @@ export default function Home() {
 <TabItem value="TypeScript">
 ```
 
-[See Code](https://github.com/vdwstoffel/code_docs/tree/main/_examples/javascript/react/redux_with_ts)
+[See Code](https://github.com/vdwstoffel/code-docs/tree/main/_examples/javascript/react/redux_with_ts)
 
 ```bash
 .
