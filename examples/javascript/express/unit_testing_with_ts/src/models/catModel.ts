@@ -1,18 +1,16 @@
 import { Sequelize, Model, DataTypes } from "sequelize";
-import { Cast } from "sequelize/types/utils";
 
 const sequelize = new Sequelize("sqlite::memory:");
 
 class Cat extends Model {
   declare id: number;
   declare name: string;
-  declare preferredName: string | null;
 }
 
 Cat.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
@@ -28,12 +26,16 @@ Cat.init(
 );
 
 // Create Table
-Cat.sync();
+export async function createTable(): Promise<void> {
+  await Cat.sync();
+}
 
 export async function getAllCats(): Promise<Cat[]> {
   return await Cat.findAll();
 }
 
 export async function createCat(name: string): Promise<void> {
+  console.log("Running")
   await Cat.create({ name: name });
+  console.log("Cat created")
 }
