@@ -1,5 +1,5 @@
 ---
-sidebar-label: 'Authentication'
+sidebar-label: "Authentication"
 sidebar_position: 2
 ---
 
@@ -10,6 +10,10 @@ import TabItem from "@theme/TabItem";
 # Authentication
 
 ## How to setup authentication with Redux
+
+```bash
+npm install @reduxjs/toolkit react-redux
+```
 
 ```mdx-code-block
 <Tabs>
@@ -266,7 +270,6 @@ export const store = configureStore({
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
 ```
 
