@@ -28,6 +28,8 @@ TBD
 <TabItem value="TypeScript">
 ```
 
+[See Code](https://github.com/vdwstoffel/code-docs/tree/main/_examples/javascript/express/authjwt_with_ts)
+
 ```ts title="jwt.ts"
 import { JwtPayload, sign, verify } from "jsonwebtoken";
 
