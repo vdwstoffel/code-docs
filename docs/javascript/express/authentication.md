@@ -28,7 +28,7 @@ TBD
 <TabItem value="TypeScript">
 ```
 
-[See Code](https://github.com/vdwstoffel/code-docs/tree/main/_examples/javascript/express/authjwt_with_ts)
+[See Code](https://github.com/vdwstoffel/code-docs/tree/main/examples/javascript/express/authjwt_with_ts)
 
 ```ts title="jwt.ts"
 import { JwtPayload, sign, verify } from "jsonwebtoken";
@@ -115,7 +115,7 @@ TBD
 <TabItem value="TypeScript">
 ```
 
-[See Code](https://github.com/vdwstoffel/code-docs/tree/main/_examples/javascript/express/protect_api_route_ts)
+[See Code](https://github.com/vdwstoffel/code-docs/tree/main/examples/javascript/express/protect_api_route_ts)
 
 ```bash
 .
