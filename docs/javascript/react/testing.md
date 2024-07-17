@@ -9,7 +9,9 @@ import TabItem from "@theme/TabItem";
 
 # Testing
 
-## How to setup unit tests with vite
+## Vite/React Testing Library
+
+### How to setup unit tests with vite
 
 **For projects setup with vite**
 
@@ -36,7 +38,7 @@ npm i vitest jsdom @testing-library/react @testing-library/jest-dom --save-dev
 
 Install coverage dependancies
 
-```bahs title="Terminal"
+```bash title="Terminal"
 npm i -D @vitest/coverage-istanbul
 ```
 
@@ -93,36 +95,28 @@ afterEach(() => {
 
 ```tsx title="App.tsx"
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+      <h1>This is a test file</h1>
+
+      <p>Count: {count}</p>
+      <button
+        onClick={() => {
+          setCount((c) => c + 1);
+        }}
+      >
+        Increase
+      </button>
     </>
   );
 }
 
 export default App;
+
 ```
 
 ```mdx-code-block
@@ -132,15 +126,27 @@ export default App;
 
 ```ts title="app.test.tsx"
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { beforeEach, expect, test } from "vitest";
 import App from "../App";
 
+beforeEach(() => {
+  render(<App />);
+});
+
 describe("App", () => {
-  it("renders headline", () => {
-    render(<App />);
-    const headline = screen.getByText(/Vite \+ React/i);
+  test("renders headline", () => {
+    const headline = screen.getByText(/this is a test file/i); // i = case insensitive
     expect(headline).toBeInTheDocument();
   });
+
+  test("button event", async () => {
+    const button = screen.getByRole("button");
+    await userEvent.click(button);
+    expect(screen.getByText(/count: 1/i)).toBeInTheDocument();
+  });
 });
+
 ```
 
 ```mdx-code-block
@@ -148,4 +154,35 @@ describe("App", () => {
 </Tabs>
 ```
 
-[more info](https://vitest.dev/api/expect.html)
+**more info**
+- [vitetest](https://vitest.dev/api/expect.html)
+- [react-testing-library](https://testing-library.com/docs/react-testing-library/cheatsheet#queries)
+
+
+### How to check if a component is rendered
+
+```tsx
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
+test("renders component", () => {
+  render(<App />);
+  const component = screen.getByTestId("component");
+  expect(component).toBeInTheDocument();
+});
+```
+
+### How to click a button
+
+```tsx
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
+test("click button", async () => {
+  render(<App />);
+  const button = screen.getByRole("button");
+  await userEvent.click(button);
+  expect(screen.getByText(/clicked/i)).toBeInTheDocument();
+});
+```
+
