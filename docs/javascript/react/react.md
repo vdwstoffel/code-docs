@@ -1,6 +1,6 @@
 ---
 sidebar_label: React
-sidebar_position: 1
+sidebar_position: 3
 ---
 
 # React
