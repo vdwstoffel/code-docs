@@ -11,9 +11,28 @@ import TabItem from "@theme/TabItem";
 
 ## Getting Started
 
+MVC (Model-View-Controller) is a software architectural pattern that separates an application into three interconnected components: the data (Model), user interface (View), and application logic (Controller), facilitating better code organization and maintenance.
+
+```
+.
+├── controllers
+│   ├── birdsController.js
+├── models
+│   ├── birdsModel.js
+├── routes
+│   ├── birdsRoute.js
+├── app.js
+├── server.js
+```
+
 ```mdx-code-block
 <Tabs>
 <TabItem value="JavaScript">
+```
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Dependancies">
 ```
 
 ```bash
@@ -22,10 +41,80 @@ npm i express
 
 ```mdx-code-block
 </TabItem>
+<TabItem value="birdsController.js">
+```
+
+```js title="controller/birdsController.js"
+const Birds = require("../models/birdsModel");
+
+module.exports.getAllBirds = async (req, res) => {
+  // db logic
+};
+
+module.exports.addBird = async (req, res) => {
+  // db logic
+};
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="birdsRouter.js">
+```
+
+```js title="routes/birdsRoute.js"
+const express = require("express");
+const router = express.Router();
+
+const birdsController = require("../controller/birdsController");
+
+router.route("/").get(birdsController.getAllBirds).post(birdsController.addBird);
+
+module.exports = router;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="app.js">
+```
+
+```js title="app.js"
+const express = require("express");
+const app = express();
+
+const birdsRouter = require("./routes/birdsRoutes");
+// ...
+app.use("/birds", birdsRouter);
+
+export default app
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="server.js">
+```
+
+```js title="app.js"
+const app = require("./app")
+
+app.listen(3000);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+```mdx-code-block
+</TabItem>
 <TabItem value="TypeScript">
 ```
 
-```bash
+```mdx-code-block
+<Tabs>
+<TabItem value="Dependancies">
+```
+
+```bash title="Terminal"
 npm init --yes
 npm install express
 npm install  -D typescript ts-node-dev @types/express
@@ -56,75 +145,7 @@ npm run dev
 
 ```mdx-code-block
 </TabItem>
-</Tabs>
-```
-
-MVC (Model-View-Controller) is a software architectural pattern that separates an application into three interconnected components: the data (Model), user interface (View), and application logic (Controller), facilitating better code organization and maintenance.
-
-```mdx-code-block
-<Tabs>
-<TabItem value="JavaScript">
-```
-
-```js
-.
-├── controllers
-│   ├── birdsController.js
-├── models
-│   ├── birdsModel.js
-├── routes
-│   ├── birdsRoute.js
-├── app.js
-```
-
-```js title="controller/birdsController.js"
-const Birds = require("../models/birdsModel");
-
-module.exports.getAllBirds = async (req, res) => {
-  // db logic
-};
-
-module.exports.addBird = async (req, res) => {
-  // db logic
-};
-```
-
-```js title="routes/birdsRoute.js"
-const express = require("express");
-const router = express.Router();
-
-const birdsController = require("../controller/birdsController");
-
-router.route("/").get(birdsController.getAllBirds).post(birdsController.addBird);
-
-module.exports = router;
-```
-
-```js title="app.js"
-const express = require("express");
-const app = express();
-
-const birdsRouter = require("./routes/birdsRoutes");
-// ...
-app.use("/birds", birdsRouter);
-
-app.listen(3000);
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="TypeScript">
-```
-
-```js
-.
-├── controllers
-│   ├── birdsController.ts
-├── models
-│   ├── birdsModel.ts
-├── routes
-│   ├── birdsRoute.ts
-├── app.ts
+<TabItem value="birdsController.ts">
 ```
 
 ```js title="controller/birdsController.ts"
@@ -138,6 +159,11 @@ export const getBirds: RequestHandler = async (req, res) => {
 };
 ```
 
+```mdx-code-block
+</TabItem>
+<TabItem value="birdsRouter.ts">
+```
+
 ```js title="routes/birdsRouter.ts"
 import { Router } from "express";
 
@@ -148,24 +174,43 @@ import { getBirds } from "../controllers/birdsController";
 router.route("/birds").get(getBirds);
 
 export default router;
+```
 
+```mdx-code-block
+</TabItem>
+<TabItem value="app.ts">
 ```
 
 ```js title="app.ts"
 import express, { Request, Response, Application } from "express";
 
 const app: Application = express();
-const port = process.env.PORT || 8000;
 
 import birdRouter from "./routes/birdsRouter";
 
 app.use("/", birdRouter);
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
-
+export default app
 ```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="server.ts">
+```
+
+```js title="routes/server.ts"
+import app from "./app";
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT)
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
 
 ```mdx-code-block
 </TabItem>
@@ -410,12 +455,11 @@ app.post("/submit-form", (req, res) => {
 app.listen(3000);
 ```
 
-
 ## Middleware
 
 ### Run on each request
 
-`Hello Middleware` will be logged on each request
+Run middleware on each request will be logged on each request
 
 ```javascript
 app.use((req, res, next) => {
@@ -430,6 +474,8 @@ app.get("/", (req, res) => {
 
 ### Middleware on specific routes
 
+Run middleware on each `'api'` route
+
 ```javascript
 app.use("/api", (req, res, next) => {
   console.log("Api route used");
@@ -442,6 +488,8 @@ app.get("/api", (req, res) => {
 ```
 
 ### Run on particular requests
+
+Run middleware on a specific route
 
 ```javascript
 const protect = (req, res, next) => {
