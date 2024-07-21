@@ -16,3 +16,7 @@ tags: [web dev, interesting]
 ## Emails
 
 * Test sending emails with [mailtrap](https://mailtrap.io/home)
+
+## Sandbox Environments
+
+* [PWD (Play with docker)](https://labs.play-with-docker.com/)
