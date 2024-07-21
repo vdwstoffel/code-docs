@@ -6,10 +6,16 @@ sidebar_position: 2
 import CodeBlock from "@theme/CodeBlock";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import expressLogo from "@site/static/img/expressjs.png"
+import DisplayLogo from "@site/src/components/DisplayLogo"
 
 # Express
 
-## Getting Started
+<DisplayLogo logo={expressLogo} />
+
+[Express](https://expressjs.com/) is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.
+
+## How to setup basic MVC structure
 
 MVC (Model-View-Controller) is a software architectural pattern that separates an application into three interconnected components: the data (Model), user interface (View), and application logic (Controller), facilitating better code organization and maintenance.
 
@@ -85,7 +91,7 @@ const birdsRouter = require("./routes/birdsRoutes");
 // ...
 app.use("/birds", birdsRouter);
 
-export default app
+export default app;
 ```
 
 ```mdx-code-block
@@ -94,7 +100,7 @@ export default app
 ```
 
 ```js title="app.js"
-const app = require("./app")
+const app = require("./app");
 
 app.listen(3000);
 ```
@@ -190,7 +196,7 @@ import birdRouter from "./routes/birdsRouter";
 
 app.use("/", birdRouter);
 
-export default app
+export default app;
 ```
 
 ```mdx-code-block
@@ -203,14 +209,13 @@ import app from "./app";
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT)
+app.listen(PORT);
 ```
 
 ```mdx-code-block
 </TabItem>
 </Tabs>
 ```
-
 
 ```mdx-code-block
 </TabItem>
@@ -221,80 +226,20 @@ Now go to mysite.com/birds/
 
 ## Routing
 
-### Route methods
+### Response Methods
 
-```mdx-code-block
-<Tabs>
-<TabItem value="Get">
-```
+| Method           | Description                                 |
+| ---------------- | ------------------------------------------- |
+| `res.send()`     | Send a response of various types.           |
+| `res.status()`   | Add the status code in brackets and send it |
+| `res.json()`     | Send a JSON response.                       |
+| `res.redirect()` | Redirect a request.                         |
+| `res.render()`   | Render a view template.                     |
+| `res.download()` | Prompt a file to be downloaded.             |
 
-```js
-app.get("/api", (req, res) => {
-  res.status(200).json({ status: "success", data: { info: mydata } });
-});
-```
+### How to add a default error route
 
-```mdx-code-block
-</TabItem>
-<TabItem value="Post">
-```
-
-When receiving **json** data
-
-```js
-app.use(express.json());
-
-app.post("/api", (req, res) => {
-  const mydata = req.body;
-  res.status(201).json({ status: "success", data: { info: mydata } });
-});
-```
-
-When receiving **html form** data
-
-```js
-app.use(express.urlencoded({ extended: true }));
-
-app.post("/api", (req, res) => {
-  const mydata = req.body;
-  res.status(201).json({ status: "success", data: { info: mydata } });
-});
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="Put/Patch">
-```
-
-```javascript
-app.patch("/api/tours/:id", (req, res) => {
-  const id = req.params.id;
-  // do update logic
-  res.status(200).json({ status: "success", data: { tours: selectedTour } });
-});
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="Delete">
-```
-
-```js
-app.delete("/api/tours/:id", (req, res) => {
-  const id = req.params.id;
-  // delete logic
-  res.status(202).json({ status: "success", data: null });
-});
-```
-
-```mdx-code-block
-</TabItem>
-</Tabs>
-```
-
-### Add default Error route
-
-Add this as the last route. When no routes match this route will run
+If no routes match, this route will be called
 
 ```javascript
 const express = require("express");
@@ -310,23 +255,21 @@ app.all("*", (req, res) => {
 });
 //highlight-end
 
-app.listen(3000, () => {
-  console.log("App is listening on port 3000");
-});
+app.listen(3000);
 ```
 
-### Route Parameters (Dynamic Routing)
+### How to add dynamic routes
 
 `mysite.com/api/tours/5`
 
 ```javascript
 app.get("/api/tours/:tourId", (req, res) => {
   const id = req.params.tourId; // 5
-  res.status(200).json({ status: "success", data: { tours: tourData[id] } });
+  res.status(200).json({ status: "success" });
 });
 ```
 
-### Nested Routes
+### How to add nested routes
 
 This option allows you to access the params of parent routers.
 
@@ -365,18 +308,7 @@ app.listen(3000, () => {
 // http://localhost:3000/comment/4          => Cannot GET /comment/4 Since the route was never mounted
 ```
 
-### Response Methods
-
-| Method           | Description                                 |
-| ---------------- | ------------------------------------------- |
-| `res.send()`     | Send a response of various types.           |
-| `res.status()`   | Add the status code in brackets and send it |
-| `res.json()`     | Send a JSON response.                       |
-| `res.redirect()` | Redirect a request.                         |
-| `res.render()`   | Render a view template.                     |
-| `res.download()` | Prompt a file to be downloaded.             |
-
-### Chain methods on a route
+### How to chain methods on a route
 
 ```javascript
 app
@@ -389,10 +321,16 @@ app
   })
   .put((req, res) => {
     res.send("Update the book");
+  })
+  .patch((req, res) => {
+    res.send("Patch the book");
+  })
+  .delete((req, res) => {
+    res.send("Delete the book");
   });
 ```
 
-### Add parameters to a query
+### How to parse query parameters
 
 `/api/tours?duration=5&difficulty=easy`
 
@@ -403,7 +341,7 @@ app.get("/api/tours", (req, res) => {
 });
 ```
 
-### Remove fields from query
+### How to remove fields from query
 
 Remove unwanted field from the query params
 
@@ -414,7 +352,83 @@ excludeFields.forEach((el) => delete queryObj[el]); // delete from the object
 console.log(queryObj);
 ```
 
-## Secure HTTP Response Headers
+## Middleware
+
+### How to run middleware on each request
+
+Using `app.use()` will run the middleware on each request
+
+```javascript
+const logger = (req, res, next) => {
+  console.log("Hello Middleware");
+  next(); // call next otherwise middleware will not complete
+};
+
+app.use(logger);
+
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
+```
+
+### How to run middleware on specific routes
+
+Run middleware on each `'api'` route
+
+```javascript
+const logger = (req, res, next) => {
+  console.log("Hello Middleware");
+  next(); // call next otherwise middleware will not complete
+};
+
+app.use("/api", logger);
+
+app.get("/api", (req, res) => {
+  res.send({ route: "api", date: "Today" });
+});
+```
+
+### How to run middleware on particular requests
+
+Run middleware on a specific route
+
+```javascript
+const protect = (req, res, next) => {
+  console.log("This route is protected");
+  next(); //  call next middleware. If no next, the request will hang
+};
+
+app.get("/secret", protect, (req, res) => {
+  res.send("This is a secret route");
+});
+```
+
+### How to add data to the request object
+
+Add data to the request object and pass it to the next middleware
+
+It will be available in the next middleware
+
+```js
+const addName = (req, res, next) => {
+  req.name = "John Doe";
+  next();
+};
+
+app.get("/", addName, (req, res) => {
+  res.send(`Hello ${req.name}`);
+});
+```
+
+### How to chain middleware
+
+```js
+app.get("/", middlewareOne, middlewareTwo, (req, res) => {
+  // ...
+});
+```
+
+## How to secure HTTP response headers
 
 ```bash
 npm i helmet
@@ -437,7 +451,7 @@ app.get("/", (req, res) => {
 app.listen(8000);
 ```
 
-## Receiving Form Data
+## How to receive data from as html form
 
 ```js
 const express = require("express");
@@ -455,105 +469,9 @@ app.post("/submit-form", (req, res) => {
 app.listen(3000);
 ```
 
-## Middleware
-
-### Run on each request
-
-Run middleware on each request will be logged on each request
-
-```javascript
-app.use((req, res, next) => {
-  console.log("Hello Middleware");
-  next(); // call next otherwise middleware will not complete
-});
-
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
-```
-
-### Middleware on specific routes
-
-Run middleware on each `'api'` route
-
-```javascript
-app.use("/api", (req, res, next) => {
-  console.log("Api route used");
-  next(); // call next middleware. If no next, the request will hang
-});
-
-app.get("/api", (req, res) => {
-  res.send({ route: "api", date: "Today" });
-});
-```
-
-### Run on particular requests
-
-Run middleware on a specific route
-
-```javascript
-const protect = (req, res, next) => {
-  console.log("This route is protected");
-  next(); //  call next middleware. If no next, the request will hang
-};
-
-app.get("/secret", protect, (req, res) => {
-  res.send("This is a secret route");
-});
-```
-
-### Edit req method
-
-You can also add a method to the request object
-
-```js
-app.use((req, res, next) => {
-  req.requestTime = new Date().toISOString();
-  console.log(req.requestTime);
-  next();
-});
-```
-
-### Accessing parameters
-
-Use `app.param()` to gain access to the passed parameters.
-
-In the example below you have `/:id` so param = 5 if path is `/5`
-
-```js
-/*
- * Value refers the the passed param (:id)
- */
-const invalid = (req, res, next, value) => {
-  if (value > 5) {
-    // return otherwise next will run
-    return res.status(500).json({ status: "Error", response: "Invalid Param" });
-  }
-  next();
-};
-
-// assign middleware
-app.param("id", invalid); // check if id is passed as a param
-
-app.get("/:id", (req, res) => {
-  res.status(200).json({
-    status: "success",
-    response: "Good",
-  });
-});
-```
-
-### Chaining middleware
-
-```js
-app.get("/", middlewareOne, middlewareTwo, (req, res) => {
-  // ...
-});
-```
-
 ## Error Handeling
 
-### Custom Error Class
+### How to setup a custom error class
 
 <Tabs>
 <TabItem value="Server">
@@ -648,7 +566,7 @@ module.exports = (fn) => {
 </TabItem>
 </Tabs>
 
-### Universal error handler for Unhandled Rejections
+### How to setup a universal error handler for unhandled rejections
 
 ```js
 const server = app.listen(port);
@@ -661,8 +579,7 @@ process.on("uncaughtException", (err) => {
 
 ## Working with Files
 
-### Upload Files (Backend)
-
+### How to upload files
 ```bash
 npm i multer
 ```
@@ -703,7 +620,7 @@ const port = process.env.PORT || 3000;
 app.listen(port);
 ```
 
-### Upload and resize Image
+### How to upload and resize image
 
 ```bash
 npm i sharp
@@ -740,7 +657,7 @@ module.exports.resizeUserPhoto = (req, res, next) => {
 };
 ```
 
-## Rate Limiting
+## How to limit api calls from ip
 
 ```bash
 npm i express-rate-limit
