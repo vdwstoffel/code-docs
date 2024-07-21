@@ -6,68 +6,117 @@ sidebar_position: 400
 import CodeBlock from "@theme/CodeBlock";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import dockerLogo from "@site/static/img/docker.png"
+import DisplayLogo from "@site/src/components/DisplayLogo"
 
 # Docker
 
+<DisplayLogo logo={dockerLogo} />
+
+Docker is a platform for developing, shipping, and running applications in containers. Containers allow a developer to package up an application with all parts it needs, such as libraries and other dependencies, and ship it all out as one package.
+
+[Official Documentation](https://docs.docker.com/)
+
 ## Images
 
-### Build an image
+Docker Images are the building blocks of a Docker container. They are created with the build command, and they are used to create containers.
+
+### How to build an image
+
+In the same root folder as the dockerfile
 
 ```bash
 docker build -t my-image:my-tag .
-
-docker build -f docker/Dockerfile -t my-image:my-tag .
 ```
 
-### List all images
+or specify path to the Dockerfile
+
+```bash
+docker build -f path/to/Dockerfile -t my-image:my-tag .
+```
+
+**Example**
+
+```bash title="Terminal"
+docker build -t app:v1 .
+```
+
+```bash title="Terminal"
+docker images
+
+REPOSITORY    TAG                IMAGE ID       CREATED        SIZE
+app           v1                 0e2ae3b450ff   2 hours ago    700MB
+```
+
+### How to list all images
 
 ```bash
 docker images
 ```
 
-### Delete an image
+### How to delete an image
 
 ```bash
 docker rmi <image_name>
+```
 
-# Delete all unused images
+Delete all unused images:
+
+```bash
 docker image prune -a
 ```
 
-### Push/Pull images to/from dockerhub
+### How to remove all unused images
+
+```bash
+docker image prune
+```
+
+### How to Push/Pull images to/from dockerhub
 
 ```bash
 docker push <image_name>
 docker pull <image_name>
 ```
 
-### Remove all unused images
-
-```bash
-docker image prune
-```
-
 ## Containers
 
-```md
--p: port
--d: detach (run in background)
---name: name the container
---rm: remove container once stopped
-```
+A container is a runtime instance of a Docker image. It runs a discrete process, taking up a small amount of system resources.
 
-### List container
+Container commands can either target a specific container by its ID or name
+
+### How to list all containers
 
 ```bash
 docker ps -a
 ```
 
-### Run Container
+### How to run a container
+
+Run a container in the background (detached mode) `-d`
 
 ```bash
-docker run <image_name>
+docker run -d my-image:my-tag
+```
 
-docker run -d -p <host_port>:<container_port> --name docker_example <image_name>
+#### How to expose container ports
+
+`3000:8000` 3000 refers to the host port and 8000 refers to the container port.
+
+```bash
+docker run -d -p 3000:8000 my-image:my-tag
+```
+
+#### How to add name to a container
+
+```bash
+docker run -d --name my-container my-image:my-tag
+```
+
+#### How to automatically remove a container once stopped
+
+```bash
+docker run --rm my-image:my-tag
 ```
 
 ### Restart a container
@@ -102,6 +151,12 @@ docker logs <container_id>
 
 ```bash
 docker exec -it <container_id> sh
+```
+
+### Run command in a running container
+
+```bash
+docker exec <container_id> <shell_command>
 ```
 
 ### Remove all stopped containers
