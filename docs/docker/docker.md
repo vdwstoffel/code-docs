@@ -79,6 +79,12 @@ docker push <image_name>
 docker pull <image_name>
 ```
 
+### How to tag an image
+
+```bash
+docker tag <image_id> my-image:my-tag
+```
+
 ## Containers
 
 A container is a runtime instance of a Docker image. It runs a discrete process, taking up a small amount of system resources.
@@ -99,7 +105,7 @@ Run a container in the background (detached mode) `-d`
 docker run -d my-image:my-tag
 ```
 
-#### How to expose container ports
+- **How to expose container ports**
 
 `3000:8000` 3000 refers to the host port and 8000 refers to the container port.
 
@@ -107,13 +113,13 @@ docker run -d my-image:my-tag
 docker run -d -p 3000:8000 my-image:my-tag
 ```
 
-#### How to add name to a container
+- **How to add name to a container**
 
 ```bash
 docker run -d --name my-container my-image:my-tag
 ```
 
-#### How to automatically remove a container once stopped
+- **How to automatically remove a container once stopped**
 
 ```bash
 docker run --rm my-image:my-tag
