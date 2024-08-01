@@ -272,6 +272,13 @@ CREATE TABLE users (
 );
 ```
 
+### Show all Tables (Postgresql)
+
+```sql
+SELECT * FROM pg_catalog.pg_tables
+WHERE schemaname = 'public';
+```
+
 ### Drop Table
 
 ```sql
