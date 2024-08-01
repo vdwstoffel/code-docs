@@ -496,6 +496,11 @@ app.get(
   catchAsync(async (req, res, next) => {
     const result = await fetch("https://swapi.dev/api/pele/1/");
     const se = await result.json();
+
+    if (!se) {
+      return next(new AppError(`Some error`, 404));
+    }
+    
     res.status(200).json({ status: "success", data: se });
   })
 );
