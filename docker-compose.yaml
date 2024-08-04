@@ -12,4 +12,5 @@ services:
       - ./src:/app/src
       - ./docs:/app/docs
       - ./blog:/app/blog
+      - ./static:/app/static
       - /app/node_modules/
