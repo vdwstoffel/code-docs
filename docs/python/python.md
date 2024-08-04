@@ -15,7 +15,7 @@ import TabItem from "@theme/TabItem";
 python -m venv .venv
 ```
 
-To deactivate 
+To deactivate
 
 ```bash
 deactivate
@@ -37,6 +37,16 @@ print(index)  # Output: 1
 numbers = [1, 2, 3, 4, 5]
 squared = [x**2 for x in numbers]
 print(squared)  # Output: [1, 4, 9, 16, 25]
+```
+
+### How to reverse a list
+
+`reverse()` method reverses the elements of a list in place.
+
+```python
+numbers = [1, 2, 3, 4, 5]
+numbers.reverse()
+print(numbers)  # Output: [5, 4, 3, 2, 1]
 ```
 
 ## Dicts
@@ -168,4 +178,72 @@ import pathlib
 
 # Find the abs path of the folder the file is int
 pathlib.Path(__file__).parent.resolve()
+```
+
+## How to scrape a website
+
+### How to scrap a basic html file
+
+```bash title="Terminal"
+pip install beautifulsoup4
+```
+
+```python
+from bs4 import BeautifulSoup
+
+
+html = """
+<html>
+
+<head>
+	<title>Angela's Personal Site</title>
+</head>
+
+<body>
+	<h1 class="header" id="name">Angela Yu</h1>
+	<p>I am an iOS and Web Developer. I ❤️ coffee and motorcycles.</p>
+	<p>Hello World</p>
+    <a href="https://www.udemy.com/user/angela-yu-2/">Check out my courses on Udemy</a>
+</body>
+
+</html>
+"""
+
+
+soup = BeautifulSoup(html, "html.parser")
+print(soup.title.name)      # Output: title
+print(soup.title.string)    # Output: Angela's Personal Site
+print(soup.p)               # Output: <p>I am an iOS and Web Developer. I ❤️ coffee and motorcycles.</p>
+print(soup.p.string)        # Output: I am an iOS and Web Developer. I ❤️ coffee and motorcycles.
+```
+
+### Find all instances of a tag
+
+```python
+
+from bs4 import BeautifulSoup
+
+soup = BeautifulSoup(html, "html.parser")
+all_para = soup.find_all(name="p")
+print(all_para)  # Output: [<p>I am an iOS and Web Developer. I ❤️ coffee and motorcycles.</p>, <p>Hello World</p>]
+```
+
+### How to get an attribute
+
+```python
+from bs4 import BeautifulSoup
+
+soup = BeautifulSoup(html, "html.parser")
+a_tag = soup.find(name="a")
+print(a_tag.get("href"))  # Output: https://www.udemy.com/user/angela-yu-2/
+```
+
+### Find by class
+
+```python
+from bs4 import BeautifulSoup
+
+soup = BeautifulSoup(html, "html.parser")
+header = soup.find(name="h1", class_="header")
+print(header)  # Output: <h1 class="header" id="name">Angela Yu</h1>
 ```
