@@ -50,7 +50,7 @@ df.tail()
 
 </details>
 
-## Nan Values
+## Na Values
 
 ### Check for missing values
 
@@ -77,6 +77,14 @@ df.isna()
 import pandas as pd
 df = pd.read_csv("employees.csv")
 df = df.dropna()
+```
+
+### Convert missing values to a specific value
+
+```python
+import pandas as pd
+df = pd.read_csv("employees.csv")
+df.fillna(0, inplace=True)
 ```
 
 ## Columns & Rows
@@ -180,6 +188,15 @@ df.tail()
 
 </details>
 
+### How to rename a column
+
+```python
+import pandas as pd
+df = pd.read_csv("employees.csv")
+df.rename(columns={"Name": "Full Name"}, inplace=True)
+df.head()
+```
+
 ## Grouping
 
 ### Group by column
@@ -240,5 +257,141 @@ df.sort_values("Name", ascending=True)
 | 7   | James Anderson | 30  | HR         | 60000  |
 | 1   | Jane Smith     | 34  | Marketing  | 80000  |
 | 4   | Michael Brown  | 45  | HR         | 60000  |
+
+</details>
+
+## Dates
+
+### How to convert a column to a date
+
+```python
+import pandas as pd
+df = pd.read_csv("employees.csv")
+df['Date'] = pd.to_datetime(df['Date'])
+```
+
+## Pivot Tables
+
+| Category | Item | Value |
+| -------- | ---- | ----- |
+| A        | X    | 10    |
+| A        | Y    | 20    |
+| B        | X    | 30    |
+| B        | Y    | 40    |
+| C        | X    | 50    |
+| C        | Y    | 60    |
+
+```python
+import pandas as pd
+df = pd.read_csv("employees.csv")
+pivoted = df.pivot(index='Category', columns='Item', values='Value')
+```
+
+<details>
+<summary>Output</summary>
+
+| Item       | X      | Y       |
+| ---------- | ------ | ------- |
+| Category   |        |         |
+| ---------- | ------ | ------- |
+| A          | 10     | 20      |
+| B          | 30     | 40      |
+| C          | 50     | 60      |
+
+</details>
+
+## How to make chart with matplotlib
+
+Given table:
+
+| Date       | Facebook | Youtube |
+| ---------- | -------- | ------- |
+| 2022-01-31 | 4        | 8       |
+| 2022-02-28 | 8        | 7       |
+| 2022-03-31 | 5        | 1       |
+| 2022-04-30 | 7        | 8       |
+| 2022-05-31 | 1        | 6       |
+| 2022-06-30 | 4        | 9       |
+
+### Create a simple line chart
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("social_media.csv")
+plt.plot(data.index, data["Facebook"])
+```
+
+<details>
+<summary>Output</summary>
+
+![alt text](@site/static/img/pandas/simpleChart.png)
+
+</details>
+
+### Create a multiline chart
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("social_media.csv")
+plt.plot(data.index, data["Facebook"])
+plt.plot(data.index, data["Youtube"])
+```
+
+<details>
+<summary>Output</summary>
+
+![alt text](@site/static/img/pandas/multilineChart.png)
+
+</details>
+
+### How to change the size of the chart
+
+```python
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(10, 5))
+plt.plot(data.index, data["Facebook"])
+```
+
+### How to add labels to the chart
+
+```python
+import matplotlib.pyplot as plt
+
+plt.plot(data.index, data["Facebook"])
+plt.xlabel("Date", fontsize=12)
+plt.ylabel("Facebook")
+plt.title("Facebook Usage")
+```
+
+### How to add a legend
+
+```python
+import matplotlib.pyplot as plt
+
+plt.plot(data.index, data["Facebook"], label="Facebook")
+plt.plot(data.index, data["Youtube"], label="Youtube")
+plt.legend()
+```
+
+### How to smooth the timeseries
+
+By using the rolling method we can smooth the timeseries using the mean of the last n values.
+
+```python
+import matplotlib.pyplot as plt
+
+rolled = data.rolling(window=2).mean()
+plt.plot(rolled.index, rolled["Facebook"])
+```
+
+<details>
+<summary>Output</summary>
+
+![alt text](@site/static/img/pandas/timeSmoothing.png)
 
 </details>
