@@ -35,7 +35,8 @@ or specify path to the Dockerfile
 docker build -f path/to/Dockerfile -t my-image:my-tag .
 ```
 
-**Example**
+<details>
+<summary>Example</summary>
 
 ```bash title="Terminal"
 docker build -t app:v1 .
@@ -47,6 +48,8 @@ docker images
 REPOSITORY    TAG                IMAGE ID       CREATED        SIZE
 app           v1                 0e2ae3b450ff   2 hours ago    700MB
 ```
+
+</details>
 
 ### How to list all images
 
