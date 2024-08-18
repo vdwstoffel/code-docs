@@ -6,12 +6,19 @@ sidebar_position: 101
 import CodeBlock from "@theme/CodeBlock";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+
+import cssLogo from "@site/static/img/css.png"
+import DisplayLogo from "@site/src/components/DisplayLogo"
 import Position from "@site/src/components/cssExamples/Position"
 import GridDisplay from '@site/src/components/cssExamples/GridDisplay'
 import Transition from '@site/src/components/cssExamples/Transition'
 import Transform from '@site/src/components/cssExamples/Transform'
 
 # CSS
+
+<DisplayLogo logo={cssLogo} />
+
+CSS is a stylesheet language that is used to control the look and feel of a website. It is used to style web pages written in HTML and XHTML. CSS describes how elements should be rendered on screen, on paper, in speech, or on other media.
 
 ## Include Stylesheet in HTML
 
@@ -26,7 +33,7 @@ import Transform from '@site/src/components/cssExamples/Transform'
 </head>
 ```
 
-## Reset all values
+## Reset all css values
 
 ```css
 * {
@@ -40,7 +47,16 @@ body {
 }
 ```
 
-## Grid Display
+## Display
+
+### Grid Display
+
+Grid layout is a two-dimensional layout system that uses a set of rows and columns to define the structure of a page. It is a powerful layout system that allows you to create complex layouts with ease.
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Grid Display">
+```
 
 ```css
 .container {
@@ -51,7 +67,10 @@ body {
 
 <GridDisplay />
 
-### Grid Placement
+```mdx-code-block
+</TabItem>
+<TabItem value="Grid Placement">
+```
 
 ```css
 .container {
@@ -71,6 +90,11 @@ body {
 ```
 
 <GridDisplay placement={true} />
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
 
 ## Positioning
 
@@ -284,6 +308,7 @@ filter: sepia(60%);
   border-color: black;
 }
 ```
+
 <div style={{backgroundColor: "gray", padding: "1.5em"}}>
 <div style={{width: "300px", height: "300px", backgroundColor: "darkgreen", margin: "auto", borderWidth: "0.5em", borderStyle: "solid", borderColor: "black"}} ></div>
 </div>
@@ -299,6 +324,7 @@ filter: sepia(60%);
   border-radius: 5%;
 }
 ```
+
 <div style={{backgroundColor: "gray", padding: "1.5em"}}>
 <div style={{width: "300px", height: "300px", backgroundColor: "darkgreen", margin: "auto", borderWidth: "0.5em", borderStyle: "solid", borderColor: "black", borderRadius: "5%"}} ></div>
 </div>
@@ -307,8 +333,6 @@ filter: sepia(60%);
 </TabItem>
 </Tabs>
 ```
-
-
 
 ## Sizing
 
@@ -323,10 +347,7 @@ filter: sepia(60%);
 
 ## Transition
 
-```mdx-code-block
-<Tabs>
-<TabItem value="Properties">
-```
+CSS transition properties are used to add smoothness and animation to the web pages. The transition properties are used to change property values smoothly (over a given duration).
 
 | Property                     | Description                                                                            |
 | ---------------------------- | -------------------------------------------------------------------------------------- |
@@ -337,12 +358,13 @@ filter: sepia(60%);
 | `transition-timing-function` | Specifies the speed curve of the transition effect                                     |
 
 ```mdx-code-block
-</TabItem>
+<Tabs>
 <TabItem value="Single Property">
 ```
 
 ```css
 .single {
+  width: 100px;
   transition: width 2s;
 }
 
@@ -355,11 +377,13 @@ filter: sepia(60%);
 
 ```mdx-code-block
 </TabItem>
-<TabItem value="Several Properties">
+<TabItem value="Multiple properties">
 ```
 
 ```css
 .multiple {
+  width: 100px;
+  background: red;
   transition: width 2s, background-color 4s;
 }
 
@@ -373,11 +397,12 @@ filter: sepia(60%);
 
 ```mdx-code-block
 </TabItem>
-<TabItem value="Delay">
+<TabItem value="Adding a delay">
 ```
 
 ```css
 .delay {
+  width: 100px;
   transition: width 2s;
   transition-delay: 1s;
 }
@@ -395,6 +420,14 @@ filter: sepia(60%);
 ```
 
 ## Transform
+
+The `transform` property allows you to rotate, scale, move, and skew elements. The `transform` property applies a 2D or 3D transformation to an element.
+
+| Function      | Description                                                    |
+| ------------- | -------------------------------------------------------------- |
+| `rotate()`    | Rotates the element by a specified number of degrees clockwise |
+| `scale()`     | Increases or decreases the size of an element                  |
+| `translate()` | Moves the element along the X-axis and Y-axis                  |
 
 ```mdx-code-block
 <Tabs>
@@ -457,16 +490,16 @@ transform: translate(30%, 30%); /* moving the element along the X- and the Y-axi
 
 ```css
 :root {
-    --success-color: #2ecc71;
-    --error-color: #e74c3c;
+  --success-color: #2ecc71;
+  --error-color: #e74c3c;
 }
 
 .success {
-    border-color: var(--success-color);
+  border-color: var(--success-color);
 }
 
 .error {
-    border-color: var(--error-color);
+  border-color: var(--error-color);
 }
 ```
 
