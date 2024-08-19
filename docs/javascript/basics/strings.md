@@ -5,6 +5,8 @@ sidebar_position: 1
 
 # Strings
 
+Strings are a sequence of characters. They are used to represent text. Strings are immutable, meaning that once they are created, they cannot be changed. However, you can create a new string based on the original string.
+
 ## Validate a non empty string
 
 ```js
