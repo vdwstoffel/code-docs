@@ -1,4 +1,7 @@
-
+---
+sidebar_label: "Docker Compose"
+sidebar_position: 7
+---
 
 
 

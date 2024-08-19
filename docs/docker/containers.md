@@ -1,3 +1,8 @@
+---
+sidebar_label: "Containers"
+sidebar_position: 3
+---
+
 # Containers
 
 A container is a runtime instance of a Docker image. It runs a discrete process, taking up a small amount of system resources.

@@ -1,3 +1,8 @@
+---
+sidebar_label: "Networks"
+sidebar_position: 5
+---
+
 # Networks
 
 Docker networks provide isolated and organized communication channels between containers, enhancing security and enabling efficient data exchange within Docker environments.

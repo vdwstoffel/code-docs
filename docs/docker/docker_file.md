@@ -1,3 +1,8 @@
+---
+sidebar_label: "Dockerfile"
+sidebar_position: 6
+---
+
 # Dockerfile
 
 ## Basic Dockerfile

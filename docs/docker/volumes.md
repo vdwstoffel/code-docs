@@ -1,3 +1,8 @@
+---
+sidebar_label: "Volumes"
+sidebar_position: 4
+---
+
 # Volumes
 
 ## List all volumes
