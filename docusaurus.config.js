@@ -71,13 +71,24 @@ const config = {
           src: "img/codeLogo.svg",
         },
         items: [
-          {
-            type: "docSidebar",
-            sidebarId: "tutorialSidebar",
-            position: "left",
-            label: "Code Snippets",
-          },
+          // {
+          //   type: "docSidebar",
+          //   sidebarId: "tutorialSidebar",
+          //   position: "left",
+          //   label: "Code Snippets",
+          // },
+          
+          
+
+          // Snippets dropdown menu
+          {type: "dropdown", label: "Snippets", position: "left", items: [
+            {type: "doc", label: "JavaScript", docId: "javascript/basics/README"},
+            {type: "doc", label: "Docker", docId: "docker/docker"},
+          ]},
+
+          // Blog posts
           { to: "/blog", label: "How To", position: "left" },
+
         ],
       },
       footer: {
