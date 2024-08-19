@@ -1,3 +1,7 @@
+---
+sidebar_label: "Hooks"
+sidebar_position: 2
+---
 
 import CodeBlock from "@theme/CodeBlock";
 import Tabs from "@theme/Tabs";
@@ -13,6 +17,12 @@ import ToggleHookExample from '@site/src/components/reactExamples/ToggleHookExam
 ## useState
 
 `useState` is a Hook in React that lets you add state to your functional components.
+
+```jsx
+import { useState } from "react";
+
+const [state, setState] = useState(initialState);
+```
 
 ### Add state to functional components
 
@@ -54,6 +64,17 @@ const [count, setCount] = useState(() => {
 ## useEffect
 
 `useEffect` is a Hook in React that allows you to perform side effects in function components. Side effects could be data fetching, subscriptions, or manually changing the DOM, among other things.
+
+```jsx
+import { useEffect } from "react";
+
+useEffect(() => {
+  // effect
+  return () => {
+    // cleanup
+  };
+}, [dependencies]);
+```
 
 ### Side effects in functional components
 
@@ -115,6 +136,12 @@ In this example, the `useEffect` hook starts a timer when the `Timer` component 
 ## useRef
 
 `useRef` is a Hook in React that allows you to create a mutable object that persists for the lifetime of the component. It's commonly used to reference DOM elements or to store mutable values that don't trigger a re-render when they change.
+
+```jsx
+import { useRef } from "react";
+
+const ref = useRef(initialValue);
+```
 
 ### How to select DOM elements
 
@@ -195,6 +222,259 @@ export default function MyComponent() {
 ```
 
 <UpdateDomElements/>
+
+## useReducer
+
+`useReducer` is a Hook in React that allows you to manage complex state logic in your components. It's similar to `useState`, but it's more suitable for managing state that involves multiple sub-values or when the next state depends on the previous one.
+
+```jsx
+import { useReducer } from "react";
+
+const [state, dispatch] = useReducer(reducerFn, initialState);
+```
+
+### Manage state with useReducer
+
+```mdx-code-block
+<Tabs>
+<TabItem value="JavaScript">
+```
+
+```jsx
+import { useReducer } from "react";
+
+function reducer(state, action): {
+  console.log(state); // 0
+  console.log(action); // {type: 'increase', payload: 1}
+
+  switch (action.type) {
+    case "increase":
+      return state + action.payload;
+    case "decrease":
+      return state - action.payload;
+    default:
+      throw new Error("Unknown action type");
+  }
+}
+
+export default function App() {
+  const [count, dispatch] = useReducer(reducer, 0);
+
+  function increase() {
+    dispatch({ type: "increase", payload: 1 });
+  }
+
+  function decrease() {
+    dispatch({ type: "decrease", payload: 1 });
+  }
+
+  return (
+    <>
+      <button onClick={decrease}>-</button>
+      <p>{count}</p>
+      <button onClick={increase}>+</button>
+    </>
+  );
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="TypeScript">
+```
+
+```tsx
+import { useReducer } from "react";
+
+function reducer(state: number, action: { type: string; payload: number }): number {
+  console.log(state); // 0
+  console.log(action); // {type: 'increase', payload: 1}
+
+  switch (action.type) {
+    case "increase":
+      return state + action.payload;
+    case "decrease":
+      return state - action.payload;
+    default:
+      throw new Error("Unknown action type");
+  }
+}
+
+export default function App() {
+  const [count, dispatch] = useReducer(reducer, 0);
+
+  function increase() {
+    dispatch({ type: "increase", payload: 1 });
+  }
+
+  function decrease() {
+    dispatch({ type: "decrease", payload: 1 });
+  }
+
+  return (
+    <>
+      <button onClick={decrease}>-</button>
+      <p>{count}</p>
+      <button onClick={increase}>+</button>
+    </>
+  );
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+### Managing multiple state values
+
+[Code](https://replit.com/@vdwstoffel/useReducer-example#src/App.jsx)
+
+```mdx-code-block
+<Tabs>
+<TabItem value="JavaScript">
+```
+
+```jsx
+import { useReducer } from "react";
+
+const initialState = {
+  toDoList: ["Hello", "World"],
+  current: "",
+};
+
+function reducerFn(state, action) {
+  switch (action.type) {
+    case "newTodo":
+      return { ...state, current: action.payload };
+    case "add":
+      return { ...state, toDoList: [...state.toDoList, state.current], current: "" };
+    case "remove":
+      const index = state.toDoList.indexOf(action.payload);
+      const temp = [...state.toDoList];
+      temp.splice(index, 1);
+      return { ...state, toDoList: temp };
+    default:
+      throw new Error("Unknow");
+  }
+}
+
+export default function App() {
+  const [todoData, dispatch] = useReducer(reducerFn, initialState);
+
+  const { toDoList, current } = todoData;
+
+  function getValue(e) {
+    dispatch({ type: "newTodo", payload: e.target.value });
+  }
+
+  function add() {
+    dispatch({ type: "add" });
+  }
+
+  function remove(item) {
+    dispatch({ type: "remove", payload: item });
+  }
+
+  return (
+    <div>
+      <h1>TODO</h1>
+      {toDoList.map((e) => {
+        return (
+          <div>
+            <li key={e}>{e}</li>
+            <button onClick={() => remove(e)}>x</button>
+          </div>
+        );
+      })}
+      <div>
+        <input type="text" onChange={getValue} value={current} />
+        <button onClick={add}>Add</button>
+      </div>
+    </div>
+  );
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="TypeScript">
+```
+
+```tsx
+import { useReducer, ChangeEvent } from "react";
+
+interface State {
+  toDoList: string[];
+  current: string;
+}
+
+type Action = { type: "newTodo"; payload: string } | { type: "add" } | { type: "remove"; payload: string };
+
+const initialState: State = {
+  toDoList: ["Hello", "World"],
+  current: "",
+};
+
+function reducerFn(state: State, action: Action): State {
+  switch (action.type) {
+    case "newTodo":
+      return { ...state, current: action.payload };
+    case "add":
+      return {
+        ...state,
+        toDoList: [...state.toDoList, state.current],
+        current: "",
+      };
+    case "remove":
+      const index = state.toDoList.indexOf(action.payload);
+      const temp = [...state.toDoList];
+      temp.splice(index, 1);
+      return { ...state, toDoList: temp };
+    default:
+      throw new Error("Unknown action type");
+  }
+}
+
+export default function App() {
+  const [todoData, dispatch] = useReducer(reducerFn, initialState);
+
+  const { toDoList, current } = todoData;
+
+  function getValue(e: ChangeEvent<HTMLInputElement>) {
+    dispatch({ type: "newTodo", payload: e.target.value });
+  }
+
+  function add() {
+    dispatch({ type: "add" });
+  }
+
+  function remove(item: string) {
+    dispatch({ type: "remove", payload: item });
+  }
+
+  return (
+    <div>
+      <h1>TODO</h1>
+      {toDoList.map((e) => (
+        <div key={e}>
+          <li>{e}</li>
+          <button onClick={() => remove(e)}>x</button>
+        </div>
+      ))}
+      <div>
+        <input type="text" onChange={getValue} value={current} />
+        <button onClick={add}>Add</button>
+      </div>
+    </div>
+  );
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
 
 ## Custom Hooks
 
@@ -328,5 +608,3 @@ export default function useFormInput(
 </TabItem>
 </Tabs>
 ```
-
-
