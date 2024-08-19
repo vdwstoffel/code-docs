@@ -5,16 +5,40 @@ sidebar_position: 6
 
 # Functions
 
+## Function Declaration
+
+```js
+function add(a, b) {
+  return a + b;
+}
+
+add(3, 5); // Output: 8
+```
+
+## Function Expression
+
+```js
+const add = function (a, b) {
+  return a + b;
+};
+
+add(3, 5); // Output: 8
+```
+
 ## Arrow Function
 
 ```js
 const add = (a, b) => a + b;
+
+add(3, 5); // Output: 8
 ```
 
 ```js
 const add = (a, b) => {
   return a + b;
 };
+
+add(3, 5); // Output: 8
 ```
 
 ## Providing a Default Parameter Value
