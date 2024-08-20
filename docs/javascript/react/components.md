@@ -1,7 +1,11 @@
 ---
-sidebar_label: 'Components'
+sidebar_label: "Components"
 sidebar_position: 1
 ---
+
+import CodeBlock from "@theme/CodeBlock";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 # Components
 
@@ -35,11 +39,6 @@ export default function App() {
 
 ## Passing Props to child components
 
-```mdx-code-block
-<Tabs>
-<TabItem value="App.jsx">
-```
-
 ```jsx
 export default function App() {
   return (
@@ -51,8 +50,24 @@ export default function App() {
 ```
 
 ```mdx-code-block
+<Tabs>
+<TabItem value="Destructured Props">
+```
+
+```jsx
+export default function Pizza({ name, ingredients }) {
+  return (
+    <>
+      <h1>{name}</h1>
+      <h2>{ingredients}</h2>
+    </>
+  );
+}
+```
+
+```mdx-code-block
 </TabItem>
-<TabItem value="Pizza.jsx">
+<TabItem value="props argument">
 ```
 
 ```jsx
@@ -77,16 +92,20 @@ export default function Pizza(props) {
 In React, `props.children` is used to display whatever you include between the opening and closing tags when invoking a component.
 
 ```jsx
-function Button({ children, clickHandler }) {
+function Wrapper({ children, clickHandler }) {
   return (
-    <button onClick={clickHandler} className="button" type="select">
+    <div onClick={clickHandler} className="button" type="select">
       {children}
-    </button>
+    </div>
   );
 }
 
 function App() {
-  return <Button clickHandler={() => console.log("Add")}>Add Friend</Button>;
+  return (
+    <Wrapper clickHandler={() => console.log("Add")}>
+      <h1>Add Friend</h1>
+    </Wrapper>
+  );
 }
 ```
 

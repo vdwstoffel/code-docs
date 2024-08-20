@@ -76,7 +76,7 @@ useEffect(() => {
 }, [dependencies]);
 ```
 
-### Side effects in functional components
+### How to fetch external api data
 
 ```jsx
 import { useEffect, useState } from "react";
@@ -227,8 +227,13 @@ export default function MyComponent() {
 
 `useReducer` is a Hook in React that allows you to manage complex state logic in your components. It's similar to `useState`, but it's more suitable for managing state that involves multiple sub-values or when the next state depends on the previous one.
 
+Reducer functions takes two arguments: the current state and an action object. The action object typically has a `type` property that describes the action and an optional `payload` property that can contain additional data. The reducer function then returns the new state based on the action type and payload.
+
 ```jsx
 import { useReducer } from "react";
+
+function reducerFn(state, action) {
+  // ...
 
 const [state, dispatch] = useReducer(reducerFn, initialState);
 ```
@@ -346,7 +351,8 @@ const initialState = {
 function reducerFn(state, action) {
   switch (action.type) {
     case "newTodo":
-      return { ...state, current: action.payload };
+      // return the new state, with the current value updated from the payload
+      return { ...state, current: action.payload }; 
     case "add":
       return { ...state, toDoList: [...state.toDoList, state.current], current: "" };
     case "remove":
