@@ -137,7 +137,7 @@ const config = {
         maxHeadingLevel: 5,
       },
       prism: {
-        theme: lightCodeTheme,
+        theme: darkCodeTheme,
         darkTheme: darkCodeTheme,
         //https://prismjs.com/#supported-languages
         additionalLanguages: ["bash", "docker", "yaml", "json", "robotframework", "pug", "groovy", "typescript", "java"],
