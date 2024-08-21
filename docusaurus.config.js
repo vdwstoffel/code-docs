@@ -82,12 +82,13 @@ const config = {
 
           // Snippets dropdown menu
           {type: "dropdown", label: "Snippets", position: "left", items: [
+            {type: "doc", label: "HTML", docId: "html/html"},
             {type: "doc", label: "JavaScript", docId: "javascript/basics/README"},
             {type: "doc", label: "Docker", docId: "docker/docker"},
           ]},
 
           // Blog posts
-          { to: "/blog", label: "How To", position: "left" },
+          { to: "/blog", label: "Interesting", position: "left" },
 
         ],
       },

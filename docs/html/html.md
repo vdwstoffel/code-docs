@@ -104,7 +104,7 @@ Highlighted: to add css and javascript
 </form>
 </div>
 
-## Select Tag
+## Dropdown Select
 
 ```html
 <select>
@@ -175,3 +175,19 @@ Highlighted: to add css and javascript
 ```html
 <img src="./post-img.jpg" alt="post-img" />
 ```
+
+## Progress Bar
+
+The progress HTML element displays an indicator showing the completion progress of a task, typically displayed as a progress bar.
+
+```html
+<progress value="50" max="100">50%</progress>
+```
+
+<progress value="50" max="100">50%</progress>
+
+```html
+<progress value="75" max="100">75%</progress>
+```
+
+<progress value="75" max="100">75%</progress>
