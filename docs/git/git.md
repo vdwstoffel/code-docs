@@ -1,7 +1,6 @@
 ---
 sidebar_label: "Git"
 sidebar_position: 000
-slug: /
 ---
 
 # Git
@@ -67,20 +66,4 @@ git reset --soft HEAD~1
 
 ```bash
 git reset
-```
-
-## Submodules
-
-```bash
-# updating submodules on a clone
-git submodule init
-
-# adding a submodule
-git submodule add <remote_url>
-
-# updating a submodule
-git submodule update --remote --merge
-
-# remove submodule
-git rm <path-to-submodule>
 ```
