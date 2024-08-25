@@ -87,7 +87,7 @@ const config = {
             {type: "doc", label: "CSS", docId: "css/css"},
             {type: "doc", label: "JavaScript", docId: "javascript/javascript/javascript"},
             {type: "doc", label: "Python", docId: "python/python/python"},
-            {type: "doc", label: "Databases", docId: "databases/databases/databases"},
+            {type: "doc", label: "Databases", docId: "databases/sql"},
             {type: "doc", label: "Docker", docId: "docker/docker"},
           ]},
 
