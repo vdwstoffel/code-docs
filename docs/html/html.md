@@ -7,6 +7,8 @@ import CodeBlock from "@theme/CodeBlock";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
+import BrowserWindow from "@site/src/components/BrowserWindow/BrowserWindow";
+
 # HTML
 
 ## Getting Started
@@ -45,11 +47,13 @@ Highlighted: to add css and javascript
 </ul>
 ```
 
+<BrowserWindow>
 <ul>
   <li>The opening tag</li>
   <li>The closing tag</li>
   <li>The actual element</li>
 </ul>
+</BrowserWindow>
 
 ```mdx-code-block
 </TabItem>
@@ -64,11 +68,13 @@ Highlighted: to add css and javascript
 </ol>
 ```
 
+<BrowserWindow>
 <ol>
   <li>The opening tag</li>
   <li>The closing tag</li>
   <li>The actual element</li>
 </ol>
+</BrowserWindow>
 
 ```mdx-code-block
 </TabItem>
@@ -92,6 +98,7 @@ Highlighted: to add css and javascript
 </form>
 ```
 
+<BrowserWindow>
 <div>
 <form action="" method="get" onsubmit="return false;" style={{textAlign: "center"}}>
     <label for="name">Name</label>
@@ -103,6 +110,7 @@ Highlighted: to add css and javascript
     <button type="submit">Submit</button>
 </form>
 </div>
+</BrowserWindow>
 
 ## Dropdown Select
 
@@ -114,11 +122,13 @@ Highlighted: to add css and javascript
 </select>
 ```
 
-<select>
-  <option value="option1">Option 1</option>
-  <option value="option2">Option 2</option>
-  <option value="option3">Option 3</option>
-</select>
+<BrowserWindow>
+  <select>
+    <option value="option1">Option 1</option>
+    <option value="option2">Option 2</option>
+    <option value="option3">Option 3</option>
+  </select>
+</BrowserWindow>
 
 ## Tables
 
@@ -138,6 +148,7 @@ Highlighted: to add css and javascript
 </table>
 ```
 
+<BrowserWindow>
 <table>
   <thead>
     <tr>
@@ -151,17 +162,22 @@ Highlighted: to add css and javascript
     </tr>
   </tbody>
 </table>
+</BrowserWindow>
 
 ## Radio Button
 
 ```html
 <p>Please select your favorite Web language:</p>
-  <input type="radio" id="html" name="fav_language" value="HTML" />   <label for="html">HTML</label><br />
-  <input type="radio" id="css" name="fav_language" value="CSS" />   <label for="css">CSS</label><br />
-  <input type="radio" id="javascript" name="fav_language" value="JavaScript" />  
+  <input type="radio" id="html" name="fav_language" value="HTML" />  
+<label for="html">HTML</label><br />
+  <input type="radio" id="css" name="fav_language" value="CSS" />  
+<label for="css">CSS</label><br />
+ 
+<input type="radio" id="javascript" name="fav_language" value="JavaScript" />  
 <label for="javascript">JavaScript</label>
 ```
 
+<BrowserWindow>
 <p>Please select your favorite Web language:</p>
   <input type="radio" id="html" name="fav_language" value="HTML"/>
   <label for="html">HTML</label><br/>
@@ -169,6 +185,7 @@ Highlighted: to add css and javascript
   <label for="css">CSS</label><br/>
   <input type="radio" id="javascript" name="fav_language" value="JavaScript"/>
   <label for="javascript">JavaScript</label>
+</BrowserWindow>
 
 ## Image
 
@@ -184,10 +201,14 @@ The progress HTML element displays an indicator showing the completion progress 
 <progress value="50" max="100">50%</progress>
 ```
 
+<BrowserWindow>
 <progress value="50" max="100">50%</progress>
+</BrowserWindow>
 
 ```html
 <progress value="75" max="100">75%</progress>
 ```
 
+<BrowserWindow>
 <progress value="75" max="100">75%</progress>
+</BrowserWindow>

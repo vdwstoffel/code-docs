@@ -3,6 +3,9 @@ sidebar_label: Routing
 sidebar_position: 1
 ---
 
+import BrowserWindow from "@site/src/components/BrowserWindow/BrowserWindow";
+import UrlBar from "@site/src/components/BrowserWindow/UrlBar";
+
 # Routing
 
 ## Response Methods
@@ -30,16 +33,23 @@ app.get("/", (req, res) => {
 
 //highlight-start
 app.all("*", (req, res) => {
-  res.status(404).json({ status: "failure", message: `Cant find ${req.originalUrl}` });
+  res
+    .status(404)
+    .json({ status: "failure", message: `Cant find ${req.originalUrl}` });
 });
 //highlight-end
 
 app.listen(3000);
 ```
 
+<BrowserWindow url={"http://localhost:3000/doesnotexist"}>
+
+<p>{'{"status" : "failure", "message" : "Cant find /doesnotexist"}'}</p>
+</BrowserWindow>
+
 ## How to add dynamic routes
 
-`mysite.com/api/tours/5`
+<UrlBar url={`mysite.com/api/tours/5`} />
 
 ```javascript
 app.get("/api/tours/:tourId", (req, res) => {
@@ -66,7 +76,12 @@ router1.get("/post/:postId", (req, res) => {
 
 // Define a route on router2
 router2.get("/comment/:commentId", (req, res) => {
-  res.send("Post ID is: " + req.params.postId + ", Comment ID is: " + req.params.commentId);
+  res.send(
+    "Post ID is: " +
+      req.params.postId +
+      ", Comment ID is: " +
+      req.params.commentId
+  );
 });
 
 // Use router2 as a middleware for router1
@@ -111,7 +126,7 @@ app
 
 ## How to parse query parameters
 
-`/api/tours?duration=5&difficulty=easy`
+<UrlBar url={`/api/tours?duration=5&difficulty=easy`}/>
 
 ```js
 app.get("/api/tours", (req, res) => {

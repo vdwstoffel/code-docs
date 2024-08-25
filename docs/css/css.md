@@ -14,6 +14,8 @@ import GridDisplay from '@site/src/components/cssExamples/GridDisplay'
 import Transition from '@site/src/components/cssExamples/Transition'
 import Transform from '@site/src/components/cssExamples/Transform'
 
+import BrowserWindow from "@site/src/components/BrowserWindow/BrowserWindow";
+
 # CSS
 
 <DisplayLogo logo={cssLogo} />
@@ -65,7 +67,9 @@ Grid layout is a two-dimensional layout system that uses a set of rows and colum
 }
 ```
 
+<BrowserWindow>
 <GridDisplay />
+</BrowserWindow>
 
 ```mdx-code-block
 </TabItem>
@@ -89,7 +93,9 @@ Grid layout is a two-dimensional layout system that uses a set of rows and colum
 }
 ```
 
+<BrowserWindow>
 <GridDisplay placement={true} />
+</BrowserWindow>
 
 ```mdx-code-block
 </TabItem>
@@ -119,7 +125,9 @@ top: 30%;
 left: 60%;
 ```
 
+<BrowserWindow>
 <Position position={"relative"} top={"30%"} left={"60%"}/>
+</BrowserWindow>
 
 ```mdx-code-block
 </TabItem>
@@ -134,7 +142,9 @@ top: 30%;
 left: 30%;
 ```
 
+<BrowserWindow>
 <Position position={"absolute"} top={"30%"} left={"30%"}/>
+</BrowserWindow>
 
 ```mdx-code-block
 </TabItem>
@@ -148,7 +158,9 @@ position: sticky;
 top: 20%; /* space between element and parent*/
 ```
 
+<BrowserWindow>
 <Position position={"sticky"} top={"20%"} />
+</BrowserWindow>
 
 ```mdx-code-block
 </TabItem>
@@ -175,11 +187,13 @@ top: 20%; /* space between element and parent*/
 }
 ```
 
+<BrowserWindow>
 <div style={{width: "300px", height: "300px", position: "relative", backgroundColor: "grey", margin: "auto" }}>
   <div style={{width: "200px", height: "200px", position: "absolute", bottom: "10%", left: "10%", backgroundColor: "red"}}>
     <div style={{width: "100px", height: "100px", position: "absolute", bottom: "10%", right: "10%", backgroundColor: "black"}}></div>
   </div>
 </div>
+</BrowserWindow>
 
 ## Overflow
 
@@ -189,10 +203,12 @@ div {
 }
 ```
 
+<BrowserWindow>
 <div style={{width: "200px", height: "100px", overflow: "auto", backgroundColor: "orange", color: "black", padding: "0.5em", margin: "auto"}}>
   You can use the overflow property when you want to have better control of the layout. The overflow property specifies
   what happens if content overflows an element's box.
 </div>
+</BrowserWindow>
 
 ## Layout
 
@@ -244,6 +260,7 @@ body {
 </div>
 ```
 
+<BrowserWindow>
 <div style={{
   textAlign: "center",
   height: "200px",
@@ -261,6 +278,7 @@ body {
     <p>I am vertically and horizontally centered.</p>
   </div>
 </div>
+</BrowserWindow>
 
 ## Background
 
@@ -274,7 +292,12 @@ background-size: cover; /* auto scale to never have white space */
 background-position: 0% 10%; /* left edge, amount to crop at top*/
 background-position: center; /* Crop same amount top and bottom */
 
-background-image: linear-gradient(145deg, red 20%, blue 60%, green); /* direction , color (when to transition)*/
+background-image: linear-gradient(
+  145deg,
+  red 20%,
+  blue 60%,
+  green
+); /* direction , color (when to transition)*/
 /*               shape (circle/ ellipse) size   left, top     start transition */
 background-image: radial-gradient(circle 50em at 10% 80%, red 20%, blue);
 
@@ -309,9 +332,11 @@ filter: sepia(60%);
 }
 ```
 
-<div style={{backgroundColor: "gray", padding: "1.5em"}}>
+<BrowserWindow>
+<div style={{padding: "1.5em"}}>
 <div style={{width: "300px", height: "300px", backgroundColor: "darkgreen", margin: "auto", borderWidth: "0.5em", borderStyle: "solid", borderColor: "black"}} ></div>
 </div>
+</BrowserWindow>
 
 ```mdx-code-block
 </TabItem>
@@ -325,9 +350,11 @@ filter: sepia(60%);
 }
 ```
 
-<div style={{backgroundColor: "gray", padding: "1.5em"}}>
+<BrowserWindow>
+<div style={{padding: "1.5em"}}>
 <div style={{width: "300px", height: "300px", backgroundColor: "darkgreen", margin: "auto", borderWidth: "0.5em", borderStyle: "solid", borderColor: "black", borderRadius: "5%"}} ></div>
 </div>
+</BrowserWindow>
 
 ```mdx-code-block
 </TabItem>
@@ -373,7 +400,9 @@ CSS transition properties are used to add smoothness and animation to the web pa
 }
 ```
 
+<BrowserWindow>
 <Transition value={"single"} />
+</BrowserWindow>
 
 ```mdx-code-block
 </TabItem>
@@ -393,7 +422,9 @@ CSS transition properties are used to add smoothness and animation to the web pa
 }
 ```
 
+<BrowserWindow>
 <Transition value={"multiple"} />
+</BrowserWindow>
 
 ```mdx-code-block
 </TabItem>
@@ -412,7 +443,9 @@ CSS transition properties are used to add smoothness and animation to the web pa
 }
 ```
 
+<BrowserWindow>
 <Transition value={"delay"} />
+</BrowserWindow>
 
 ```mdx-code-block
 </TabItem>
@@ -438,7 +471,9 @@ The `transform` property allows you to rotate, scale, move, and skew elements. T
 transform: rotate(180deg);
 ```
 
+<BrowserWindow>
 <Transform property={"rotate"} />
+</BrowserWindow>
 
 ```mdx-code-block
 </TabItem>
@@ -449,7 +484,9 @@ transform: rotate(180deg);
 transform: scale(150%);
 ```
 
+<BrowserWindow>
 <Transform property={"scale"} />
+</BrowserWindow>
 
 ```mdx-code-block
 </TabItem>
@@ -459,10 +496,15 @@ transform: scale(150%);
 ```css
 transform: translateX(30%); /* moving the element along the X-axis */
 transform: translateY(30%); /* moving the element along the Y-axis */
-transform: translate(30%, 30%); /* moving the element along the X- and the Y-axis */
+transform: translate(
+  30%,
+  30%
+); /* moving the element along the X- and the Y-axis */
 ```
 
+<BrowserWindow>
 <Transform property={"translate"} />
+</BrowserWindow>
 
 ```mdx-code-block
 </TabItem>
@@ -479,7 +521,10 @@ transform: translate(30%, 30%); /* moving the element along the X- and the Y-axi
 }
 ```
 
+
+<BrowserWindow>
 <Transform property={"tt"} />
+</BrowserWindow>
 
 ```mdx-code-block
 </TabItem>
