@@ -11,6 +11,7 @@ import SelectDomElement from '@site/src/components/reactExamples/SelectDomElemen
 import UpdateDomElements from '@site/src/components/reactExamples/UpdateDomElements'
 import CounterHookExample from '@site/src/components/reactExamples/CounterHookExample'
 import ToggleHookExample from '@site/src/components/reactExamples/ToggleHookExample'
+import BrowserWindow from '@site/src/components/BrowserWindow/BrowserWindow'
 
 # Hooks
 
@@ -198,7 +199,9 @@ export default function MyComponent(): React.JSX.Element {
 </Tabs>
 ```
 
+<BrowserWindow>
 <SelectDomElement/>
+</BrowserWindow>
 
 ### Update DOM elements
 
@@ -221,7 +224,9 @@ export default function MyComponent() {
 }
 ```
 
+<BrowserWindow>
 <UpdateDomElements/>
+</BrowserWindow>
 
 ## useReducer
 
@@ -291,7 +296,10 @@ export default function App() {
 ```tsx
 import { useReducer } from "react";
 
-function reducer(state: number, action: { type: string; payload: number }): number {
+function reducer(
+  state: number,
+  action: { type: string; payload: number }
+): number {
   console.log(state); // 0
   console.log(action); // {type: 'increase', payload: 1}
 
@@ -352,9 +360,13 @@ function reducerFn(state, action) {
   switch (action.type) {
     case "newTodo":
       // return the new state, with the current value updated from the payload
-      return { ...state, current: action.payload }; 
+      return { ...state, current: action.payload };
     case "add":
-      return { ...state, toDoList: [...state.toDoList, state.current], current: "" };
+      return {
+        ...state,
+        toDoList: [...state.toDoList, state.current],
+        current: "",
+      };
     case "remove":
       const index = state.toDoList.indexOf(action.payload);
       const temp = [...state.toDoList];
@@ -415,7 +427,10 @@ interface State {
   current: string;
 }
 
-type Action = { type: "newTodo"; payload: string } | { type: "add" } | { type: "remove"; payload: string };
+type Action =
+  | { type: "newTodo"; payload: string }
+  | { type: "add" }
+  | { type: "remove"; payload: string };
 
 const initialState: State = {
   toDoList: ["Hello", "World"],
@@ -524,7 +539,9 @@ export default function Counter() {
 }
 ```
 
+<BrowserWindow>
 <CounterHookExample/>
+</BrowserWindow>
 
 ### Toggle Input
 
@@ -560,7 +577,9 @@ export default function App() {
 }
 ```
 
+<BrowserWindow>
 <ToggleHookExample/>
+</BrowserWindow>
 
 ### Form Input Hooks
 
