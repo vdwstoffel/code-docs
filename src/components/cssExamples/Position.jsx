@@ -15,14 +15,14 @@ export default function Position(props) {
     height: "300px",
   };
 
-  const box = {
+  const blue = {
     width: "200px",
     height: "200px",
     marginTop: "20%",
     backgroundColor: "darkblue",
   };
 
-  const middle = {
+  const yellow = {
     width: "200px",
     height: "200px",
     backgroundColor: "yellow",
@@ -63,9 +63,9 @@ export default function Position(props) {
         is hard to explain, it's a bad idea. If the implementation is easy to explain, it may be a good idea. Namespaces
         are one honking great idea -- let's do more of those!
       </p>
-      <div style={box}></div>
-      <div style={middle}></div>
-      <div style={box}></div>
+      <div style={blue}></div>
+      <div style={yellow}></div>
+      <div style={blue}></div>
     </div>
   );
 }
