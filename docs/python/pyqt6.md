@@ -90,7 +90,7 @@ if __name__ == '__main__':
     sys.exit(app.exec())
 ```
 
-![pushButton](../images/pushButton.png)
+![pushButton](@site/static/img/pyqt6/pushButton.png)
 
 ## Label
 
@@ -119,7 +119,7 @@ if __name__ == '__main__':
     sys.exit(app.exec())
 ```
 
-![label](../images/label.png)
+![label](@site/static/img/pyqt6/label.png)
 
 ## TextEdit
 
@@ -150,7 +150,7 @@ if __name__ == '__main__':
     sys.exit(app.exec())
 ```
 
-![textEdit](../images/textEdit.png)
+![textEdit](@site/static/img/pyqt6/textEdit.png)
 
 ## ComboBox
 
@@ -178,9 +178,9 @@ if __name__ == '__main__':
     sys.exit(app.exec())
 ```
 
-![comboBox](../images/comboBox.png)
+![comboBox](@site/static/img/pyqt6/comboBox.png)
 
-![comboBoxExpanded](../images/comboBoxExpanded.png)
+![comboBoxExpanded](@site/static/img/pyqt6/comboBoxExpanded.png)
 
 ## LineEdit
 
@@ -210,7 +210,7 @@ if __name__ == '__main__':
     sys.exit(app.exec())
 ```
 
-![lineEdit](../images/lineEdit.png)
+![lineEdit](@site/static/img/pyqt6/lineEdit.png)
 
 ## ToolBar
 
@@ -243,7 +243,7 @@ if __name__ == '__main__':
     sys.exit(app.exec())
 ```
 
-![toolbar](../images/toolbar.png)
+![toolbar](@site/static/img/pyqt6/toolbar.png)
 
 ## Status Bar
 
@@ -271,7 +271,7 @@ if __name__ == '__main__':
     sys.exit(app.exec())
 ```
 
-![statusbar](../images/statusbar.png)
+![statusbar](@site/static/img/pyqt6/statusbar.png)
 
 ## Menu Bar
 
@@ -306,7 +306,7 @@ if __name__ == '__main__':
     sys.exit(app.exec())
 ```
 
-![menubar](../images/menubar.png)
+![menubar](@site/static/img/pyqt6/menubar.png)
 
 ## Message Box (pop up)
 
@@ -343,9 +343,9 @@ if __name__ == '__main__':
     sys.exit(app.exec())
 ```
 
-![messageBox](../images/messageBox.png)
+![messageBox](@site/static/img/pyqt6/messageBox.png)
 
-![messageBoxClicked](../images/messageBoxClicked.png)
+![messageBoxClicked](@site/static/img/pyqt6/messageBoxClicked.png)
 
 ## Multi Window
 
@@ -435,7 +435,7 @@ if __name__ == '__main__':
     sys.exit(app.exec())
 ```
 
-![table](../images/table.png)
+![table](@site/static/img/pyqt6/table.png)
 
 ### Other Table Functions
 
