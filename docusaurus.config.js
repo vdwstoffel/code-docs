@@ -84,7 +84,10 @@ const config = {
           {type: "dropdown", label: "Snippets", position: "left", items: [
             {type: "doc", label: "Git", docId: "git/git"},
             {type: "doc", label: "HTML", docId: "html/html"},
-            {type: "doc", label: "JavaScript", docId: "javascript/basics/README"},
+            {type: "doc", label: "CSS", docId: "css/css"},
+            {type: "doc", label: "JavaScript", docId: "javascript/javascript/javascript"},
+            {type: "doc", label: "Python", docId: "python/python/python"},
+            {type: "doc", label: "Databases", docId: "databases/databases/databases"},
             {type: "doc", label: "Docker", docId: "docker/docker"},
           ]},
 
