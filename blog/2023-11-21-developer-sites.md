@@ -9,6 +9,13 @@ authors:
 tags: [web dev, interesting]
 ---
 
+## Database Tools
+
+- [PGAdmin](https://www.pgadmin.org/) - PostgreSQL administration and management tools
+- [Neon](https://neon.tech/) - A modern PostgreSQL client
+- [Compass](https://www.mongodb.com/products/tools/compass) - MongoDB GUI
+- [Mongo Cloud](https://www.mongodb.com/products/platform/cloud) - MongoDB Cloud
+
 ## Emails
 
 - [Mailtrap](https://mailtrap.io/home) - Fake SMTP testing server
