@@ -1,6 +1,6 @@
 ---
 sidebar_label: "CSS"
-sidebar_position: 101
+sidebar_position: 1
 ---
 
 import CodeBlock from "@theme/CodeBlock";
@@ -47,59 +47,6 @@ body {
   margin: 0;
   padding: 0;
 }
-```
-
-## Display
-
-### Grid Display
-
-Grid layout is a two-dimensional layout system that uses a set of rows and columns to define the structure of a page. It is a powerful layout system that allows you to create complex layouts with ease.
-
-```mdx-code-block
-<Tabs>
-<TabItem value="Grid Display">
-```
-
-```css
-.container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr; /* Set 3 grid rows*/
-}
-```
-
-<BrowserWindow>
-<GridDisplay />
-</BrowserWindow>
-
-```mdx-code-block
-</TabItem>
-<TabItem value="Grid Placement">
-```
-
-```css
-.container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-}
-
-.one {
-  grid-column: span 2; /* takes x columns */
-  grid-row: span 1; /* takes x rows*/
-}
-
-.three {
-  grid-column: span 1; /* takes x columns */
-  grid-row: span 2; /* takes x rows*/
-}
-```
-
-<BrowserWindow>
-<GridDisplay placement={true} />
-</BrowserWindow>
-
-```mdx-code-block
-</TabItem>
-</Tabs>
 ```
 
 ## Positioning
@@ -520,7 +467,6 @@ transform: translate(
   transform: rotate(360deg);
 }
 ```
-
 
 <BrowserWindow>
 <Transform property={"tt"} />
