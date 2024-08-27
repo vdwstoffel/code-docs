@@ -7,6 +7,8 @@ import CodeBlock from "@theme/CodeBlock";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
+import BrowserWindow from "@site/src/components/BrowserWindow/BrowserWindow"
+
 # React Router
 
 React Router is a collection of navigational components that compose declaratively with your application. Whether you want to have bookmarkable URLs for your web app or a composable way to navigate in React Native, React Router works wherever React is rendering.
@@ -14,6 +16,36 @@ React Router is a collection of navigational components that compose declarative
 ```bash
 npm i react-router-dom
 ```
+
+```jsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/Home" element={<Home />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+function Home() {
+  return <NavLink to="/home">Home</NavLink>;
+}
+```
+
+:::info
+Link can also be used instead of `NavLink` to navigate to a different page.
+
+```jsx
+import { Link } from "react-router-dom";
+
+<Link to="/home">Home</Link>;
+```
+
+:::
 
 ## Adding a router (Legacy)
 
@@ -50,9 +82,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="product" element={<Product />}></Route>
-        <Route path="*" element={<PageNotFound />}></Route>
+        <Route path="/" element={<Home />} />
+        <Route path="product" element={<Product />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
   );
@@ -130,9 +162,9 @@ export default function App(): JSX.Element {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/about" element={<About />}></Route>
-          <Route path="*" element={<ErrorPage />}></Route>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
     </>
@@ -217,6 +249,90 @@ export default function Home(): JSX.Element {
 </TabItem>
 </Tabs>
 ```
+
+### Adding Nested Routes
+
+[Full Code](https://github.com/vdwstoffel/code_examples/tree/main/javascript/react/react_router_old_nested_routes_ts/src)
+
+```mdx-code-block
+<Tabs>
+<TabItem value="App.tsx">
+```
+
+```tsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Home from "./pages/Home";
+import Sub1 from "./components/Sub1";
+import Sub2 from "./components/Sub2";
+
+export default function App(): JSX.Element {
+  return (
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="home" element={<Home />}>
+            <Route index element={<Sub1 />} /> {/* Display Sub1 as default */}
+            <Route path="sub" element={<Sub1 />} />
+            <Route path="sub2" element={<Sub2 />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Home.tsx">
+```
+
+```tsx
+import { Link, Outlet } from "react-router-dom";
+
+export default function Home(): JSX.Element {
+  return (
+    <>
+      <h1>Home</h1>
+      <Link to="sub">Sub 1</Link>
+      <Link to="sub2">Sub 2</Link>
+      <Outlet /> {/* Display child element from the route */}
+    </>
+  );
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Sub1.tsx">
+```
+
+```tsx
+export default function Sub1(): JSX.Element {
+  return <h1>Section 1</h1>;
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+<BrowserWindow url="localhost/home/sub1">
+<h1>Home</h1>
+<a>Sub 1 </a>
+<a>Sub 2</a>
+<h1>Section 1</h1>
+</BrowserWindow>
+
+<BrowserWindow url="localhost/home/sub2">
+<h1>Home</h1>
+<a>Sub 1 </a>
+<a>Sub 2</a>
+<h1>Section 2</h1>
+</BrowserWindow>
+
 
 ## Adding a router
 
