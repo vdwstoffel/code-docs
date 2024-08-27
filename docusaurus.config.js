@@ -88,7 +88,9 @@ const config = {
             {type: "doc", label: "JavaScript", docId: "javascript/javascript/javascript"},
             {type: "doc", label: "Python", docId: "python/python/python"},
             {type: "doc", label: "Databases", docId: "databases/sql"},
+            {type: "doc", label: "Linux", docId: "linux/linux"},
             {type: "doc", label: "Docker", docId: "docker/docker"},
+            {type: "doc", label: "CI/CD", docId: "cicd/jenkins"},
           ]},
 
           // Blog posts
