@@ -218,6 +218,8 @@ export default function Home() {
 <TabItem value="authslice.ts">
 ```
 
+The authSlice file contains the initial state and the reducers for the authentication slice.
+
 ```ts
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -257,6 +259,8 @@ export default authSlice;
 <TabItem value="store.ts">
 ```
 
+The store file contains the store configuration and the types for the store.
+
 ```ts
 import { configureStore } from "@reduxjs/toolkit";
 
@@ -278,6 +282,8 @@ export type AppDispatch = typeof store.dispatch;
 <TabItem value="storeHooks.ts">
 ```
 
+The storeHooks file contains the custom hooks to use the store throughout the app.
+
 ```ts
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "./store";
@@ -291,6 +297,8 @@ export const useAppSelector = useSelector.withTypes<RootState>();
 </TabItem>
 <TabItem value="auth.ts">
 ```
+
+The auth file contains the api call to the backend to get the user details and update the store with the details.
 
 ```ts
 import authSlice from "../store/authSlice";
@@ -308,6 +316,8 @@ export const signInUser = () => {
 </TabItem>
 <TabItem value="App.tsx">
 ```
+
+The app file contains the main component of the app. It uses the custom hooks to access the store and dispatch actions.
 
 ```ts
 import { useAppDispatch, useAppSelector } from "./store/storeHooks";
@@ -338,6 +348,8 @@ export default App;
 </TabItem>
 <TabItem value="main.tsx">
 ```
+
+the main file contains the root component of the app. It wraps the app component with the provider to provide the store to the app.
 
 ```ts
 import React from "react";
