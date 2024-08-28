@@ -1,6 +1,5 @@
 ---
-sidebar_label: React Router
-sidebar_position: 4
+Sidebar_label: "React Router pre(6.4)"
 ---
 
 import CodeBlock from "@theme/CodeBlock";
@@ -9,9 +8,7 @@ import TabItem from "@theme/TabItem";
 
 import BrowserWindow from "@site/src/components/BrowserWindow/BrowserWindow"
 
-# React Router
-
-React Router is a collection of navigational components that compose declaratively with your application. Whether you want to have bookmarkable URLs for your web app or a composable way to navigate in React Native, React Router works wherever React is rendering.
+# React Router (pre 6.4)
 
 ```bash
 npm i react-router-dom
@@ -47,7 +44,7 @@ import { Link } from "react-router-dom";
 
 :::
 
-## Adding a router (Legacy)
+## Adding a router
 
 [Full code example](https://github.com/vdwstoffel/code_examples/tree/main/javascript/react/react_router_old_ts)
 
@@ -250,7 +247,7 @@ export default function Home(): JSX.Element {
 </Tabs>
 ```
 
-### Adding Nested Routes
+## Adding Nested Routes
 
 [Full Code](https://github.com/vdwstoffel/code_examples/tree/main/javascript/react/react_router_old_nested_routes_ts/src)
 
@@ -334,93 +331,44 @@ export default function Sub1(): JSX.Element {
 </BrowserWindow>
 
 
-## Adding a router
+## How to get the dynamic route parameter
 
 ```mdx-code-block
 <Tabs>
-<TabItem value="Header.jsx">
-```
-
-```jsx title="Header.jsx"
-import { Link } from "react-router-dom";
-
-export default function Header() {
-  return (
-    <header>
-      <Link to="/">Home</Link>
-      <Link to="Products">Products</Link>
-    </header>
-  );
-}
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="RootLayout.jsx">
-```
-
-```jsx title="RootLayout.jsx"
-import { Outlet } from "react-router-dom";
-import Header from "./Header";
-
-export default function RootLayout() {
-  return (
-    <>
-      <Header /> {/* Add a navigation header */}
-      <Outlet /> {/* Display all child pages */}
-    </>
-  );
-}
-```
-
-```mdx-code-block
-</TabItem>
 <TabItem value="App.jsx">
 ```
 
 ```jsx title="App.jsx"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"; // npm i react-router-dom
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import RootLayout from "./RootLayout";
-import Home from "./Home";
-import Products from "./Products";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <RootLayout />, // Wrap the root layout and add other pages as children
-    // errorElement: <ErrorPage />, // if page does not exists show a define error page
-    children: [
-      { index: true, element: <Home /> },
-      { path: "/products", element: <Products /> },
-    ],
-  },
-]);
+import Product from "./pages/Product";
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/product" element={<Home />} />
+        //highlight-next-line
+        <Route path="product/:id" element={<Product />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 ```
 
 ```mdx-code-block
 </TabItem>
-<TabItem value="Home.jsx">
+<TabItem value="Product.jsx">
 ```
 
-```jsx title="Home.jsx"
-export default function Home() {
-  return <h1>Welcome Home</h1>;
-}
-```
+```jsx title="Product.jsx"
+//highlight-next-line
+import { useParams } from "react-router-dom";
 
-```mdx-code-block
-</TabItem>
-<TabItem value="Products.jsx">
-```
-
-```jsx title="Products.jsx"
-export default function Products() {
-  return <h1>This is the Products page</h1>;
+export default function Product() {
+  //highlight-next-line
+  const { id } = useParams();
+  return <h1>Product: {id}</h1>;
 }
 ```
 
@@ -428,3 +376,10 @@ export default function Products() {
 </TabItem>
 </Tabs>
 ```
+
+<BrowserWindow url="http://localhost/product/123">
+<h1>Product: 123</h1>
+</BrowserWindow>
+
+
+

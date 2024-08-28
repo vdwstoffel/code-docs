@@ -11,95 +11,6 @@ import TabItem from "@theme/TabItem";
 
 
 
-
-
-
-## UseState
-
-`useState` is a React hook that allows functional components to manage and update state.
-
-```mdx-code-block
-<Tabs>
-<TabItem value="Code">
-```
-
-```jsx
-import { useState } from "react";
-
-export default function App() {
-  // destruct array         // Set initial value
-  const [count, setCount] = useState(1);
-
-  function increase() {
-    const newCount = count + 1;
-    setCount(newCount); // Set a new value
-  }
-
-  return (
-    <div className="container">
-      <h1>{count}</h1>
-      <button onClick={increase}>+</button>
-    </div>
-  );
-}
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="Live">
-```
-
-```jsx live
-function App() {
-  // destruct array         // Set initial value
-  const [count, setCount] = useState(1);
-
-  function increase() {
-    const newCount = count + 1;
-    setCount(newCount); // Set a new value
-  }
-
-  return (
-    <div className="container">
-      <h1>{count}</h1>
-      <button onClick={increase}>+</button>
-    </div>
-  );
-}
-```
-
-```mdx-code-block
-</TabItem>
-</Tabs>
-```
-
-## UseEffect
-
-`useEffect` is a React hook that enables functional components to perform side effects, such as data fetching or DOM manipulation, after rendering.
-
-```jsx
-import { useState, useEffect } from "react";
-import axios from "axios";
-
-export default function App() {
-  const [results, setResults] = useState([]);
-
-  useEffect(() => {
-    const getData = async () => {
-      const res = await axios.get("https://swapi.dev/api/films/1/");
-      setResults(res.data);
-    };
-    getData();
-  }, []); // use callback array to run only when given argument changes
-
-  return (
-    <div>
-      <h1>{results.title} </h1>
-    </div>
-  );
-}
-```
-
 ## useContext
 
 `useContext` is a React hook that allows components to access shared data or values from a parent component's context without the need for prop drilling.
@@ -166,40 +77,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </AuthContextProvider>
   </React.StrictMode>
 );
-```
-
-## Custom Hooks
-
-```jsx title="/hooks/useToggler.jsx"
-import { useState } from "react";
-
-/* By convention prefix class with use */
-export default function useToggler(value = false) {
-  const [isOn, setIsOn] = useState(value); // set initial values with useState
-
-  const toggle = () => {
-    setIsOn(!isOn);
-  }; // set the value is the opposite of what it is
-
-  return [isOn, toggle]; // return the value and the toggle function
-}
-```
-
-```jsx title="App.jsx"
-import useToggler from "./hooks/useToggler";
-
-export default function App() {
-  const [btnOne, setBtnOne] = useToggler(false); // value , toggle function
-  const [btnTwo, setBtnTwo] = useToggler(false); // value , toggle function
-
-  return (
-    <div>
-      <h onClick={setBtnOne}>Button 1 is {btnOne ? "On" : "Off"}</h>
-      <br />
-      <h onClick={setBtnTwo}>Button 2 is {btnTwo ? "On" : "Off"}</h>
-    </div>
-  );
-}
 ```
 
 ## Router
@@ -275,42 +152,6 @@ export default function Home() {
 ```jsx title="Products.jsx"
 export default function Products() {
   return <h1>This is the Products page</h1>;
-}
-```
-
-### Dynamic Router
-
-```jsx title="App.jsx"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"; // npm i react-router-dom
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <RootLayout />, // Wrap the root layout and add other pages as children
-    children: [
-      { path: "/products", element: <Products /> },
-      { path: "products/:id", element: <ProductItems /> }, // dynamic routing
-    ],
-  },
-]);
-
-export default function App() {
-  return <RouterProvider router={router} />;
-}
-```
-
-```jsx title="ProductItems.jsx"
-import { useParams } from "react-router-dom";
-
-export default function ProductItems() {
-  const params = useParams();
-
-  return (
-    <>
-      <h1>Product: {params.id}</h1>
-      {/* params.id must match the dynamic route */}
-    </>
-  );
 }
 ```
 
@@ -1049,19 +890,6 @@ export default function App() {
 }
 ```
 
-## Vite: Change Default Port
-
-```jsx title="vite.config.js"
-// vite.config.js
-import { defineConfig } from "vite";
-
-export default defineConfig({
-  server: {
-    port: 8000,
-    host: true, // needed for docker
-  },
-});
-```
 
 ## Various
 
