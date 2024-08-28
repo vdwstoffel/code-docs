@@ -308,3 +308,41 @@ sendMail();
 npm install eslint --save-dev
 npx eslint --init
 ```
+## Create a json-server
+  
+```bash
+npm install json-server
+```
+
+Create a `db.json` file
+
+```json
+{
+  "posts": [
+    { "id": 1, "title": "json-server", "author": "typicode" }
+  ],
+  "comments": [
+    { "id": 1, "body": "some comment", "postId": 1 }
+  ],
+  "profile": { "name": "typicode" }
+}
+```
+
+Add to `package.json`
+
+```json
+"scripts": {
+  "json:server": "json-server --watch db.json --port 5000"
+}
+```
+
+Run
+
+```bash
+npm run json:server
+```
+
+```bash
+curl http://localhost:5000/posts
+$ {"posts":[{"id":1,"title":"json-server","author":"typicode"}]}
+```
