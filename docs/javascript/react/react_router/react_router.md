@@ -187,3 +187,75 @@ export default function ProductItems() {
 <BrowserWindow url="https://site.com/products/123">
 <h1>Product 123</h1>
 </BrowserWindow>
+
+## How to get the query parameter from the url
+
+```jsx
+import {useSearchParams } from "react-router-dom";
+
+export default function Product() {
+  const [searchParams] = useSearchParams();
+  const productName = searchParams.get("name");
+  return <h1>Product: {productName}</h1>;
+}
+```
+
+<BrowserWindow url="http://localhost/product?name=Table">
+<h1>Product: Table</h1>
+</BrowserWindow>
+
+## How to navigate programmatically
+
+`useNavigate` is a hook that returns a navigate function. Use it to navigate programmatically.
+
+
+```jsx title="ProductItems.jsx"
+import { useNavigate } from "react-router-dom";
+
+export default function ProductItems() {
+  const navigate = useNavigate();
+  return (
+    <>
+      <h1>Product</h1>
+      <button onClick={() => navigate("/products")}>Go to Products</button>
+    </>
+  );
+}
+```
+
+## Navigate away after a certain time
+
+```jsx
+import { useNavigate } from "react-router-dom";
+
+function useLogoutTimer() {
+  const userIsInactive = useFakeInactiveUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userIsInactive) {
+      fake.logout();
+      navigate("/login-screen");
+    }
+  }, [userIsInactive]);
+}
+```
+
+## Redirect back to previous page
+
+`useNavigate` can be used to navigate back to the previous page. Pass `-x` to navigate back `x` number of pages. of `x` to move foreware `x` number of pages.
+
+```jsx
+import { useNavigate } from "react-router-dom";
+
+export default function ProductItems() {
+  const navigate = useNavigate();
+  return (
+    <>
+      <h1>Product</h1>
+      <button onClick={() => navigate(-1)}>Go back</button>
+    </>
+  );
+}
+```
+
