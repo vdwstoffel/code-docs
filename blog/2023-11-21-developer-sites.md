@@ -29,6 +29,10 @@ tags: [web dev, interesting]
 - [SQL Murder Mystery](https://mystery.knightlab.com/) - A crime has taken place and the detective needs your help.
 - [Learn Git Branching](https://learngitbranching.js.org)
 
+## General
+
+- [Regex101](https://regex101.com/) - Build and test regular expression
+
 ## Sandbox Environments
 
 - [PWD (Play with docker)](https://labs.play-with-docker.com/) - Docker in the browser
