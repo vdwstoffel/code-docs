@@ -50,3 +50,12 @@ if (regex.test(emailValid)) {
   console.log("This email is valid");
 }
 ```
+
+## Replace a string with a regex
+
+```js
+const text = "Now is the time and this is the time and that is the time";
+const regex = /t\w*e/g;
+const newText = text.replace(regex, "space");
+console.log(newText); // Now is space and this is space and that is space
+```

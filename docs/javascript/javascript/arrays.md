@@ -244,3 +244,12 @@ const numbers = [1, 2, 3, 4, 5];
 const sum = numbers.reduce((total, number) => total + number, 0);
 console.log(sum); // 15
 ```
+
+## How to sort a list alphabetically
+
+```js
+const languages = ["C", "Python", "JavaScript", "Ruby", "Java"];
+
+languages.sort();
+console.log(languages); // ["C", "Java", "JavaScript", "Python", "Ruby"]
+```
