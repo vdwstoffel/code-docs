@@ -497,6 +497,133 @@ export default function App() {
 </Tabs>
 ```
 
+## useContext
+
+`useContext` is a Hook in React that allows you to access global data in your components without having to pass props down through multiple levels of the component tree. The context is available to all child components of the provider.
+
+### Global state management
+
+```bash
+.
+├── App.tsx
+├── context
+│   ├── authContext.tsx
+├── main.tsx
+```
+
+```mdx-code-block
+<Tabs>
+<TabItem value="authContext.tsx">
+```
+
+The `AuthContext` component is a provider that wraps the entire application. It provides the `isLoggedIn`, `login`, `logout`, and `userData` values to all components in the application.
+
+```tsx
+import { ReactNode } from "react";
+import { createContext, useState, useContext } from "react";
+
+interface Props {
+  children: ReactNode;
+}
+
+const AuthContext = createContext({
+  isLoggedIn: false,
+  login: () => {},
+  logout: () => {},
+  userData: {},
+});
+
+export function AuthContextProvider({ children }: Props) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState({});
+
+  function login(): void {
+    setUserData({ name: "John" });
+    setIsLoggedIn(true);
+  }
+
+  function logout(): void {
+    setUserData({});
+    setIsLoggedIn(false);
+  }
+
+  return (
+    <AuthContext.Provider
+      value={{
+        isLoggedIn: isLoggedIn,
+        login: login,
+        logout: logout,
+        userData: userData,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+// Create custom hook for the context
+export function useAuth() {
+  const context = useContext(AuthContext);
+
+  if (context === undefined) {
+    throw new Error("useAuth used outside of the Provider");
+  }
+
+  return context;
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="App.tsx">
+```
+
+```tsx
+//highlight-next-line
+import { useContext } from "react";
+//highlight-next-line
+import { useAuth } from "./context/authContext";
+
+export default function App() {
+  //highlight-next-line
+  const { isLoggedIn, login, logout, userData } = useAuth();
+  return (
+    <>
+      <div>
+        <h1>Logged In: {isLoggedIn ? userData.name : "Not Logged in"} </h1>
+        <button onClick={login}>Login</button>
+        <button onClick={logout}>Logout</button>
+      </div>
+    </>
+  );
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="main.tsx">
+```
+
+```tsx
+import { createRoot } from "react-dom/client";
+import App from "./App.tsx";
+//highlight-next-line
+import { AuthContextProvider } from "./context/authContext.tsx";
+
+createRoot(document.getElementById("root")!).render(
+  //highlight-next-line
+  <AuthContextProvider>
+    <App />
+    // highlight-next-line
+  </AuthContextProvider>
+);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
 ## Custom Hooks
 
 Custom hooks are reusable functions that contain logic that can be shared between components. They are a powerful way to extract and share logic between components in a React application.
