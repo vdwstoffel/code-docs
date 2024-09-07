@@ -11,73 +11,6 @@ import TabItem from "@theme/TabItem";
 
 
 
-## useContext
-
-`useContext` is a React hook that allows components to access shared data or values from a parent component's context without the need for prop drilling.
-
-```jsx title="/context/auth-context.jsx"
-import { createContext, useState } from "react";
-
-const AuthContext = createContext({
-  isLoggedIn: false,
-  login: () => {}, // placeholder functions
-  logout: () => {}, // placeholder functions
-});
-
-export function AuthContextProvider(props) {
-  const [isAuth, setIsAuth] = useState(false);
-
-  const login = () => {
-    setIsAuth(true);
-  };
-
-  const logout = () => {
-    setIsAuth(false);
-  };
-
-  return (
-    <AuthContext.Provider value={{ isLoggedIn: isAuth, login: login, logout: logout }}>
-      {props.children}
-    </AuthContext.Provider>
-  );
-}
-
-// Export the auth context
-export default AuthContext;
-```
-
-```jsx title="App.jsx"
-import { useContext } from "react";
-import AuthContext from "./context/auth-context";
-
-export default function App() {
-  const { isLoggedIn, login, logout } = useContext(AuthContext);
-
-  return (
-    <div>
-      <h1>Logged In: {isLoggedIn ? "Yes" : "No"} </h1>
-      <button onClick={login}>Login</button>
-      <button onClick={logout}>Logout</button>
-    </div>
-  );
-}
-```
-
-```jsx title="main.jsx"
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
-import { AuthContextProvider } from "./context/auth-context.jsx";
-
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    {/* Wrap app in the context provider */}
-    <AuthContextProvider>
-      <App />
-    </AuthContextProvider>
-  </React.StrictMode>
-);
-```
 
 ## Router
 
@@ -152,27 +85,6 @@ export default function Home() {
 ```jsx title="Products.jsx"
 export default function Products() {
   return <h1>This is the Products page</h1>;
-}
-```
-
-### useNavigate
-
-```jsx title="Home.jsx"
-import { useNavigate } from "react-router-dom";
-
-export default function Home() {
-  const navigate = useNavigate();
-
-  const clickHandler = () => {
-    navigate("/products"); // programmatically go to another page
-  };
-
-  return (
-    <div>
-      <h1>Welcome Home</h1>
-      <button onClick={clickHandler}>Go To Products</button>
-    </div>
-  );
 }
 ```
 
@@ -328,37 +240,6 @@ export default function Error() {
       <h1>{error.status}</h1>
       <h2>{error.data.message}</h2>
     </>
-  );
-}
-```
-
-### useSearchParam
-
-The useSearchParams hook is used in React Router to access and manage the query parameters of the current URL, allowing components to read and update the search parameters in the browser's address bar.
-
-```jsx title="App.jsx"
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-import Content from "./Content";
-
-const router = createBrowserRouter([{ path: "/content", element: <Content /> }]);
-
-export default function App() {
-  return <RouterProvider router={router} />;
-}
-```
-
-```jsx title="Content.jsx"
-import { useSearchParams } from "react-router-dom";
-
-export default function Products() {
-  // get everything in the params ex localhost/products?bread
-  let [searchParams, setSearchParams] = useSearchParams();
-
-  return (
-    <div>
-      <h1>{searchParams}</h1>
-    </div>
   );
 }
 ```
@@ -833,61 +714,6 @@ export default store; // will be imported in main as a Wrapper for the app
 ```mdx-code-block
 </TabItem>
 </Tabs>
-```
-
-## Scoping CSS
-
-```jsx title="App.jsx"
-import { useState } from "react";
-
-// Name the .css file as a module and import as styles
-import styles from "./App.module.css";
-
-export default function App() {
-  const [clicked, setClicked] = useState(false);
-
-  const clickHandler = () => {
-    setClicked(!clicked);
-  };
-
-  /*
-  Call the class name from the styles module
-  Dynamically add the class 'dynamic-bg' based on weather or not the state is clicked
-  */
-  return (
-    <div>
-      <h1 className={styles.heading} onClick={clickHandler}>
-        Css Modules Example
-      </h1>
-      <div className={clicked && styles["dynamic-bg"]} onClick={clickHandler}>
-        Click Me
-      </div>
-      <h2 className={`${styles.heading} ${clicked && styles["dynamic-bg"]}`}>Combined</h2>
-    </div>
-  );
-}
-```
-
-```css title="App.module.css"
-.heading {
-  color: Black;
-  font-size: 4em;
-}
-
-.heading:hover {
-  color: red;
-}
-
-.dynamic-bg {
-  background-color: yellowgreen;
-}
-
-/* Media queries works the same way */
-@media (max-width: 1000px) {
-  .dynamic-bg {
-    background-color: red;
-  }
-}
 ```
 
 
