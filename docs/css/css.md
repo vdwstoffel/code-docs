@@ -13,6 +13,7 @@ import Position from "@site/src/components/cssExamples/Position"
 import GridDisplay from '@site/src/components/cssExamples/GridDisplay'
 import Transition from '@site/src/components/cssExamples/Transition'
 import Transform from '@site/src/components/cssExamples/Transform'
+import Spinner from '@site/src/components/cssExamples/Spinner'
 
 import BrowserWindow from "@site/src/components/BrowserWindow/BrowserWindow";
 
@@ -505,4 +506,66 @@ Adding Font Awesome
   integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm"
   crossorigin="anonymous"
 />
+```
+
+## How to create a loading spinner
+
+```html
+<div class="spinner"></div>
+```
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Spinner A">
+```
+
+```css
+.spinner {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+```
+
+<Spinner style="spinnerA"/>
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Spinner B">
+```
+
+```css
+.spinnerB {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  background: conic-gradient(#0000 10%, rgb(163, 146, 146));
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+  animation: rotate 1.5s infinite linear;
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(1turn);
+  }
+}
+```
+
+<Spinner style="spinnerB"/>
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
