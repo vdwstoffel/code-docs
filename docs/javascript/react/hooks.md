@@ -12,6 +12,7 @@ import UpdateDomElements from '@site/src/components/reactExamples/UpdateDomEleme
 import CounterHookExample from '@site/src/components/reactExamples/CounterHookExample'
 import ToggleHookExample from '@site/src/components/reactExamples/ToggleHookExample'
 import BrowserWindow from '@site/src/components/BrowserWindow/BrowserWindow'
+import MemoExample from '@site/src/components/reactExamples/MemoExample'
 
 # Hooks
 
@@ -623,6 +624,37 @@ createRoot(document.getElementById("root")!).render(
 </TabItem>
 </Tabs>
 ```
+
+## Memo
+
+Memoization is a technique used to optimize performance by storing the results of expensive function calls and returning the cached result when the same inputs occur again. If a components own props of state changes, the component will re-render. However, if the component is wrapped in a `memo` function, it will only re-render if the props change.
+
+
+### Optimized re-render on state change
+
+```jsx
+import { useState, memo } from "react";
+
+export default function MemoExample() {
+  const [times, setTimes] = useState(0);
+
+  return (
+    <>
+      <p>Times Clicked: {times}</p>
+      <button onClick={() => setTimes((t) => t + 1)}>Increase</button>
+      <p>Without Memo update: {new Date().toLocaleTimeString()}</p>
+      <Optimized />
+    </>
+  );
+}
+
+const Optimized = memo(function Optimized() {
+  return <p>With Memo Update: {new Date().toLocaleTimeString()}</p>;
+});
+
+```
+
+<MemoExample/>
 
 ## Custom Hooks
 
