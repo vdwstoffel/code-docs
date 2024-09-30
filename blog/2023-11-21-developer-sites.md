@@ -9,6 +9,9 @@ authors:
 tags: [web dev, interesting]
 ---
 
+## AI
+ [DeepAI](https://deepai.org/) - AI tools for developers
+
 ## Database Tools
 
 - [PGAdmin](https://www.pgadmin.org/) - PostgreSQL administration and management tools
@@ -36,6 +39,7 @@ tags: [web dev, interesting]
 ## Sandbox Environments
 
 - [PWD (Play with docker)](https://labs.play-with-docker.com/) - Docker in the browser
+- [Stackblitz](https://stackblitz.com/) - An online development environment for frontend, Node.js and the JavaScript ecosystem.
 - [Codesandbox](https://codesandbox.io/) - CodeSandbox
 - [Codepen](https://codepen.io/) - The best place to build, test, and discover front-end code.
 - [Codeply](https://www.codeply.com/) A fast, free online editor that includes dozens of frameworks
@@ -50,3 +54,4 @@ tags: [web dev, interesting]
 - [Coolers](https://coolors.co/palettes/trending) - Trending color palettes
 - [SVGRepo](https://www.svgrepo.com/) - 500.000+ Open-licensed SVG Vector and Icons
 - [Flaticon](https://www.flaticon.com/) - Access 16.7M+ vector icons & stickers
+- [100L5](https://10015.io/) - All online Tools in "One Box"

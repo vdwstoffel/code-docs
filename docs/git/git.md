@@ -42,6 +42,12 @@ git log --oneline
 git reset sha_hash
 ```
 
+## How to remove a file from git tracking
+
+```bash
+git rm --cached <file>
+```
+
 ## Stashing
 
 ```bash

@@ -58,6 +58,17 @@ app.get("/api/tours/:tourId", (req, res) => {
 });
 ```
 
+## How to receive json body from an incoming request
+
+```javascript
+app.use(express.json());
+
+app.post("/api/tours", (req, res) => {
+  console.log(req.body);
+  res.status(200).json({ status: "success" });
+});
+```
+
 ## How to add nested routes
 
 This option allows you to access the params of parent routers.

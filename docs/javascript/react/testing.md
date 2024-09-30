@@ -174,6 +174,11 @@ test("renders component", () => {
 
 ### How to click a button
 
+```bash
+npm install @testing-library/user-event
+```
+
+
 ```tsx
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";

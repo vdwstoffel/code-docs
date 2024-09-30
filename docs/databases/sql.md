@@ -220,28 +220,83 @@ WHERE employeeId = 5;
 DELETE FROM employees;
 ```
 
-## Multiple Tables
+## JOINS
 
-### INNER JOIN
+### Alias a row
 
 ```sql
-SELECT *
-FROM Employees
-INNER JOIN Customers
-ON Employees.EmployeeID = Orders.EmployeeID;
+SELECT COUNT(amount) AS num_transactions
+FROM payment;
 ```
+
+<details>
+<summary>Output</summary>
+
+| num_transactions |
+| ---------------- |
+| 16049            |
+
+</details>
+
+```sql
+SELECT customer_id, SUM(amount) as total_spent
+FROM payment
+GROUP BY customer_id;
+```
+
+<details>
+<summary>Output</summary>
+
+| customer_id | total_spent |
+| ----------- | ----------- |
+| 132         | 118.68      |
+| 242         | 128.76      |
+| 301         | 135.74      |
+
+</details>
+
+### Inner Join
+
+Inner join is used to return rows when there is at least one match in both tables.
+
+```sql title="Syntax"
+SELECT * FROM TableA
+INNER JOIN TableB
+ON TableA.column_name = TableB.column_name;
+```
+
+```sql
+SELECT * FROM customer
+INNER JOIN payment
+ON customer.customer_id = payment.customer_id
+```
+
+<details>
+<summary>Output</summary>
+
+Customer Table:
+
+| customer_id | first_name | last_name |
+| ----------- | ---------- | --------- |
+| 1           | Mary       | Smith     |
+
+Payment Table:
+
+| payment_id | customer_id | staff_id | rental_id | amount | payment_date |
+| ---------- | ----------- | -------- | --------- | ------ | ------------ |
+| 1          | 1           | 1        | 76        | 7.99   | 2005-05-25   |
+| 2          | 1           | 1        | 573       | 1.99   | 2005-05-28   |
+
+Result:
+
+| customer_id | first_name | last_name | payment_id | customer_id | staff_id | rental_id | amount | payment_date |
+| ----------- | ---------- | --------- | ---------- | ----------- | -------- | --------- | ------ | ------------ |
+| 1           | Mary       | Smith     | 1          | 1           | 1        | 76        | 7.99   | 2005-05-25   |
+| 1           | Mary       | Smith     | 2          | 1           | 1        | 573       | 1.99   | 2005-05-28   |
+
+</details>
 
 ## Tables
-
-### Create Table
-
-```sql
-CREATE TABLE users (
-    user_id SERIAL PRIMARY KEY,
-    username VARCHAR(250),
-    age INTEGER
-);
-```
 
 ### Create Table with Constraints
 
