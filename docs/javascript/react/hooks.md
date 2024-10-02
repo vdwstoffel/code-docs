@@ -13,6 +13,7 @@ import CounterHookExample from '@site/src/components/reactExamples/CounterHookEx
 import ToggleHookExample from '@site/src/components/reactExamples/ToggleHookExample'
 import BrowserWindow from '@site/src/components/BrowserWindow/BrowserWindow'
 import MemoExample from '@site/src/components/reactExamples/MemoExample'
+import UseCallbackExample from '@site/src/components/reactExamples/UseCallbackExample'
 
 # Hooks
 
@@ -629,7 +630,6 @@ createRoot(document.getElementById("root")!).render(
 
 Memoization is a technique used to optimize performance by storing the results of expensive function calls and returning the cached result when the same inputs occur again. If a components own props of state changes, the component will re-render. However, if the component is wrapped in a `memo` function, it will only re-render if the props change.
 
-
 ### Optimized re-render on state change
 
 ```jsx
@@ -651,10 +651,91 @@ export default function MemoExample() {
 const Optimized = memo(function Optimized() {
   return <p>With Memo Update: {new Date().toLocaleTimeString()}</p>;
 });
-
 ```
 
 <MemoExample/>
+
+## useCallback
+
+`useCallback` is a Hook in React that returns a memoized callback function. It's useful when passing callbacks to optimized child components that rely on reference equality to prevent unnecessary re-renders.
+
+### Memoize functions
+
+```mdx-code-block
+<Tabs>
+<TabItem value="useMemo">
+```
+
+```jsx
+import { useState, useCallback, useMemo } from "react";
+
+// Button component that receives a callback
+const Button = ({ onClick, text }) => {
+  console.log(`${text} button rendered`);
+  return <button onClick={onClick}>{text}</button>;
+};
+
+export default function App() {
+  const [count, setCount] = useState(0);
+
+  // Memoized increment function using useCallback
+  const increment = useCallback(() => {
+    setCount((prevCount) => prevCount + 1);
+  }, []);
+
+  // Using useMemo to memoize the Button components
+  const incrementButton = useMemo(() => {
+    return <Button onClick={increment} text="Increment" />;
+  }, [increment]);
+
+  return (
+    <div>
+      <h1>Count: {count}</h1>
+      {/* Render the memoized buttons */}
+      {incrementButton}
+    </div>
+  );
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="React.Memo">
+```
+
+```jsx
+import React, { useState, useCallback } from "react";
+
+// Child component that receives a callback
+const Button = React.memo(({ onClick, text }) => {
+  return <button onClick={onClick}>{text}</button>;
+});
+
+export default function UseCallbackExample() {
+  const [count, setCount] = useState(0);
+
+  // Without useCallback, this function will be re-created on every render
+  const increment = useCallback(() => {
+    setCount((prevCount) => prevCount + 1);
+  }, []); // Dependency array is empty, so it will only be created once
+
+  return (
+    <>
+      <div>
+        <h1>Count: {count}</h1>
+        <Button onClick={increment} text="Increment" />
+      </div>
+    </>
+  );
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+<UseCallbackExample/>
 
 ## Custom Hooks
 
