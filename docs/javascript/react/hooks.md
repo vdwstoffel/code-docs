@@ -626,24 +626,30 @@ createRoot(document.getElementById("root")!).render(
 </Tabs>
 ```
 
-## Memo
+## useMemo
 
-Memoization is a technique used to optimize performance by storing the results of expensive function calls and returning the cached result when the same inputs occur again. If a components own props of state changes, the component will re-render. However, if the component is wrapped in a `memo` function, it will only re-render if the props change.
+`useMemo` is a Hook in React that allows you to memoize expensive calculations so that they are only computed when the dependencies change. It's useful for optimizing performance by avoiding unnecessary re-renders.
 
-### Optimized re-render on state change
+### Skipper re-render with useMemo
 
 ```jsx
-import { useState, memo } from "react";
+import React, { useState, useMemo } from "react";
 
-export default function MemoExample() {
+export default function UseMEmoExmaple() {
   const [times, setTimes] = useState(0);
+  const [force, setForce] = useState(false);
+
+  const date = useMemo(() => {
+    new Date().toLocaleTimeString();
+  }, [force]); // Will only update when force changes
 
   return (
     <>
       <p>Times Clicked: {times}</p>
       <button onClick={() => setTimes((t) => t + 1)}>Increase</button>
       <p>Without Memo update: {new Date().toLocaleTimeString()}</p>
-      <Optimized />
+      <p>With Memo Update: {date}</p>
+      <button onClick={() => setForce((f) => !f)}>Force Rerender</button>
     </>
   );
 }
@@ -653,7 +659,7 @@ const Optimized = memo(function Optimized() {
 });
 ```
 
-<MemoExample/>
+<UseMemoExample/>
 
 ## useCallback
 
