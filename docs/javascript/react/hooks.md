@@ -659,7 +659,7 @@ const Optimized = memo(function Optimized() {
 });
 ```
 
-<UseMemoExample/>
+<MemoExample/>
 
 ## useCallback
 
