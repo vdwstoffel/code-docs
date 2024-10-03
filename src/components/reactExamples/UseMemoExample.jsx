@@ -6,7 +6,7 @@ export default function UseMEmoExmaple() {
   const [force, setForce] = useState(false);
 
   const date = useMemo(() => {
-    new Date().toLocaleTimeString();
+    return new Date().toLocaleTimeString();
   }, [force]);
 
   return (

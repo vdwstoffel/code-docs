@@ -12,7 +12,7 @@ import UpdateDomElements from '@site/src/components/reactExamples/UpdateDomEleme
 import CounterHookExample from '@site/src/components/reactExamples/CounterHookExample'
 import ToggleHookExample from '@site/src/components/reactExamples/ToggleHookExample'
 import BrowserWindow from '@site/src/components/BrowserWindow/BrowserWindow'
-import MemoExample from '@site/src/components/reactExamples/MemoExample'
+import UseMemoExample from '@site/src/components/reactExamples/UseMemoExample'
 import UseCallbackExample from '@site/src/components/reactExamples/UseCallbackExample'
 
 # Hooks
@@ -640,8 +640,8 @@ export default function UseMEmoExmaple() {
   const [force, setForce] = useState(false);
 
   const date = useMemo(() => {
-    new Date().toLocaleTimeString();
-  }, [force]); // Will only update when force changes
+    return new Date().toLocaleTimeString();
+  }, [force]);
 
   return (
     <>
@@ -654,12 +654,9 @@ export default function UseMEmoExmaple() {
   );
 }
 
-const Optimized = memo(function Optimized() {
-  return <p>With Memo Update: {new Date().toLocaleTimeString()}</p>;
-});
 ```
 
-<MemoExample/>
+<UseMemoExample/>
 
 ## useCallback
 
