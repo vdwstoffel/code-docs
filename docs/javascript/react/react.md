@@ -11,6 +11,7 @@ import SelectDomElement from '@site/src/components/reactExamples/SelectDomElemen
 import UpdateDomElements from '@site/src/components/reactExamples/UpdateDomElements'
 import CounterHookExample from '@site/src/components/reactExamples/CounterHookExample'
 import ToggleHookExample from '@site/src/components/reactExamples/ToggleHookExample'
+import LazyLoadWithSuspense from '@site/src/components/reactExamples/LazyLoadWithSuspense'
 
 import reactLogo from "@site/static/img/react.png"
 import DisplayLogo from "@site/src/components/DisplayLogo"
@@ -438,8 +439,14 @@ function ChangeCenter({ position }) {
 
 ### Add a click event to the map
 
-```jsx 
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaflet";
+```jsx
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMapEvents,
+} from "react-leaflet";
 
 export default function Map() {
   return (
@@ -473,3 +480,31 @@ function ClickEvent() {
   return null;
 }
 ```
+
+## Lazy Loading
+
+Lazy loading is a technique to defer loading of non-critical resources at page load time. This can help reduce the initial load time of your app.
+
+### Load components lazily, when needed
+
+```jsx
+import { lazy, Suspense } from "react";
+
+import BrowserWindow from "../BrowserWindow/BrowserWindow";
+
+const LazyComponent = lazy(() => import("./LazyComponent"));
+
+export default function LazyLoadWithSuspense() {
+  return (
+    <BrowserWindow>
+      <h1>Normal Component</h1>
+
+      <Suspense fallback={<h1>Loading...</h1>}>
+        <LazyComponent />
+      </Suspense>
+    </BrowserWindow>
+  );
+}
+```
+
+<LazyLoadWithSuspense/>

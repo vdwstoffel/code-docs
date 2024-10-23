@@ -103,3 +103,11 @@ nmcli device wifi connect SSID_NAME password PASSWORD
 ```
 
 Replace SSID_NAME with the name of the WiFi network you want to connect to and PASSWORD with the password for that network.
+
+## Applications
+
+### Install a .deb package
+
+```bash
+sudo dpkg -i package_name.deb
+```

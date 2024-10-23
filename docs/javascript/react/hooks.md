@@ -681,7 +681,7 @@ const Button = ({ onClick, text }) => {
 export default function App() {
   const [count, setCount] = useState(0);
 
-  // Memoized increment function using useCallback
+  // useCallback to prevent the increment function from being re-created on every render
   const increment = useCallback(() => {
     setCount((prevCount) => prevCount + 1);
   }, []);
