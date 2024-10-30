@@ -205,6 +205,15 @@ SET city = 'Tacoma'
 WHERE employeeId = 5;
 ```
 
+### Updating Multiple values
+
+```sql
+UPDATE employees
+SET city = 'Tacoma', reportsTo = 2
+WHERE employeeId = 5;
+```
+
+
 ## DELETE
 
 ### Deleting a Record

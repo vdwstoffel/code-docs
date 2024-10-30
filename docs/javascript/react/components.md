@@ -293,3 +293,13 @@ const Optimized = memo(function Optimized() {
 ```
 
 <MemoExample/>
+
+## Exporting memo components
+
+```jsx
+import { memo } from "react"; 
+
+export default memo(function Optimized() {
+  return <p>With Memo Update: {new Date().toLocaleTimeString()}</p>;
+});
+```
