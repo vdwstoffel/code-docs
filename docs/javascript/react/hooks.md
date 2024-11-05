@@ -136,6 +136,40 @@ export default Timer;
 
 In this example, the `useEffect` hook starts a timer when the `Timer` component mounts. The interval ID returned by `setInterval` is saved so it can be used to clear the interval when the component unmounts. This is done in the cleanup function, which is the function that's returned from the effect function. This ensures that the timer is stopped and doesn't continue to run after the `Timer` component has been removed from the DOM.
 
+### Aborting an API request
+
+```jsx
+import React, { useState, useEffect } from "react";
+
+function FetchComponent({ query }) {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchData = async () => {
+      const response = await fetch(
+        `https://api.example.com/data?query=${query}`,
+        { signal: controller.signal }
+      );
+      const data = await response.json();
+      setData(data);
+    };
+
+    fetchData();
+
+    // Cleanup function
+    return () => {
+      controller.abort(); // This aborts the fetch request
+    };
+  }, [query]);
+
+  return <div>{data ? JSON.stringify(data) : "Loading..."}</div>;
+}
+
+export default FetchComponent;
+```
+
 ## useRef
 
 `useRef` is a Hook in React that allows you to create a mutable object that persists for the lifetime of the component. It's commonly used to reference DOM elements or to store mutable values that don't trigger a re-render when they change.
@@ -653,7 +687,6 @@ export default function UseMEmoExmaple() {
     </>
   );
 }
-
 ```
 
 <UseMemoExample/>
