@@ -73,7 +73,10 @@ const router = express.Router();
 
 const birdsController = require("../controller/birdsController");
 
-router.route("/").get(birdsController.getAllBirds).post(birdsController.addBird);
+router
+  .route("/")
+  .get(birdsController.getAllBirds)
+  .post(birdsController.addBird);
 
 module.exports = router;
 ```
@@ -224,8 +227,6 @@ app.listen(PORT);
 
 Now go to mysite.com/birds/
 
-
-
 ## How to secure HTTP response headers
 
 ```bash
@@ -298,7 +299,7 @@ app.get(
     if (!se) {
       return next(new AppError(`Some error`, 404));
     }
-    
+
     res.status(200).json({ status: "success", data: se });
   })
 );
@@ -383,6 +384,7 @@ process.on("uncaughtException", (err) => {
 ## Working with Files
 
 ### How to upload files
+
 ```bash
 npm i multer
 ```
@@ -406,7 +408,8 @@ const upload = multer({ storage: storage });
 module.exports = upload;
 ```
 
-```js title="main.js"const express = require("express");
+```js title="main.js"
+const express = require("express");
 const app = express();
 
 // Require the upload middleware
@@ -458,6 +461,82 @@ module.exports.resizeUserPhoto = (req, res, next) => {
 
   next();
 };
+```
+
+### How to download files
+
+```js
+const express = require("express");
+const app = express();
+
+// Downloading a file
+app.get("/download", (req, res) => {
+  res.download("./uploads/filename.txt");
+});
+
+app.listen(3000);
+```
+
+## Sending an email
+
+```bash
+npm i nodemailer
+```
+
+```mdx-code-block
+<Tabs>
+<TabItem value="mailer.js">
+```
+
+```js
+import nodemailer from "nodemailer";
+
+const transporter = nodemailer.createTransport({
+  host: "sandbox.smtp.mailtrap.io",
+  port: 2525,
+  auth: {
+    user: "0ab28d4be596ec",
+    pass: "********c54c",
+  },
+});
+
+export async function mailer() {
+  const info = await transporter.sendMail({
+    from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
+    to: "bar@example.com, baz@example.com", // list of receivers
+    subject: "Hello ✔", // Subject line
+    text: "Hello world?", // plain text body
+    html: "<b>Hello world?</b>", // html body
+  });
+
+  console.log("Message sent: %s", info.messageId);
+  // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="main.js">
+```
+
+```js
+import express from "express";
+
+import { mailer } from "./mailer.js";
+
+const app = express();
+
+app.get("/send", async (req, res) => {
+  await mailer();
+  res.status(200).json({ status: "succes", message: "Mail sent" });
+});
+
+app.listen(3000);
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
 ```
 
 ## How to limit api calls from ip
