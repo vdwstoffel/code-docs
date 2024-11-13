@@ -3,7 +3,14 @@ sidebar_label: "Git"
 sidebar_position: 000
 ---
 
+import GitLogo from '@site/static/img/git.png';
+import DisplayLogo from '@site/src/components/DisplayLogo';
+
 # Git
+
+<DisplayLogo logo={GitLogo}/>
+
+Git is a distributed version control system for tracking changes in source code during software development. It is designed for coordinating work among programmers, but it can be used to track changes in any set of files.
 
 ## Start new repo
 
