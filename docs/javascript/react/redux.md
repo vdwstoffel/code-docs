@@ -182,97 +182,131 @@ npm install @reduxjs/toolkit react-redux
 
 ```mdx-code-block
 <Tabs>
+<TabItem value="accountSlice.js">
+```
+
+```js title="accountSlice.js"
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  balance: 0,
+  loan: 0,
+  loanReason: "",
+};
+
+const accountSlice = createSlice({
+  name: "account",
+  initialState: initialState,
+  reducers: {
+    deposit(state, action) {
+      state.balance += action.payload;
+    },
+    withdraw(state, action) {
+      state.balance -= action.payload;
+    },
+    takeLoan(state, action) {
+      state.balance += action.payload.amount;
+      state.loan += action.payload.amount;
+      state.loanReason = action.payload.reason;
+    },
+    payLoan(state) {
+      if (state.loan === 0) return;
+
+      state.balance -= state.loan;
+      state.loan = 0;
+      state.loanReason = "";
+    },
+  },
+});
+
+export const { deposit, withdraw, takeLoan, payLoan } = accountSlice.actions;
+export default accountSlice.reducer;
+```
+
+```mdx-code-block
+</TabItem>
 <TabItem value="store.js">
 ```
 
-```js title="app/store.js"
+```js title="store.js"
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "../features/counter/counterSlice";
+
+import accountSlice from "./accountSlice";
 
 export default configureStore({
   reducer: {
-    counter: counterReducer,
+    account: accountSlice,
   },
 });
 ```
 
 ```mdx-code-block
 </TabItem>
-<TabItem value="index.js">
+<TabItem value="main.jsx">
 ```
 
-```js title="index.js"
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-//highlight-next-line
-import store from "./app/store";
-//highlight-next-line
+```js title="main.jsx"
+import { createRoot } from "react-dom/client";
+import App from "./App.jsx";
+
+// highlight-next-line
 import { Provider } from "react-redux";
+// highlight-next-line
+import store from "./store.js";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-
-root.render(
+createRoot(document.getElementById("root")).render(
   //highlight-next-line
   <Provider store={store}>
     <App />
+    // highlight-next-line
   </Provider>
 );
 ```
 
 ```mdx-code-block
 </TabItem>
-<TabItem value="counterSlice.js">
+<TabItem value="app.jsx">
 ```
 
-```js title="counter/counterSlice.js"
-import { createSlice } from "@reduxjs/toolkit";
-
-export const counterSlice = createSlice({
-  name: "counter",
-  initialState: {
-    value: 0,
-  },
-  reducers: {
-    increment: (state) => {
-      state.value += 1;
-    },
-    decrement: (state) => {
-      state.value -= 1;
-    },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload;
-    },
-  },
-});
-
-// Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
-
-export default counterSlice.reducer;
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="Counter.jsx">
-```
-
-```js title='components/Counter.js'
-import React from "react";
+```js title='app.js'
+//highlight-next-line
 import { useSelector, useDispatch } from "react-redux";
-import { decrement, increment } from "./counterSlice";
+//highlight-next-line
+import { deposit, withdraw, takeLoan, payLoan } from "./accountSlice";
 
-export default function Counter() {
-  const count = useSelector((state) => state.counter.value);
+export default function App() {
+  //highlight-next-line
   const dispatch = useDispatch();
+  //highlight-next-line
+  const { balance, loan, loanReason } = useSelector((state) => state.account);
+
+  function depositHandler() {
+    dispatch(deposit(50));
+  }
+
+  function withdrawHandler() {
+    dispatch(withdraw(30));
+  }
+
+  function takeLoanHandler() {
+    dispatch(takeLoan({ amount: 100, reason: "Buy Car" }));
+  }
+
+  function payload() {
+    dispatch(payLoan());
+  }
 
   return (
-    <div>
-      <button onClick={() => dispatch(increment())}>Increment</button>
-      <span>{count}</span>
-      <button onClick={() => dispatch(decrement())}>Decrement</button>
-    </div>
+    <>
+      <h1>Balance ${balance}</h1>
+      <h3>
+        Outstanding loan: ${loan} - ({loanReason})
+      </h3>
+      <button onClick={depositHandler}>Deposit $50</button>
+      <button onClick={withdrawHandler}>Withdraw $30</button>
+      <button onClick={takeLoanHandler}>Take Loan</button>
+      <button onClick={payload}>Pay Loan</button>
+    </>
   );
 }
 ```
@@ -280,4 +314,35 @@ export default function Counter() {
 ```mdx-code-block
 </TabItem>
 </Tabs>
+```
+
+## Preparing a reducer
+
+When a payload is dispatched in an unwanted way, we can prepare the reducer to handle the payload in a more structured way.
+
+```jsx
+const accountSlice = createSlice({
+  name: "account",
+  initialState: initialState,
+  reducers: {
+    requestLoan: {
+      prepare(amount, purpose) {
+        return {
+          payload: { amount, purpose },
+        };
+      },
+      reducer(state, action) {
+        if (state.loan > 0) return;
+
+        state.loan = action.payload.amount;
+        state.loanPurpose = action.payload.purpose;
+        state.balance = state.balance + action.payload.amount;
+      },
+    },
+  },
+});
+```
+
+```jsx
+dispatch(requestLoan(loanAmount, loanPurpose));
 ```
