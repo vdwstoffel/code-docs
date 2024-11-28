@@ -12,110 +12,208 @@ import TabItem from "@theme/TabItem";
 ## Authenticatiing user with a json web token
 
 ```bash
-npm install jsonwebtoken
-npm install @types/jsonwebtoken --save-dev
+npm i express
+npm i sequelize sqlite3
+npm nodemon
+npm i bcrypt
+npm i jsonwebtoken
 ```
 
 ```mdx-code-block
 <Tabs>
-<TabItem value="JavaScript">
+<TabItem value="Model">
 ```
 
-```ts title="jwt.js"
-const { sign, verify } = require("jsonwebtoken");
+```js
+import { Sequelize, DataTypes } from "sequelize";
 
-const JWT_SECRET = "superSecret"; // Secret should be at least 32 characters
+const sequelize = new Sequelize("sqlite:./demo.sqlite", { logging: false });
 
-export function createToken(id) {
-  return sign({ userId: id }, JWT_SECRET, { expiresIn: "1w" });
-}
-
-export function verifyToken(token) {
-  return verify(token, JWT_SECRET);
-}
-```
-
-```ts title="index.js"
-const express = require("express");
-
-const { createToken, verifyToken } = require("./jwt");
-
-const app = express();
-app.use(express.json());
-
-app.get("/getToken", (req, res) => {
-  const token = createToken(597);
-  res.status(200).json({ status: "success", token: token });
+const User = sequelize.define("User", {
+  user_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  username: {
+    type: DataTypes.STRING,
+  },
+  password: {
+    type: DataTypes.STRING,
+  },
 });
 
-app.post("/login", (req, res) => {
-  let token = req.headers.authorization;
-  token = token?.split(" ")[1];
+export async function createTable() {
+  await User.sync();
+}
 
-  if (!token) {
-    return res.status(400).json({ status: "fail", message: "Token not provided" });
-  }
+export async function createUser(username, password) {
+  await User.create({ username, password });
+}
 
-  try {
-    const result = verifyToken(token); // { userId: 597, iat: 1721031831, exp: 1721636631 }
-    res.status(200).json({ status: "success", message: "logged in" });
-  } catch (err) {
-    return res.status(401).json({ status: "fail", message: "Unauthorized" });
-  }
-});
+export async function getUserByUsername(username) {
+  const res = await User.findOne({ where: { username } });
+  return res.dataValues;
+}
 
-app.listen(3000);
+export async function getUserById(user_id) {
+  const res = await User.findOne({ where: { user_id } });
+  return res.dataValues;
+}
 ```
 
 ```mdx-code-block
 </TabItem>
-<TabItem value="TypeScript">
+<TabItem value="Controller">
 ```
 
-[See Code](https://github.com/vdwstoffel/code-docs/tree/main/examples/javascript/express/authjwt_with_ts)
+```js title="userController.js"
+import { createUser, getUserByUsername } from "../models/userModel.js";
 
-```ts title="jwt.ts"
-import { JwtPayload, sign, verify } from "jsonwebtoken";
+import {
+  hashPassword,
+  verifyPassword,
+  createToken,
+} from "../utils/security.js";
 
-const JWT_SECRET = "superSecret"; // Secret should be at least 32 characters
+export const createNewUser = async (req, res) => {
+  const { username, password } = req.body;
+  // Create a hashed version of the password
+  const hashedPassword = await hashPassword(password);
+  createUser(username, hashedPassword);
+  res.status(201).json({ status: "success", message: "User created" });
+};
 
-export function createToken(id: number): string {
-  return sign({ userId: id }, JWT_SECRET, { expiresIn: "1w" });
-}
+export const getToken = async (req, res) => {
+  const { username, password } = req.body;
+  const user = await getUserByUsername(username);
 
-export function verifyToken(token: string): string | JwtPayload {
-  return verify(token, JWT_SECRET);
-}
-```
-
-```ts title="index.ts"
-import express, { Application, Request, Response } from "express";
-
-import { createToken, verifyToken } from "./jwt";
-
-const app: Application = express();
-app.use(express.json());
-
-app.get("/getToken", (req: Request, res: Response) => {
-  const token = createToken(597);
-  res.status(200).json({ status: "success", token: token });
-});
-
-app.post("/login", (req: Request, res: Response) => {
-  let token = req.headers.authorization;
-  token = token?.split(" ")[1];
-
-  if (!token) {
-    return res.status(400).json({ status: "fail", message: "Token not provided" });
+  // Check if the password the user provided matches the hashed version
+  // by comparing the plain password and the saved password from the user db
+  const isValidPassword = await verifyPassword(password, user.password);
+  console.log(isValidPassword);
+  if (!isValidPassword) {
+    return res.status(401).json({ status: "error", message: "Unauthorized" });
   }
+
+  // Create a JWT token and send it back to the user
+  const token = createToken(user.user_id);
+  res.status(200).json({ status: "success", token: token });
+};
+```
+
+```js title="authController.js"
+import { veriftyToken } from "../utils/security.js";
+import { getUserById } from "../models/userModel.js";
+
+export const authenticate = async (req, res, next) => {
+  let token = req.headers.authorization || " ";
+  token = token.split(" ")[1].replaceAll(" ", "");
 
   try {
-    const result = verifyToken(token); // { userId: 597, iat: 1721031831, exp: 1721636631 }
-    res.status(200).json({ status: "success", message: "logged in" });
-  } catch (err) {
-    return res.status(401).json({ status: "fail", message: "Unauthorized" });
+    const verifiedToken = veriftyToken(token);
+    const userDetails = await getUserById(verifiedToken.userId);
+    // Attach userDetails to the request object, this will make it available in future middleware
+    req.user = userDetails;
+    next();
+  } catch {
+    res.status(401).json({ status: "error", message: "Unauthorized access" });
   }
-});
+};
+```
+
+```js title="secretController.js"
+export const secetPage = async (req, res) => {
+  const { username } = req.user; // The user was attached at the authenticate middleware
+  console.log(username);
+  res.status(200).json({ message: "Secret Page", user: username });
+};
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Routes">
+```
+
+```js title="userRouter.js"
+import { Router } from "express";
+
+import { createNewUser, getToken } from "../controllers/userController.js";
+
+const router = Router();
+
+router.route("/user").post(createNewUser);
+router.route("/getToken").post(getToken);
+
+export default router;
+```
+
+```js title="secretRouter.js"
+import { Router } from "express";
+
+import { secetPage } from "../controllers/secretController.js";
+import { authenticate } from "../controllers/authController.js";
+
+const router = Router();
+
+// Attach authenticate middleware to all routes below
+router.use(authenticate);
+router.route("/secret").get(secetPage);
+
+export default router;
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Utils">
+```
+
+```js title="security.js"
+import bcrypt from "bcrypt";
+
+import jwt from "jsonwebtoken";
+
+const JWT_SECRET = "SHOULD_HAVE_A_LENGTH_OF_32_CHARS";
+
+export async function hashPassword(plainTextPassword) {
+  const hashedPW = await bcrypt.hash(plainTextPassword, 12);
+  return hashedPW;
+}
+
+export async function verifyPassword(plainTextPassword, hashedPassword) {
+  const result = await bcrypt.compare(plainTextPassword, hashedPassword);
+  return result;
+}
+
+export function createToken(userId) {
+  return jwt.sign({ userId: userId }, JWT_SECRET, { expiresIn: "1w" });
+}
+
+export function veriftyToken(userToken) {
+  return jwt.verify(userToken, JWT_SECRET);
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="App">
+```
+
+```js title="index.js"
+import express from "express";
+const app = express();
+
+import { createTable } from "./models/userModel.js";
+import userRouter from "./routes/userRouter.js";
+import secretRouter from "./routes/secretRouter.js";
+
+// Initial Setup
+createTable();
+
+app.use(express.json()); // Required to parse json
+
+app.use("/", userRouter);
+app.use("/", secretRouter);
 
 app.listen(3000);
 ```
@@ -123,21 +221,6 @@ app.listen(3000);
 ```mdx-code-block
 </TabItem>
 </Tabs>
-```
-
-```bash
-curl http://localhost:3000/getToken
-# {"status":"success","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU5NywiaWF0IjoxNzIxMDM1NDk1LCJleHAiOjE3MjE2NDAyOTV9.Tg201_OmLz2ynMGJ_088Ux8jXjH0YVxL49zdKmSm0lw"}
-```
-
-```bash
-curl -X POST http://localhost:3000/login -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU5NywiaWF0IjoxNzIxMDM1NDk1LCJleHAiOjE3MjE2NDAyOTV9.Tg201_OmLz2ynMGJ_088Ux8jXjH0YVxL49zdKmSm0lw"
-# {"status":"success","message":"logged in"}
-```
-
-```bash
-curl -X POST http://localhost:3000/login -H "authorization: bearer fakeToken"
-# {"status":"fail","message":"Unauthorized"}
 ```
 
 ## How to protect api route
@@ -202,12 +285,18 @@ export const secret = async (req: Request, res: Response) => {
   res.status(200).json({ status: "success", message: "Secret Page" });
 };
 
-export const loginRequired = async (req: Request, res: Response, next: NextFunction) => {
+export const loginRequired = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   let token = req.headers.authorization;
   token = token?.split(" ")[1];
 
   if (!token) {
-    return res.status(400).json({ status: "fail", message: "Token not provided" });
+    return res
+      .status(400)
+      .json({ status: "fail", message: "Token not provided" });
   }
 
   try {
@@ -308,9 +397,21 @@ User.init(
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     userName: { type: new DataTypes.STRING(128), allowNull: false },
     password: { type: new DataTypes.STRING(128), allowNull: false },
-    passwordResetToken: { type: new DataTypes.STRING(), allowNull: true, defaultValue: null },
-    passwordResetTokenExpiry: { type: new DataTypes.DATE(), allowNull: true, defaultValue: null },
-    lastPasswordReset: { type: new DataTypes.DATE(), allowNull: true, defaultValue: null },
+    passwordResetToken: {
+      type: new DataTypes.STRING(),
+      allowNull: true,
+      defaultValue: null,
+    },
+    passwordResetTokenExpiry: {
+      type: new DataTypes.DATE(),
+      allowNull: true,
+      defaultValue: null,
+    },
+    lastPasswordReset: {
+      type: new DataTypes.DATE(),
+      allowNull: true,
+      defaultValue: null,
+    },
   },
   {
     tableName: "users",
@@ -320,7 +421,10 @@ User.init(
 
 User.sync();
 
-export async function createNewuser(userDetails: { userName: string; password: string }): Promise<void> {
+export async function createNewuser(userDetails: {
+  userName: string;
+  password: string;
+}): Promise<void> {
   await User.create(userDetails);
 }
 
@@ -331,23 +435,39 @@ export async function findUser(username: string): Promise<User> {
 
 export async function findUserByResetToken(resetToken: string): Promise<User> {
   const hashedToken = createHash("sha256").update(resetToken).digest("hex");
-  const userData: User[] = await User.findAll({ where: { passwordResetToken: hashedToken } });
+  const userData: User[] = await User.findAll({
+    where: { passwordResetToken: hashedToken },
+  });
   return userData[0];
 }
 
-export async function updatePasswordReset(userName: string, token: string): Promise<void> {
+export async function updatePasswordReset(
+  userName: string,
+  token: string
+): Promise<void> {
   const hashedToken = createHash("sha256").update(token).digest("hex");
   const expireIn15Min = new Date(Date.now() + 15 * 60 * 1000);
   await User.update(
-    { passwordResetToken: hashedToken, passwordResetTokenExpiry: expireIn15Min },
+    {
+      passwordResetToken: hashedToken,
+      passwordResetTokenExpiry: expireIn15Min,
+    },
     { where: { userName: userName } }
   );
 }
 
-export async function updatePassword(userName: string, password: string): Promise<void> {
+export async function updatePassword(
+  userName: string,
+  password: string
+): Promise<void> {
   // Add password hasing function here
   await User.update(
-    { password: password, passwordResetToken: null, passwordResetTokenExpiry: null, lastPasswordReset: new Date() },
+    {
+      password: password,
+      passwordResetToken: null,
+      passwordResetTokenExpiry: null,
+      lastPasswordReset: new Date(),
+    },
     { where: { userName: userName } }
   );
 }
@@ -408,7 +528,9 @@ export const resetPassword = async (req: Request, res: Response) => {
 
   await updatePassword(user.userName, password);
 
-  res.status(200).json({ status: "success", message: "Password reset successful" });
+  res
+    .status(200)
+    .json({ status: "success", message: "Password reset successful" });
 };
 ```
 
@@ -417,7 +539,11 @@ import { Router } from "express";
 
 const router = Router();
 
-import { createUser, passwordResetRequest, resetPassword } from "../controllers/userController";
+import {
+  createUser,
+  passwordResetRequest,
+  resetPassword,
+} from "../controllers/userController";
 
 router.route("/create").get(createUser);
 router.route("/resetRequest").post(passwordResetRequest);
