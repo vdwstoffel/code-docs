@@ -17,7 +17,29 @@ React Router is a collection of navigational components that compose declarative
 npm i react-router-dom
 ```
 
-## Adding a router
+## How to quickly get started
+
+```jsx
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import Home from "./Home";
+import Menu from "./Menu";
+
+const router = createBrowserRouter([
+  { path: "/", element: <Home /> },
+  { path: "/menu", element: <Menu /> },
+]);
+
+export default function App() {
+  return (
+    <RouterProvider router={router}>
+      <h1>Hello Vite</h1>
+    </RouterProvider>
+  );
+}
+```
+
+## Building an App layout
 
 ```mdx-code-block
 <Tabs>
@@ -44,6 +66,7 @@ export default function Header() {
 <a aria-current="page" class="active" href="/">Home</a>
 <a class="" href="/product">Products</a>
 ```
+
 :::
 
 :::info
@@ -92,7 +115,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />, // Wrap the root layout and add other pages as children
-    // errorElement: <ErrorPage />, // if page does not exists show a define error page
     children: [
       { index: true, element: <Home /> },
       { path: "/products", element: <Products /> },
@@ -125,6 +147,55 @@ export default function Home() {
 export default function Products() {
   return <h1>This is the Products page</h1>;
 }
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## Adding an Error Boundary Page
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Error Page">
+```
+
+```jsx title="Error.jsx"
+import { useRouteError } from "react-router-dom";
+
+export default function ErrorPage() {
+  const error = useRouteError();
+
+  return (
+    <div>
+      <h1>Oops!</h1>
+      <p>Sorry, an unexpected error has occurred.</p>
+      <p>
+        <i>{error.status}</i>
+        <i>{error.statusText || error.message}</i>
+      </p>
+    </div>
+  );
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="App.jsx">
+```
+
+```jsx title="App.jsx"
+/* previous imports */
+import ErrorPage from "./error-page";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root />,
+    errorElement: <ErrorPage />,
+  },
+]);
 ```
 
 ```mdx-code-block
@@ -191,7 +262,7 @@ export default function ProductItems() {
 ## How to get the query parameter from the url
 
 ```jsx
-import {useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 export default function Product() {
   const [searchParams] = useSearchParams();
@@ -207,7 +278,6 @@ export default function Product() {
 ## How to navigate programmatically
 
 `useNavigate` is a hook that returns a navigate function. Use it to navigate programmatically.
-
 
 ```jsx title="ProductItems.jsx"
 import { useNavigate } from "react-router-dom";
@@ -259,3 +329,124 @@ export default function ProductItems() {
 }
 ```
 
+## Fetch data while navigating using loader
+
+useLoader fetches data as the components loads as opposed to useEffect the loads data after the component is rendered.
+
+```mdx-code-block
+<Tabs>
+<TabItem value="Menu">
+```
+
+In Menu create a loader function that will be called when the component is loaded on the menu route. `useLoaderData` will then be used to get access to the data fetched in the loader function.
+
+```jsx title="Menu.jsx"
+//highlight-next-line
+import { useLoaderData } from "react-router-dom";
+
+export default function Menu() {
+  //highlight-next-line
+  const menu = useLoaderData();
+  return <h1>{menu}</h1>;
+}
+
+// highlight-next-line
+export async function loader() {
+  // highlight-next-line
+  const menu = await someMenuApiService();
+  // highlight-next-line
+  return menu;
+  // highlight-next-line
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="App">
+```
+
+Import the Menu component and the loader function in the App component. Pass the loader function to the Menu component.
+
+```jsx title="App.jsx"
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import Home from "./Home";
+//highlight-next-line
+import Menu, { loader as menuLoader } from "./Menu";
+import AppLayout from "./AppLayout";
+
+const router = createBrowserRouter([
+  {
+    element: <AppLayout />,
+    children: [
+      { path: "/", element: <Home /> },
+      //highlight-next-line
+      { path: "/menu", element: <Menu />, loader: menuLoader },
+    ],
+  },
+]);
+
+export default function App() {
+  return <RouterProvider router={router} />;
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## How to get the url path in a loader
+
+Since `useParams` is only available in a component you can use `params` from the loader function to get the current url param
+
+- To get the current url path
+
+```jsx
+export async function loader({ params }) {
+  console.log(params);
+}
+```
+
+```jsx
+const router = createBrowserRouter([
+  { path: "/order", element: <Order />, loader: orderLoader },
+]);
+```
+
+- To get dynamic route params
+
+```jsx
+export async function loader({ params }) {
+  console.log(params.orderId);
+}
+```
+
+```jsx
+const router = createBrowserRouter([
+  { path: "/order/:orderId", element: <Order />, loader: orderLoader },
+]);
+```
+
+## Add global check to see if a page is loading
+
+useNavigation returns the current loading state of the global navigation.
+
+```jsx
+import { Outlet, useNavigation } from "react-router-dom";
+
+import Loader from "./Loader";
+
+export default function AppLayout() {
+  //highlight-start
+  const navigation = useNavigation();
+  const isLoading = navigation.state === "loading";
+  //highlight-end
+  return (
+    <>
+      {isLoading && <Loader />}
+      <Outlet />
+    </>
+  );
+}
+```

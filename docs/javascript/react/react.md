@@ -53,6 +53,49 @@ npm start
 </Tabs>
 ```
 
+## React Project Example
+
+```bash
+.
+├── eslint.config.js
+├── index.html
+├── package.json
+├── package-lock.json
+├── src
+│   ├── App.jsx
+│   ├── features
+│   │   ├── cart
+│   │   │   ├── CartItem.jsx
+│   │   │   ├── Cart.jsx
+│   │   │   ├── CartOverview.jsx
+│   │   │   └── EmptyCart.jsx
+│   │   ├── menu
+│   │   │   ├── MenuItem.jsx
+│   │   │   └── Menu.jsx
+│   │   ├── order
+│   │   │   ├── CreateOrder.jsx
+│   │   │   ├── OrderItem.jsx
+│   │   │   ├── Order.jsx
+│   │   │   └── SearchOrder.jsx
+│   │   └── user
+│   │       ├── CreateUser.jsx
+│   │       └── userSlice.js
+│   ├── index.css
+│   ├── main.jsx
+│   ├── services
+│   │   ├── apiGeocoding.js
+│   │   └── apiRestaurant.js
+│   ├── ui
+│   │   ├── AppLayout.jsx
+│   │   ├── Error.jsx
+│   │   ├── Header.jsx
+│   │   ├── Home.jsx
+│   │   └── Loader.jsx
+│   └── utils
+│       └── helpers.js
+└── vite.config.js
+```
+
 ## Forms
 
 ### Handling Form Submissions

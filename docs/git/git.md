@@ -16,67 +16,124 @@ Git is a distributed version control system for tracking changes in source code 
 
 ```bash
 git init
-git remote add origin git@github.com:<username>/<repo_name>.git
-git add <file>
-git commit -m "initial commit"
+```
+
+## Check the status of the repo
+
+```bash
+git status
+```
+
+<details>
+
+<summary>Output</summary>
+
+```bash
+On branch main
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   hello.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	world.py
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+</details>
+
+## Add and commit file
+
+```bash
+git add hello.py
+git commit -m "initial"
+```
+
+<details>
+
+<summary>Output</summary>
+
+```bash
+[main (root-commit) fa151bd] initial
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hello.py
+```
+
+</details>
+
+## Push to remote repo
+
+```bash
 git push
 ```
 
-## Making Changes
+## Discard changes made to file
 
 ```bash
-git status                  # See changes
-git add file.py             # Add files/folder to staging
-git commit -m "my message"  # commit changes
-git push                    # push to remote repo
-
-git restore file.js         # discard any changes made
+git restore hello.py
 ```
 
-## Merging
+## Discard all changes made
 
 ```bash
-git fetch
-git merge origin/<branch_name>
-git commit                  # if any conflict resole else just push
-git push
+git reset --hard
 ```
 
-## Go to previous commit
+## Remove a file from git tracking
+
+```bash
+git rm --cached hello.py
+```
+
+## View git history
+
+Ommit the `--oneline` flag to see the full commit message
 
 ```bash
 git log --oneline
-git reset sha_hash
 ```
 
-## How to remove a file from git tracking
+<details>
+
+<summary>Output</summary>
 
 ```bash
-git rm --cached <file>
+13dacc5 (HEAD -> main) add new file
+fa151bd initial
 ```
 
-## Stashing
+</details>
+
+## Got to previous commit
 
 ```bash
-git stash
-git stash pop
+git reset <git_sha>
 ```
 
-## Cleaning changes
+## Clone remote repo
 
 ```bash
-git reset --hard # remove/reset tracked files
-git clean -df # remove untracked files
+git clone git@github.com:username/reponame.git
 ```
 
-## Undoing a commit
+## Branches
+
+### Create a new branch
 
 ```bash
-git reset --soft HEAD~1
+git branch improvements
 ```
 
-## Unstage all changes
+### Switch to a branch
 
 ```bash
-git reset
+git checkout improvements
+```
+
+### View all branches
+
+```bash
+git branch
 ```

@@ -83,6 +83,7 @@ const config = {
           // Snippets dropdown menu
           {type: "dropdown", label: "Snippets", position: "left", items: [
             {type: "doc", label: "Git", docId: "git/git"},
+            {type: "doc", label: "CLI", docId: "cli/cli"},
             {type: "doc", label: "HTML", docId: "html/html"},
             {type: "doc", label: "CSS", docId: "css/css"},
             {type: "doc", label: "JavaScript", docId: "javascript/javascript/javascript"},

@@ -346,3 +346,45 @@ const accountSlice = createSlice({
 ```jsx
 dispatch(requestLoan(loanAmount, loanPurpose));
 ```
+
+
+## Making API calls with the reducer
+
+```jsx
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  balance: 0,
+};
+
+const accountSlice = createSlice({
+  name: "account",
+  initialState: initialState,
+  reducers: {
+    deposit(state, action) {
+      state.balance = state.balance + action.payload;
+    },
+    withdraw(state, action) {
+      state.balance -= action.payload;
+    }
+  },
+});
+
+export const { withdraw } = accountSlice.actions;
+
+export function deposit(amount, currency) {
+  console.log(currency);
+  if (currency === "USD") {
+    return { type: "account/deposit", payload: amount };
+  }
+
+  return async function (dispatch, getState) {
+    let res = await fetch(`https://api.frankfurter.app/latest?base=${currency}&symbols=USD`);
+    res = await res.json();
+    const convertedAmount = (amount * res.rates["USD"]).toFixed(2);
+    dispatch({ type: "account/deposit", payload: Number(convertedAmount) });
+  };
+}
+
+export default accountSlice.reducer;
+```

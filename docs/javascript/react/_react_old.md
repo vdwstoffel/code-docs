@@ -267,7 +267,7 @@ const router = createBrowserRouter([
 export default function App() {
   return <RouterProvider router={router} />;
 }
-```
+```233
 
 ```jsx title="User.jsx"
 import { useRouteLoaderData } from "react-router-dom";
