@@ -1,6 +1,6 @@
 ---
 sidebar_label: React
-sidebar_position: 3
+sidebar_position: 0
 ---
 
 import CodeBlock from "@theme/CodeBlock";

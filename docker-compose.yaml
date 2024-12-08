@@ -14,3 +14,5 @@ services:
       - ./blog:/app/blog
       - ./static:/app/static
       - /app/node_modules/
+      - ./docusaurus.config.js:/app/docusaurus.config.js
+      - ./sidebars.js:/app/sidebars.js

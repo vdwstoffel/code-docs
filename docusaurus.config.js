@@ -77,26 +77,34 @@ const config = {
           //   position: "left",
           //   label: "Code Snippets",
           // },
-          
-          
 
           // Snippets dropdown menu
-          {type: "dropdown", label: "Snippets", position: "left", items: [
-            {type: "doc", label: "Git", docId: "git/git"},
-            {type: "doc", label: "CLI", docId: "cli/cli"},
-            {type: "doc", label: "HTML", docId: "html/html"},
-            {type: "doc", label: "CSS", docId: "css/css"},
-            {type: "doc", label: "JavaScript", docId: "javascript/javascript/javascript"},
-            {type: "doc", label: "Python", docId: "python/python/python"},
-            {type: "doc", label: "Databases", docId: "databases/sql"},
-            {type: "doc", label: "Linux", docId: "linux/linux"},
-            {type: "doc", label: "Docker", docId: "docker/docker"},
-            {type: "doc", label: "CI/CD", docId: "cicd/jenkins"},
-          ]},
+          {
+            type: "dropdown",
+            label: "Languages",
+            position: "left",
+            items: [
+              {
+                type: "doc",
+                label: "JavaScript",
+                docId: "languages/javascript/strings",
+              },
+              { type: "doc", label: "Java", docId: "languages/java/java" },
+            ],
+          },
+
+          {
+            type: "dropdown",
+            label: "Quick Ref",
+            position: "left",
+            items: [
+              { type: "doc", label: "React", docId: "quickRef/react/react" },
+              { type: "doc", label: "Express", docId: "quickRef/express/express" },
+            ],
+          },
 
           // Blog posts
           { to: "/blog", label: "Interesting", position: "left" },
-
         ],
       },
       footer: {
@@ -148,7 +156,17 @@ const config = {
         theme: darkCodeTheme,
         darkTheme: darkCodeTheme,
         //https://prismjs.com/#supported-languages
-        additionalLanguages: ["bash", "docker", "yaml", "json", "robotframework", "pug", "groovy", "typescript", "java"],
+        additionalLanguages: [
+          "bash",
+          "docker",
+          "yaml",
+          "json",
+          "robotframework",
+          "pug",
+          "groovy",
+          "typescript",
+          "java",
+        ],
       },
       docs: {
         sidebar: {
