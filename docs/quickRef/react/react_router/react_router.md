@@ -450,3 +450,98 @@ export default function AppLayout() {
   );
 }
 ```
+
+## Load data without navigating to page
+
+The useFetcher hook from react-router-dom is used to interact with loaders and actions without causing a navigation. This is particularly useful for fetching data or submitting forms asynchronously within a component.
+
+Here's a brief explanation of how it works:
+
+- Initialization: You initialize the fetcher by calling useFetcher().
+- Loading Data: You can use the fetcher.load() method to fetch data from a specified URL. This does not trigger a navigation but allows you to retrieve data and use it within the component.
+- Submitting Data: Similarly, you can use fetcher.submit() to submit data to a specified URL without navigating away from the current page.
+
+```jsx
+import { useFetcher } from "react-router-dom";
+
+const UserList = () => {
+  // Initialize the fetcher hook
+  const fetcher = useFetcher();
+
+  // Fetch user data when the component mounts
+  React.useEffect(() => {
+    fetcher.load("/users"); // Call an API to get user data
+  }, [fetcher]);
+
+  return (
+    <div>
+      <h1>Users</h1>
+      {/* Check if the fetcher is still loading */}
+      {fetcher.state === "loading" && <p>Loading...</p>}
+
+      {/* If there's data, display it */}
+      {fetcher.state === "idle" && fetcher.data && (
+        <ul>
+          {fetcher.data.map((user) => (
+            <li key={user.id}>{user.name}</li>
+          ))}
+        </ul>
+      )}
+
+      {/* If there's an error, show an error message */}
+      {fetcher.state === "error" && <p>Error loading data</p>}
+    </div>
+  );
+};
+
+export default UserList;
+```
+
+- The data will be loaded from the usersLoader
+
+```jsx
+{ path: "/user", element: <Menu />, loader: usersLoader, errorElement: <Error /> },
+```
+
+## Submitting data using an action
+
+Update order shold be a child component of Order
+
+```jsx
+import { useFetcher } from "react-router-dom";
+import { someOrderFunction } from "./someOrder";
+
+export default function UpdateOrder({ order }) {
+  const fetcher = useFetcher();
+
+  return (
+    <fetcher.Form method="PATCH">
+      <button>Make Priority</button>
+    </fetcher.Form>
+  );
+}
+
+export async function action({ request, params }) {
+  const data = { priority: true };
+  await someOrderFunction(data);
+  return null;
+}
+```
+
+```jsx
+import { action as updateOrderAction } from "./UpdateOrder";
+
+const router = createBrowserRouter([
+  {
+    element: <AppLayout />,
+    children: [
+      {
+        path: "/order/:orderId",
+        element: <Order />,
+        action: updateOrderAction,
+        errorElement: <Error />,
+      },
+    ],
+  },
+]);
+```

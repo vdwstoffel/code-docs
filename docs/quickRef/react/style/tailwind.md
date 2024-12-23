@@ -78,3 +78,11 @@ export default function Input = () => {
 };
 
 ```
+
+## How to define your own css values
+
+```js
+<span className="absolute right-1"></span>  // Tailwind class
+
+<span className="absolute right-[3px]"></span>  //Defining your own value
+```

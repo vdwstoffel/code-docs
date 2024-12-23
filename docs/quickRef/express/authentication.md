@@ -1,6 +1,6 @@
 ---
 sidebar_label: "Authentication"
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 import CodeBlock from "@theme/CodeBlock";

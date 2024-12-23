@@ -168,6 +168,8 @@ server: {
 const res = await axios.get("api/backend-route");
 ```
 
+- Note that your route should start with `/api` in the backend.
+
 ### Vite: Change Default Port
 
 ```jsx title="vite.config.js"
@@ -222,163 +224,6 @@ export default function Example() {
 }
 ```
 
-## Adding a map to your app with leaflet
-
-[Official Docs](https://react-leaflet.js.org/)
-
-```bash
-npm i react-leaflet leaflet
-npm install -D @types/leaflet
-```
-
-```mdx-code-block
-<Tabs>
-<TabItem value="main.jsx">
-```
-
-```jsx title="main.jsx"
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-//highlight-next-line
-import "./global.css"
-
-createRoot(document.getElementById('root')!).render(
-    <App />
-)
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="global.css">
-```
-
-```css title="global.css"
-@import "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="App.tsx">
-```
-
-```jsx title="App.tsx"
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-
-export default function App() {
-  return (
-    <MapContainer
-      center={[51.505, -0.09]}
-      zoom={13}
-      scrollWheelZoom={true}
-      style={{ height: "500px", width: "500px" }}
-    >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      <Marker position={[51.505, -0.09]}>
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
-      </Marker>
-    </MapContainer>
-  );
-}
-```
-
-```mdx-code-block
-</TabItem>
-</Tabs>
-```
-
-### Update the center of the map
-
-Each time you click on a button that changes the poition of the map, the map will recenter to the new position.
-
-```jsx
-import { useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-
-export default function Map() {
-  const [position, setPosition] = useState([51, 3]);
-  return (
-    <>
-      <div>
-        <button onClick={() => setPosition([51, 9])}>Pos 1</button>
-        <button onClick={() => setPosition([46, 18])}>Pos 2</button>
-      </div>
-      <MapContainer
-        center={position}
-        zoom={13}
-        scrollWheelZoom={true}
-        style={{ height: "500px", width: "500px" }}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <Marker position={position}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </Marker>
-        //highlight-next-line
-        <ChangeCenter position={position} />
-      </MapContainer>
-    </>
-  );
-}
-
-function ChangeCenter({ position }) {
-  const map = useMap();
-  map.setView(position);
-  return null;
-}
-```
-
-### Add a click event to the map
-
-```jsx
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMapEvents,
-} from "react-leaflet";
-
-export default function Map() {
-  return (
-    <MapContainer
-      center={[51.505, -0.09]}
-      zoom={13}
-      scrollWheelZoom={true}
-      style={{ height: "500px", width: "500px" }}
-    >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      <Marker position={[51.505, -0.09]}>
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
-      </Marker>
-      //highlight-next-line
-      <ClickEvent />
-    </MapContainer>
-  );
-}
-
-function ClickEvent() {
-  useMapEvents({
-    click: (e) => {
-      console.log(e.latlng);
-    },
-  });
-  return null;
-}
-```
 
 ## Lazy Loading
 
@@ -406,4 +251,5 @@ export default function LazyLoadWithSuspense() {
 }
 ```
 
-<LazyLoadWithSuspense/>
+<!-- <LazyLoadWithSuspense/> -->
+

@@ -90,6 +90,7 @@ const config = {
                 docId: "languages/javascript/strings",
               },
               { type: "doc", label: "Java", docId: "languages/java/java" },
+              { type: "doc", label: "SQL", docId: "languages/sql/select" },
             ],
           },
 
@@ -98,8 +99,21 @@ const config = {
             label: "Quick Ref",
             position: "left",
             items: [
-              { type: "doc", label: "React", docId: "quickRef/react/react" },
-              { type: "doc", label: "Express", docId: "quickRef/express/express" },
+              {
+                type: "doc",
+                label: "React",
+                docId: "quickRef/react/react",
+              },
+              {
+                type: "doc",
+                label: "Express",
+                docId: "quickRef/express/express",
+              },
+              {
+                type: "doc",
+                label: "Docker",
+                docId: "quickRef/docker/docker",
+              },
             ],
           },
 

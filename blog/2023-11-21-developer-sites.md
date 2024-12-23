@@ -10,7 +10,7 @@ tags: [web dev, interesting]
 ---
 
 ## AI
- [DeepAI](https://deepai.org/) - AI tools for developers
+ - [DeepAI](https://deepai.org/) - AI tools for developers
 
 ## Database Tools
 
@@ -18,6 +18,7 @@ tags: [web dev, interesting]
 - [Neon](https://neon.tech/) - A modern PostgreSQL client
 - [Compass](https://www.mongodb.com/products/tools/compass) - MongoDB GUI
 - [Mongo Cloud](https://www.mongodb.com/products/platform/cloud) - MongoDB Cloud
+- [Supabase](https://supabase.io/) - Open source Firebase alternative, out of the box backend
 
 ## Emails
 
