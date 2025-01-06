@@ -47,55 +47,50 @@ The data is cached, so when moving to other pages, the data is still available a
 
 ```mdx-code-block
 <Tabs>
-<TabItem value="Creating QueryClient">
+<TabItem value="App">
 ```
 
 ```jsx
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60 * 1000, // How long it takes before data becomse stale and get a refresh
-    },
-  },
-});
+import Setup from "./components/Setup";
+
+const queryClient = new QueryClient();
 
 export default function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Cabin />
-    </QueryClientProvider>
-  );
+    return (
+        <QueryClientProvider client={queryClient}>
+            <Setup />
+        </QueryClientProvider>
+    );
 }
 ```
 
 ```mdx-code-block
 </TabItem>
-<TabItem value="Consuming data">
+<TabItem value="Setup">
 ```
 
 ```jsx
 import { useQuery } from "@tanstack/react-query";
 
-function getCabins() {
-  // remote call function that returns a promise
-}
+import { getData } from "../utils/api";
 
-export default function Cabin() {
-  const { isPending, data, error, } = useQuery({
-    queryKey: ["cabin"], // identifies the data
-    queryFn: getCabins, // needs to return a promise, so no async and dont call the function
-  });
+export default function Setup() {
+    const { isPending, error, data } = useQuery({
+        queryKey: ["data"],
+        queryFn: getData,
+    });
 
+    if (isPending) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.status} - {error.message} </p>;
 
-  return (
-    {data.map((cabin) => (
-      <div key={cabin.id}>
-        <h1>{cabin.name}</h1>
-      </div>
-    ))}
-  );
+    return (
+        <>
+            <h1>Basic Setup</h1>
+            <p>{data.description}</p>
+        </>
+    );
 }
 ```
 
@@ -104,28 +99,107 @@ export default function Cabin() {
 </Tabs>
 ```
 
-## Trigger reload after mutation
+## Updating data with mutations
 
 ```mdx-code-block
 <Tabs>
-<TabItem value="Creating QueryClient">
+<TabItem value="App">
 ```
 
-```jsx
+```tsx
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60 * 1000, // How long it takes before data becomse stale and get a refresh
-    },
-  },
-});
+import Mutations from "./components/Mutations";
+
+const queryClient = new QueryClient();
+
+export default function App() {
+    return (
+        <QueryClientProvider client={queryClient}>
+            <Mutations />
+        </QueryClientProvider>
+    );
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="Mutations">
+```
+
+```tsx
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { getItems, addItem } from "../utils/fakeServer";
+
+export default function Mutations() {
+    const queryClient = useQueryClient(); // get access to the queryClient
+
+    const {
+        isPending: isFetching, error, data } = useQuery({
+        queryKey: ["items"],
+        queryFn: getItems,
+    });
+
+    // Mutation Function
+    const { isPending: isPosting, mutate } = useMutation({
+        mutationFn: addItem,
+        onSuccess: () => {
+            // Invalidate and refetch
+            // highlight-next-line
+            queryClient.invalidateQueries({ queryKey: ["items"] });
+        },
+        onError: () => console.log(error),
+    });
+
+    // Check the status of the data loading
+    if (isPending) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.status} - {error.message} </p>;
+    
+    return (
+        <>
+            <h1>Mutations</h1>
+            // highlight-next-line
+            <button disabled={isPosting} onClick={() => mutate("hello")}>
+                {isPosting ? "Loading" : "Post"}
+            </button>
+            <ul>
+                {data.map((item: string) => (
+                    <li>{item}</li>
+                ))}
+            </ul>
+        </>
+    );
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
+
+## Passing multiple args to mutation
+
+Since mutations can only accept one argument, multiple args should be passed as an object
+
+```mdx-code-block
+<Tabs>
+<TabItem value="App">
+```
+
+```tsx
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+import Mutations from "./components/Mutations";
+
+const queryClient = new QueryClient();
 
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Cabin />
+      <Mutations />
     </QueryClientProvider>
   );
 }
@@ -133,62 +207,55 @@ export default function App() {
 
 ```mdx-code-block
 </TabItem>
-<TabItem value="Consuming data">
+<TabItem value="Mutation">
 ```
 
-```jsx
-import { useQuery } from "@tanstack/react-query";
+```tsx
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-function getCabins() {
-  // remote call function that returns a promise
-}
+import { getNames, addName } from "../utils/fakeServer";
 
-export default function Cabin() {
-  const { isPending, data, error, } = useQuery({
-    queryKey: ["cabin"], // identifies the data
-    queryFn: getCabins, // needs to return a promise, so no async and dont call the function
+export default function MutationFnMultipleArgs() {
+  const queryClient = useQueryClient(); // get access to the queryClient
+
+  const {
+    isPending: isFetching, error, data } = useQuery({
+    queryKey: ["names"],
+    queryFn: getNames,
   });
 
-
-  return (
-    {data.map((cabin) => (
-      <CabinItems cabin={cabin} />
-    ))}
-  );
-}
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="Deleting data">
-```
-
-```jsx
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-function deleteCabin(cabinId) {
-  // remote call function that returns a promise
-}
-
-export default function CabinItem({ cabin }) {
-  const { cabinId, name } = cabin;
-
-  const queryClient = useQueryClient();
-  const { isPending, mutate } = useMutation({
-    mutationFn: deleteCabin,
-    // Invalid the data to force a new fetch
+  // Mutation Function
+  const { isPending: isPosting, mutate } = useMutation({
+    mutationFn: ({ name, surname }) => addName(name, surname),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["cabin"], // key created in the useQuery
-      });
+      // Invalidate and refetch
+        // highlight-next-line
+      queryClient.invalidateQueries({ queryKey: ["names"] });
     },
-    onError: (err) => console.log(err.message),
+    onError: () => console.log(error),
   });
+
+  // Check the status of the data loading
+  if (isFetching) return <p>Loading...</p>;
+  if (error) <p> Error: {error.status} - {error.message} </p>;
 
   return (
     <>
-      <h1>{name}</h1>
-      <button onClick={() => mutate(cabinId)}>Delete</button>
+      <h1>Mutations Function with multiple args</h1>
+      <button
+        disabled={isPosting}
+        // highlight-next-line
+        onClick={() => mutate({ name: "hello", surname: "world" })}
+      >
+        {isPosting ? "Loading" : "Post"}
+      </button>
+      <ul>
+        {data.map((data) => (
+          <li>
+            {data.surname}, {data.name}
+          </li>
+        ))}
+      </ul>
     </>
   );
 }
@@ -199,3 +266,101 @@ export default function CabinItem({ cabin }) {
 </Tabs>
 ```
 
+## Creating query hooks
+
+```mdx-code-block
+<Tabs>
+<TabItem value="App">
+```
+
+```tsx
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+import QueryHooks from "./components/QueryHooks";
+
+const queryClient = new QueryClient();
+
+export default function App() {
+    return (
+        <QueryClientProvider client={queryClient}>
+            <QueryHooks />
+        </QueryClientProvider>
+    );
+}
+```
+
+```mdx-code-block
+
+</TabItem>
+<TabItem value="useNames Hook">
+```
+
+```tsx
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { getNames, addName } from "./fakeServer";
+
+export function useGetNames() {
+    const {isPending, error, data: names } = useQuery({
+        queryKey: ["names"],
+        queryFn: getNames,
+    });
+
+    return { isPending, error, names };
+}
+
+export function useAddName() {
+    const queryClient = useQueryClient();
+
+    const { isPending: isPosting, mutate: addNewName } = useMutation({
+        mutationFn: ({ name, surname }) => addName(name, surname),
+        onSuccess: () => {
+            // Invalidate and refetch
+            queryClient.invalidateQueries({ queryKey: ["names"] });
+        },
+        onError: () => console.log(error),
+    });
+
+    return { isPosting, addNewName };
+}
+```
+
+```mdx-code-block
+</TabItem>
+<TabItem value="QueryHooks">
+```
+
+```tsx
+import { useGetNames, useAddName } from "../utils/useNames";
+
+export default function QueryHooks() {
+    const { isPending, error, names } = useGetNames();
+    const { isPosting, addNewName } = useAddName();
+
+    if (isPending) return <p>Loading...</p>;
+    if (error) return <p>{error.message}</p>;
+
+    return (
+        <>
+            <h1>Query Hooks </h1>
+            <button
+                disabled={isPosting}
+                onClick={() => addNewName({ name: "hello", surname: "world" })}
+            >
+                {isPosting ? "Loading" : "Post"}
+            </button>
+            {names.map((user) => (
+                <p>
+                    {user.name} {user.surname}
+                </p>
+            ))}
+        </>
+    );
+}
+```
+
+```mdx-code-block
+</TabItem>
+</Tabs>
+```
