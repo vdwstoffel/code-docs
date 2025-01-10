@@ -14,6 +14,7 @@ import ToggleHookExample from '@site/src/components/reactExamples/ToggleHookExam
 import BrowserWindow from '@site/src/components/BrowserWindow/BrowserWindow'
 import UseMemoExample from '@site/src/components/reactExamples/UseMemoExample'
 import UseCallbackExample from '@site/src/components/reactExamples/UseCallbackExample'
+import DivRefExample from '@site/src/components/reactExamples/DivRefExample'
 
 # Hooks
 
@@ -263,6 +264,43 @@ export default function MyComponent() {
 <BrowserWindow>
 <UpdateDomElements/>
 </BrowserWindow>
+
+### Adding classes to a dif using useRef
+
+```jsx
+import { useRef } from "react";
+
+export default function RefExample() {
+  const redBox = useRef();
+
+  function handleClick() {
+    console.log(redBox);
+    redBox.current.className = redBox.current.className + " spin";
+    redBox.current.textContent = "Spinning";
+
+    setTimeout(() => {
+      redBox.current.textContent = "Stable";
+      redBox.current.className = "box red";
+    }, 5500);
+  }
+
+  return (
+    <>
+      <h1>UseRef Example</h1>
+      <div>
+        <button onClick={handleClick}>Red</button>
+      </div>
+      <div>
+        <div ref={redBox} className="box red">
+          Stable
+        </div>
+      </div>
+    </>
+  );
+}
+```
+
+<DivRefExample/>
 
 ## useReducer
 

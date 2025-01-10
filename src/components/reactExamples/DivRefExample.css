@@ -1,0 +1,16 @@
+.box {
+    width: 250px;
+    height: 250px;
+    border: 1px black solid;
+    margin: auto;
+    margin-top: 4em;
+}
+
+.red {
+    background-color: darkred;
+}
+
+.spin {
+    transform: rotate(360deg);
+    transition: all 5s;
+}

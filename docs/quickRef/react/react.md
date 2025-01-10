@@ -12,6 +12,7 @@ import UpdateDomElements from '@site/src/components/reactExamples/UpdateDomEleme
 import CounterHookExample from '@site/src/components/reactExamples/CounterHookExample'
 import ToggleHookExample from '@site/src/components/reactExamples/ToggleHookExample'
 import LazyLoadWithSuspense from '@site/src/components/reactExamples/LazyLoadWithSuspense'
+import PortalExample from '@site/src/components/reactExamples/PortalExample'
 
 import reactLogo from "@site/static/img/react.png"
 import DisplayLogo from "@site/src/components/DisplayLogo"
@@ -224,7 +225,6 @@ export default function Example() {
 }
 ```
 
-
 ## Lazy Loading
 
 Lazy loading is a technique to defer loading of non-critical resources at page load time. This can help reduce the initial load time of your app.
@@ -250,6 +250,164 @@ export default function LazyLoadWithSuspense() {
   );
 }
 ```
+
 <!-- Break the build process for what ever reason -->
 <!-- <LazyLoadWithSuspense/> -->
 
+## Portals
+
+- [createPortal](https://react.dev/reference/react-dom/createPortal) lets you render some children into a different part of the DOM.
+
+**Parameters**
+
+```jsx
+createPortal(children, domNode, key?)
+```
+
+- children: Anything that can be rendered with React, such as a piece of JSX (e.g. <div /> or <SomeComponent />), a Fragment (<>...</>), a string or a number, or an array of these.
+
+- domNode: Some DOM node, such as those returned by document.getElementById(). The node must already exist. Passing a different DOM node during an update will cause the portal content to be recreated.
+
+- optional key: A unique string or number to be used as the portal’s key.
+
+```jsx
+import { createPortal } from "react-dom";
+
+// ...
+
+<div>
+  <p>This child is placed in the parent div.</p>
+  {createPortal(
+    <p>This child is placed in the document body.</p>,
+    document.body
+  )}
+</div>;
+```
+
+### Using a portal to place an element on the document body
+
+```jsx
+import { useState } from "react";
+import { createPortal } from "react-dom";
+
+export function Modal() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  function openModel() {
+    setIsOpen(true);
+  }
+
+  function closeModel() {
+    setIsOpen(false);
+  }
+
+  return (
+    <>
+      <div className="modalContainer">
+        <h1>Modal</h1>
+        <div>
+          <button onClick={openModel}>Click To Open</button>
+
+          {/* Non Portal Modal. Will be positioned within its container */}
+          {isOpen && (
+            <div className="modal">
+              <p>This is a modal</p>
+              <button onClick={closeModel}>close</button>
+            </div>
+          )}
+
+          {/* Portal Modal Will be positioned within the body */}
+          {isOpen &&
+            createPortal(
+              <div className="modal">
+                <p>This is a modal</p>
+                <button onClick={closeModel}>close</button>
+              </div>,
+              document.body
+            )}
+        </div>
+      </div>
+    </>
+  );
+}
+```
+
+<PortalExample/>
+
+## Compound Component Pattern
+
+<Tabs >
+
+  <TabItem value="App">
+
+```jsx
+import Counter from "./Counter";
+
+export default function App() {
+  return (
+    <>
+      <Counter>
+        <Counter.Label label="Counter" />
+        <Counter.Decrement />
+        <Counter.Count />
+        <Counter.Increase />
+      </Counter>
+    </>
+  );
+}
+```
+
+</TabItem>
+
+<TabItem value="Counter">
+
+```jsx
+import { createContext, useContext, useState } from "react";
+
+// 1. Create Context
+const CounterContext = createContext();
+
+// 2. Create Parent component
+export default function Counter({ children }) {
+  const [count, setCount] = useState(0);
+  const increment = () => setCount((c) => c + 1);
+  const decrement = () => setCount((c) => c - 1);
+
+  return (
+    <CounterContext.Provider value={{ count, increment, decrement }}>
+      {children}
+    </CounterContext.Provider>
+  );
+}
+
+// 3. Create helper child components
+function Label({ label }) {
+  return <h1>{label}</h1>;
+}
+
+function Count() {
+  const { count } = useContext(CounterContext);
+  return <span>{count}</span>;
+}
+
+function Increase({ icon = "+" }) {
+  const { increment } = useContext(CounterContext);
+  return <button onClick={increment}>{icon}</button>;
+}
+
+function Decrement({ icon = "-" }) {
+  const { decrement } = useContext(CounterContext);
+  return <button onClick={decrement}>{icon}</button>;
+}
+
+// 4. Add child compoents as properties
+Counter.Label = Label;
+Counter.Count = Count;
+Counter.Increase = Increase;
+Counter.Decrement = Decrement;
+```
+
+</TabItem>
+
+</Tabs>
+```
