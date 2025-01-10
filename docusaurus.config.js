@@ -96,23 +96,23 @@ const config = {
 
           {
             type: "dropdown",
-            label: "Quick Ref",
+            label: "Cook Book",
             position: "left",
             items: [
               {
                 type: "doc",
                 label: "React",
-                docId: "quickRef/react/react",
+                docId: "cookbook/react/react",
               },
               {
                 type: "doc",
                 label: "Express",
-                docId: "quickRef/express/express",
+                docId: "cookbook/express/express",
               },
               {
                 type: "doc",
                 label: "Docker",
-                docId: "quickRef/docker/docker",
+                docId: "cookbook/docker/docker",
               },
             ],
           },
