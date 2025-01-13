@@ -1,0 +1,71 @@
+---
+sidebar_label: HTML/CSS/JS
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# HTML/CSS/JS
+
+## Centering an element horizontal/vertical
+
+<Tabs>
+<TabItem value='Html'>
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Centered Item</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="outerContainer">
+        <div class="container">Div place nicely in the center</div>
+    <div>
+  </body>
+</html>
+```
+
+</TabItem >
+<TabItem value='CSS'>
+
+```css
+.outerContainer {
+  position: relative;
+}
+
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 5px;
+}
+```
+
+</TabItem >
+</Tabs>
+
+<body
+  style={{
+    border: "1px solid black",
+    padding: "5px",
+    height: "250px",
+    width: "450px",
+    position: "relative",
+  }}
+>
+  <div
+    style={{
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+    }}
+  >
+    Div place nicely in the center
+  </div>
+</body>

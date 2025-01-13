@@ -101,6 +101,11 @@ const config = {
             items: [
               {
                 type: "doc",
+                label: "HTML/CSS/JS",
+                docId: "cookbook/html_css_js/recepies",
+              },
+              {
+                type: "doc",
                 label: "React",
                 docId: "cookbook/react/react",
               },
