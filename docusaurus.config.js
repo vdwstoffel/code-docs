@@ -116,8 +116,8 @@ const config = {
               },
               {
                 type: "doc",
-                label: "Docker",
-                docId: "cookbook/docker/docker",
+                label: "Devops",
+                docId: "cookbook/devops/docker",
               },
             ],
           },
