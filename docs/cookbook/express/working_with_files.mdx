@@ -1,0 +1,153 @@
+---
+sidebar_label: Working with Files
+sidebar_position: 6
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Working with files
+
+## How to upload a file
+
+```bash
+npm i multer
+```
+
+<Tabs>
+<TabItem value="upload.js">
+
+```javascript
+import multer from "multer";
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./working_with_files/uploads/"); // destination relative to app.js/server.js
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+
+// Create the multer instance
+const upload = multer({ storage: storage });
+export default upload;
+```
+
+</TabItem>
+
+<TabItem value="app.js">
+
+```javascript
+import express from "express";
+
+import upload from "./upload.js";
+
+const app = express();
+
+app.post("/upload-file", upload.single("file"), (req, res) => {
+  res.status(200).json({ status: "success", message: "File uploaded" });
+});
+
+export default app;
+```
+
+</TabItem>
+</Tabs>
+
+## How to download a file
+
+```javascript
+import express from "express";
+
+const app = express();
+
+app.get("/download-file", (req, res) => {
+  res.download("./working_with_files/uploads/upload-test.txt"); // path should be ralative from main entry point
+});
+
+export default app;
+```
+
+## How to modify a file on the server and download it
+
+```javascript
+import express from "express";
+import fs from "fs";
+
+const app = express();
+
+app.get("/server-file", (req, res) => {
+  const content = "Text modiefied by server";
+
+  fs.writeFileSync("./working_with_files/uploads/server.txt", content, "utf-8");
+
+  res.download("./working_with_files/uploads/server.txt");
+});
+
+export default app;
+```
+
+## How to upload and resize image
+
+```bash
+npm i sharp
+npm i multer
+```
+
+<Tabs>
+
+<TabItem value="resizeImages.js">
+
+```javascript
+import multer from "multer";
+import sharp from "sharp";
+
+// Save in momery to pass the image to sharp
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Not an image"));
+  }
+};
+
+const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
+export const photoUpload = upload.single("photo");
+
+export const resizeImage = (req, res, next) => {
+  if (!req.file) return next();
+
+  sharp(req.file.buffer)
+    .resize(500, 500)
+    .toFormat("jpeg")
+    .jpeg({ quality: 90 })
+    .toFile("./working_with_files/uploads/new_image.jpeg");
+
+  next();
+};
+```
+
+</TabItem>
+
+<TabItem value="app.js">
+
+```javascript
+import express from "express";
+
+import { photoUpload, resizeImage } from "./resizeImage.js";
+
+const app = express();
+
+app.post("/resize-image", photoUpload, resizeImage, (req, res) => {
+  res.status(200).json({ status: "success", message: "Photo uploaded" });
+});
+
+export default app;
+```
+
+</TabItem>
+
+</Tabs>

@@ -1,0 +1,101 @@
+---
+sidebar_label: "Usefull Libraries"
+sidebar_position: 104
+---
+
+# Usefull Libraries
+
+## Secure http headers
+
+Help secure Express apps by setting HTTP response headers.
+
+```bash
+npm i helmt
+```
+
+```js
+import express from "express";
+import helmet from "helmet";
+
+const app = express()
+
+app.use(helmet());
+
+app.get("/", (req, res) => {
+    res.statusCode(200).json({status: "success", message: "Hello"})
+})
+
+export default app
+```
+
+## Limit Api requets
+
+Basic rate-limiting middleware for Express. Use to limit repeated requests to public APIs and/or endpoints such as password reset.
+
+```bash
+npm i express-rate-limit
+```
+
+```js
+import express from "express"
+import rateLimit from "express-rate-limit"
+
+const app = express()
+
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+	standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+	// store: ... , // Redis, Memcached, etc. See below.
+})
+
+// Apply the rate limiting middleware to all requests.
+app.use(limiter)
+
+app.get("/", (req, res) => {
+    res.status(200).json({status: "success", "message": "hello"})
+})
+
+export default app
+```
+
+## How to sanitize input
+
+```bash
+npm install xss-clean --save
+```
+
+```js
+import express from "express"
+import xss from "xss-clean"
+
+const app = express()
+app.use(xss())
+
+app.get("/", (req, res) => {
+    res.status(200).json({status: "success", "message": "hello"})
+})
+
+export default app
+```
+
+## How to watch for changes
+
+```bash
+npm install nodemon --save-dev
+```
+
+```json
+"scripts": {
+  "start": "node app.js",
+  "dev": "nodemon app.js"
+},
+"devDependencies": {
+  "nodemon": "^1.18.11"
+}
+```
+
+```bash
+npm run dev
+```
