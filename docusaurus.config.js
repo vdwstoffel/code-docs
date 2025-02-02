@@ -96,28 +96,28 @@ const config = {
 
           {
             type: "dropdown",
-            label: "Cook Book",
+            label: "Recepies",
             position: "left",
             items: [
               {
                 type: "doc",
                 label: "HTML/CSS/JS",
-                docId: "cookbook/html_css_js/recepies",
+                docId: "recepies/html_css_js/recepies",
               },
               {
                 type: "doc",
                 label: "React",
-                docId: "cookbook/react/react",
+                docId: "recepies/react/react",
               },
               {
                 type: "doc",
                 label: "Express",
-                docId: "cookbook/express/express",
+                docId: "recepies/express/express",
               },
               {
                 type: "doc",
                 label: "Devops",
-                docId: "cookbook/devops/docker",
+                docId: "recepies/devops/docker",
               },
             ],
           },
